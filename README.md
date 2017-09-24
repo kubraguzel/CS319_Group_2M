@@ -9,7 +9,7 @@ Reference: http://diep.io/
 
 Group members:
 
-Pelin Günay - 21402149 
+Pelin Elbin Günay - 21402149 
 
 Kübra Nur Güzel - 21400946
 
