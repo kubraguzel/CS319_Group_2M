@@ -6,3 +6,8 @@
 Player will be able to move inside the borders of the game just like the enemies. Enemies will have a simple AI that will chase the player down they will try to damage the player by either shooting them, crashing onto him or spawning other enemy units that will attack the player. Player will be able to move around the map using arrow keys and will click to shoot to damage enemies. Player will not have a health bar but instead he will have limited time to complete the game, damages will also decrease that time bar. The game arena will contain collectable items such as extra time tokens, coins(which can be used to get upgrades) etc.  Upgrade system will have multiple variences which will be determined later.
 
 Reference: http://diep.io/
+
+Pelin Günay - 21402149
+Kübra Nur Güzel - 21400946
+Alper Şahıstan - 21501207
+Semih Teker - 21300964
