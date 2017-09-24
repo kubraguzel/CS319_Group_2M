@@ -7,7 +7,12 @@ Player will be able to move inside the borders of the game just like the enemies
 
 Reference: http://diep.io/
 
-Pelin Günay - 21402149
+Group members:
+
+Pelin Günay - 21402149 
+
 Kübra Nur Güzel - 21400946
+
 Alper Şahıstan - 21501207
+
 Semih Teker - 21300964
