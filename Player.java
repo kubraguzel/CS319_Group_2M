@@ -2,10 +2,11 @@ import java.awt.*;
 
 public class Player extends GameObject implements Drawable
 {
-	Stats playerStats;
-	float fireRate;
-	float dX=0;
-	float dY=0;
+	private Stats playerStats;
+	private float fireRate;
+	private float dX=0;
+	private float dY=0;
+	
 	
 	private float nextTimeToShoot = 0;
 	
@@ -13,6 +14,38 @@ public class Player extends GameObject implements Drawable
 	private boolean down;
 	private boolean right;
 	private boolean left;
+	
+	
+	public Player(Vector2 pos, Vector2 dim, float maxHealth, float curHealth, Vector2 velocity, float fireRate)
+	{
+		super(pos, dim, velocity);
+		playerStats = new Stats(maxHealth, curHealth);
+		this.fireRate =fireRate;
+	}
+	
+	public Player(Vector2 pos, float maxHealth, float curHealth, Vector2 velocity, float fireRate)
+	{
+		super(pos, new Vector2(15f, 15f), velocity);
+		playerStats = new Stats(maxHealth, curHealth);
+		this.fireRate =fireRate;
+	}
+	
+	//Getters & Setters
+	public Stats getPlayerStats() {
+		return playerStats;
+	}
+
+	public void setPlayerStats(Stats playerStats) {
+		this.playerStats = playerStats;
+	}
+
+	public float getFireRate() {
+		return fireRate;
+	}
+
+	public void setFireRate(float fireRate) {
+		this.fireRate = fireRate;
+	}
 	
 	public void setUp(boolean up) {
 		this.up = up;
@@ -31,14 +64,7 @@ public class Player extends GameObject implements Drawable
 	}
 	
 	
-	public Player(Vector2 pos, Vector2 dim, float maxHealth, float curHealth, float speed, float fireRate)
-	{
-		super(pos, dim);
-		playerStats = new Stats(maxHealth, curHealth, speed);
-		this.fireRate =fireRate;
-	}
-	//TODO: ADD MORE CONTRUCTORS
-	
+
 	public void takeDamage(float dmg)
 	{
 		this.playerStats.setCurHealth(this.playerStats.getCurHealth()-dmg);
@@ -58,16 +84,25 @@ public class Player extends GameObject implements Drawable
 		if(left)
 			dX=-1;
 		
-		Vector2 velocity = new Vector2(dX, dY);
 		//System.out.println(velocity.normalized());
-		velocity = (velocity.normalized());
-		velocity.multiply( playerStats.getSpeed());
 		
 		//System.out.println(velocity.getX());
 		//System.out.println(velocity.getY());
 		
+		Vector2 p = super.getPos();
+		Vector2 v = new Vector2(super.getVelocity().getX()*dX,
+							super.getVelocity().getY()*dY);
 		
-		pos.add(velocity);
+		//Limits the speed to the magnitude
+		if(v.getMagnitude()> v.getX() || v.getMagnitude()> v.getY())
+		{
+			v.setX(v.getX()/1.4142f);
+			v.setY(v.getY()/1.4142f);
+			//System.out.println("hello");
+		}
+		p.add(v);
+		
+		super.setPos(p);
 		
 		/*System.out.println(dX);
 		System.out.println(dY);
@@ -84,10 +119,10 @@ public class Player extends GameObject implements Drawable
 		
 		//getting the object drawn from the center
 		//System.out.println((int)(super.pos.getX()- (super.dimentions.getX()/2)));
-		g.fillOval((int)(super.pos.getX()- (super.dimentions.getX()/2)),
-				(int)(super.pos.getY()- (super.dimentions.getY()/2)),
-				(int)super.dimentions.getX(),
-				(int)super.dimentions.getY());
+		g.fillOval((int)(super.getPos().getX() - ((super.getDimentions()).getX())/2),
+				(int)(super.getPos().getY()- (super.getDimentions().getY()/2)),
+				(int)super.getDimentions().getX(),
+				(int)super.getDimentions().getY());
 	}
 	
 	public Bullet shoot(Vector2 target)
@@ -95,7 +130,7 @@ public class Player extends GameObject implements Drawable
 		if ((float) System.currentTimeMillis() >= nextTimeToShoot)
 		{
 			nextTimeToShoot = fireRate + (float) System.currentTimeMillis();
-			Bullet bullet = new Bullet(new Vector2(super.pos), target, 20f);
+			Bullet bullet = new Bullet(new Vector2(super.getPos()), target, 20f);
 			return bullet;
 		}
 		System.out.println("Null");

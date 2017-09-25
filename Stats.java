@@ -3,14 +3,14 @@ public class Stats
 {
 	private float maxHealth;
 	private float curHealth;
-	private float speed;
+	//private float speed;
 	
 	//Constructor
-	public Stats(float maxHealth, float curHealth, float speed)
+	public Stats(float maxHealth, float curHealth)
 	{
 		this.maxHealth= maxHealth;
 		this.curHealth= curHealth;
-		this.speed= speed;
+		//this.speed= speed;
 	}
 
 	public float getMaxHealth() {
@@ -29,13 +29,13 @@ public class Stats
 		this.curHealth = curHealth;
 	}
 
-	public float getSpeed() {
+	/*public float getSpeed() {
 		return speed;
 	}
 
 	public void setSpeed(float speed) {
 		this.speed = speed;
-	}
+	}*/
 	
 	
 }

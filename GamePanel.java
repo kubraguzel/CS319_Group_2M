@@ -36,7 +36,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     	setPreferredSize(new Dimension (WIDTH, HEIGHT));
     	setFocusable(true);
     	requestFocus();
-    	player = new Player(new Vector2((float)WIDTH/2, (float)HEIGHT/2), new Vector2(50f ,50f), 100f, 100f, 10f, 15000f);
+    	player = new Player(new Vector2((float)WIDTH/2, (float)HEIGHT/2), 
+    						new Vector2(50f, 50f), 
+    						100f, 100f, 
+    						new Vector2(15f, 15f), 
+    						15000f);
     	bulletList = new ArrayList<Bullet>();
     }
     
@@ -97,14 +101,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private void gameUpdate()
     {
     	player.update();
-    	if (player.pos.getX()<0 + player.dimentions.getX()/2)
-    		player.pos.setX(0+player.dimentions.getX()/2);
-    	if (player.pos.getX()>WIDTH - player.dimentions.getX()/2)
-    		player.pos.setX(WIDTH-player.dimentions.getX()/2);
-    	if (player.pos.getY()<0 + player.dimentions.getY()/2)
-    		player.pos.setY(0+player.dimentions.getY()/2);
-    	if (player.pos.getY()>HEIGHT - player.dimentions.getY()/2)
-    		player.pos.setY(HEIGHT-player.dimentions.getY()/2);
+    	
+    	//Border Check
+    	if (player.getPos().getX()<0 + player.getDimentions().getX()/2)
+    		player.getPos().setX(0+player.getDimentions().getX()/2);
+    	if (player.getPos().getX()>WIDTH - player.getDimentions().getX()/2)
+    		player.getPos().setX(WIDTH-player.getDimentions().getX()/2);
+    	if (player.getPos().getY()<0 + player.getDimentions().getY()/2)
+    		player.getPos().setY(0+player.getDimentions().getY()/2);
+    	if (player.getPos().getY()>HEIGHT - player.getDimentions().getY()/2)
+    		player.getPos().setY(HEIGHT-player.getDimentions().getY()/2);
     	for(int i =0; i < bulletList.size(); i++)
     		bulletList.get(i).update();
     	
@@ -194,9 +200,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		{
 			Bullet bullet;
 			bullet = player.shoot(new Vector2((float)(e.getX()), (float)(e.getY())));
-			System.out.println("Posx: " + player.pos.getX());
+			/*System.out.println("Posx: " + player.getPos().getX());
 			System.out.println((float)(e.getX()-WIDTH/2));
-			System.out.println((float)(e.getY()- HEIGHT/2));
+			System.out.println((float)(e.getY()- HEIGHT/2));*/
 			if (bullet != null)
 			{
 				bulletList.add(bullet);

@@ -44,6 +44,11 @@ public class Vector2
     	 this.y=y;
     }
     
+    public float getMagnitude()
+    {
+    	return (float)Math.sqrt(x*x + y*y);
+    }
+    
     public void normalize()
     {
     	Vector2 nV= this.normalized();
