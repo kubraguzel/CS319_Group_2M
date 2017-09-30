@@ -12,7 +12,7 @@ public class Bar implements Drawable {
 	private Color layer1;
 	private Color layer2;
 	
-	public Bar(Vector2 pos, float height, float width, Color layer1, Color layer2)
+	public Bar(Vector2 pos, float width, float height, Color layer1, Color layer2)
 	{
 		this.pos = pos;
 		this.height = height;
@@ -106,7 +106,6 @@ public class Bar implements Drawable {
 	{
 		g.setColor(layer1);
 		g.fillRect(((int)pos.getX()), (int)(pos.getY()), (int)width, (int)height);
-		
 		g.setColor(layer2);
 		if(horizontal)
 		{

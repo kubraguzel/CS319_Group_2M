@@ -14,7 +14,7 @@ public class Enemy extends GameObject implements Drawable
 		this.findTarget(target);
 		Vector2 hbPos = super.getPos().difference(new Vector2(0f, getDimentions().getY() + 5f));
 		hbPos.setX(hbPos.getX() - super.getDimentions().getX());
-		healthBar = new Bar(hbPos, super.getPos().getX()*2, 3f);
+		healthBar = new Bar(hbPos, super.getDimentions().getX()*2, 3f);
 		System.out.println("Enemy Spawned" + super.getPos().getX()+ " " +super.getPos().getY());
 	}
 	
@@ -49,8 +49,8 @@ public class Enemy extends GameObject implements Drawable
 			targetVector.multiply(super.getVelocity().getX());
 			targetVector.add(super.getPos());
 			super.setPos(targetVector);
-			Vector2 hbPos = super.getPos().difference(new Vector2(0f, getDimentions().getY() + 5f));
-			hbPos.setX(hbPos.getX() - super.getDimentions().getX());
+			Vector2 hbPos = super.getPos().difference(new Vector2(0f, getDimentions().getY()/2 + 5f ));
+			hbPos.setX(hbPos.getX() - healthBar.getWidth()/2);
 			healthBar.setPos(hbPos);
 			healthBar.setPercentage((enemyStats.getCurHealth()/enemyStats.getMaxHealth()));
 			
@@ -70,6 +70,8 @@ public class Enemy extends GameObject implements Drawable
 				(int)(super.getPos().getY()- (super.getDimentions().getY()/2)),
 				(int)super.getDimentions().getX(),
 				(int)super.getDimentions().getY());
+		g.setColor(Color.BLACK);
+		g.drawString("BUG", super.getPos().getX(), super.getPos().getY());
 		//System.out.println("Enemy is drawn");
 		healthBar.draw(g);
 	}

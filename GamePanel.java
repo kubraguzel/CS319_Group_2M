@@ -31,6 +31,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private ArrayList<Enemy> enemyList;
     private boolean mouseHeldDown=false;
     
+    int mouseX;
+    int mouseY;
+    
     public GamePanel()
     {
     	super();
@@ -41,12 +44,23 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     						new Vector2(30f, 30f), 
     						100f, 100f, 
     						new Vector2(15f, 15f), 
-    						15000f);
+    						300f);
+    	
     	bulletList = new ArrayList<Bullet>();
+    	
     	enemyList = new ArrayList<Enemy>();
-    	enemyList.add(new Enemy(new Vector2(20f,20f), 
+    	enemyList.add(new Enemy(new Vector2(10f,10f), 
+				new Vector2(20f, 20f),
+				100f, 100f,
+				new Vector2(7f, 7f), player));
+    	
+    	enemyList.add(new Enemy(new Vector2(600f,600f),
 				new Vector2(20f, 20f), 
-				100f, 100f, 
+				100f, 100f,
+				new Vector2(7f, 7f), player));
+    	enemyList.add(new Enemy(new Vector2(1000f,900f), 
+				new Vector2(20f, 20f),
+				100f, 100f,
 				new Vector2(7f, 7f), player));
     }
     
@@ -118,11 +132,30 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     	if (player.getPos().getY()>HEIGHT - player.getDimentions().getY()/2)
     		player.getPos().setY(HEIGHT-player.getDimentions().getY()/2);
     	
-    	for(int i =0; i < bulletList.size(); i++)
-    	{
-    		bulletList.get(i).update();
-    		for(int j =0; j < enemyList.size(); j++)
+    	if (mouseHeldDown)
+		{
+			Bullet bullet;
+			bullet = player.shoot(new Vector2((float)(MouseInfo.getPointerInfo().getLocation().getX()), 
+					(float)MouseInfo.getPointerInfo().getLocation().getY()));
+			/*System.out.println("Posx: " + player.getPos().getX());
+			System.out.println((float)(e.getX()-WIDTH/2));
+			System.out.println((float)(e.getY()- HEIGHT/2));*/
+			if (bullet != null)
+			{
+				bulletList.add(bullet);
+				//System.out.println("heyy");
+			}
+		
+		}
+    	
+    	for(int j =0; j < enemyList.size(); j++)
+    	{ 
+    		//System.out.println("hiii");
+			for(int i = bulletList.size()-1; i >= 0; i--)
     		{
+				bulletList.get(i).update();
+    			//System.out.println(bulletList.get(i));
+    			//System.out.println(enemyList.get(j));
     			//TODO: Write a contains method for game objects
         		if( bulletList.get(i).getPos().getX() <= enemyList.get(j).getPos().getX() 
         				+ enemyList.get(j).getDimentions().getX() &&
@@ -134,15 +167,28 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         				- enemyList.get(j).getDimentions().getY())
         		{
         			enemyList.get(j).takeDamage(bulletList.get(i).getDamage());
+        			//bulletList.get(i).setHit(true);
         			bulletList.remove(i);
-        			if(enemyList.get(j).enemyStats.isDead())
-        				enemyList.remove(j);
+        			//system.out.println(i);
+        			
         		}
+        		/*if (bulletList.get(i).isHit())
+        		{
+        			
+        			System.out.println("byeee");
+        		}*/
+        			
     		}
     	}
+    	for(int i = bulletList.size()-1; i >= 0; i--)
+			bulletList.get(i).update();
     	
     	for(int i =0; i < enemyList.size(); i++)
+    	{
     		enemyList.get(i).update();
+    		if(enemyList.get(i).enemyStats.isDead())
+				enemyList.remove(i);
+    	}
     }
     
     private void gameRender()
@@ -227,28 +273,30 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		if(e.getButton()==1)
 		{
 			mouseHeldDown=true;
+			mouseX = e.getX();
+			mouseY = e.getY();
 		}
-		if (mouseHeldDown)
+		/*if (mouseHeldDown)
 		{
 			Bullet bullet;
 			bullet = player.shoot(new Vector2((float)(e.getX()), (float)(e.getY())));
-			/*System.out.println("Posx: " + player.getPos().getX());
-			System.out.println((float)(e.getX()-WIDTH/2));
-			System.out.println((float)(e.getY()- HEIGHT/2));*/
+			//System.out.println("Posx: " + player.getPos().getX());
+			//System.out.println((float)(e.getX()-WIDTH/2));
+			System.out.println((float)(e.getY()- HEIGHT/2));
 			if (bullet != null)
 			{
 				bulletList.add(bullet);
 				//System.out.println("heyy");
 			}
 		
-		}
+		} */
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if(e.getButton()==0)
+		if(e.getButton()==1)
 		{
-			//mouseHeldDown=false;
+			mouseHeldDown=false;
 		}
 		
 	}

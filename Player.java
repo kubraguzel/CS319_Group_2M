@@ -7,7 +7,7 @@ public class Player extends GameObject implements Drawable, Shooter
 	private float dX=0;
 	private float dY=0;
 	
-	private float nextTimeToShoot = 0;
+	private long nextTimeToShoot = 0;
 	
 	private boolean up;
 	private boolean down;
@@ -124,13 +124,13 @@ public class Player extends GameObject implements Drawable, Shooter
 	
 	public Bullet shoot(Vector2 target)
 	{
-		if ((float) System.currentTimeMillis() >= nextTimeToShoot)
+		if (System.currentTimeMillis() >= nextTimeToShoot)
 		{
-			nextTimeToShoot = fireRate + (float) System.currentTimeMillis();
+			nextTimeToShoot = (long)fireRate + System.currentTimeMillis();
 			Bullet bullet = new Bullet(new Vector2(super.getPos()), target, 20f, 10f);
 			return bullet;
 		}
-		System.out.println("Null");
+		//System.out.println("Null");
 		return null;
 	}
 	
