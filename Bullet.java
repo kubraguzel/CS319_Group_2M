@@ -3,16 +3,18 @@ import java.awt.Graphics2D;
 
 public class Bullet extends GameObject implements Drawable {
 	
-	
+	private float damage;
+
 	public Bullet(Vector2 pos, Vector2 dim, Vector2 velocity)
 	{
 		super(pos, dim, velocity);
 	}
 	
-	public Bullet(Vector2 pos, Vector2 target, float speed)
+	public Bullet(Vector2 pos, Vector2 target, float speed, float damage)
 	{
 		super(pos, new Vector2(15f, 15f));
 		super.setVelocity( (target.difference(pos).normalized()).multiply(speed));
+		this.damage =damage;
 		//System.out.print("Bullet");
 	}
 	@Override
@@ -33,6 +35,14 @@ public class Bullet extends GameObject implements Drawable {
 				(int)(super.getPos().getY()- (super.getDimentions().getY()/2)),
 				(int)super.getDimentions().getX(),
 				(int)super.getDimentions().getY());		
+	}
+	
+	public float getDamage() {
+		return damage;
+	}
+
+	public void setDamage(float damage) {
+		this.damage = damage;
 	}
 
 }

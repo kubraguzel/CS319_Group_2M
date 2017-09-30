@@ -3,8 +3,10 @@ public class Stats
 {
 	private float maxHealth;
 	private float curHealth;
-	//private float speed;
+	private boolean dead= false;
 	
+	//private float speed;
+
 	//Constructor
 	public Stats(float maxHealth, float curHealth)
 	{
@@ -27,6 +29,25 @@ public class Stats
 
 	public void setCurHealth(float curHealth) {
 		this.curHealth = curHealth;
+	}
+	
+	public boolean isDead() {
+		return dead;
+	}
+
+	public void setDead(boolean dead) {
+		this.dead = dead;
+	}
+	
+	public void takeDamage(float dmg)
+	{
+		this.setCurHealth(this.getCurHealth()-dmg);
+		
+		if(!(this.getCurHealth()>0))
+		{
+			this.setDead(true);
+			//System.out.println("Enemy is killed!");
+		}
 	}
 
 	/*public float getSpeed() {

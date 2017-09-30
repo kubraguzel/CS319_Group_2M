@@ -1,12 +1,11 @@
 import java.awt.*;
 
-public class Player extends GameObject implements Drawable
+public class Player extends GameObject implements Drawable, Shooter
 {
 	private Stats playerStats;
 	private float fireRate;
 	private float dX=0;
 	private float dY=0;
-	
 	
 	private float nextTimeToShoot = 0;
 	
@@ -62,15 +61,13 @@ public class Player extends GameObject implements Drawable
 	public void setLeft(boolean left) {
 		this.left = left;
 	}
-	
-	
 
 	public void takeDamage(float dmg)
 	{
-		this.playerStats.setCurHealth(this.playerStats.getCurHealth()-dmg);
+		this.playerStats.takeDamage(dmg);
 		
 		if(!(this.playerStats.getCurHealth()>0))
-			System.out.println("Player is killed!");
+			System.out.println("player is killed!");
 	}
 
 	public void update() 
@@ -130,7 +127,7 @@ public class Player extends GameObject implements Drawable
 		if ((float) System.currentTimeMillis() >= nextTimeToShoot)
 		{
 			nextTimeToShoot = fireRate + (float) System.currentTimeMillis();
-			Bullet bullet = new Bullet(new Vector2(super.getPos()), target, 20f);
+			Bullet bullet = new Bullet(new Vector2(super.getPos()), target, 20f, 10f);
 			return bullet;
 		}
 		System.out.println("Null");

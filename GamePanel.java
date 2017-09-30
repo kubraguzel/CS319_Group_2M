@@ -28,6 +28,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private float averageFPS;
     
     private ArrayList<Bullet> bulletList;
+    private ArrayList<Enemy> enemyList;
     private boolean mouseHeldDown=false;
     
     public GamePanel()
@@ -37,11 +38,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     	setFocusable(true);
     	requestFocus();
     	player = new Player(new Vector2((float)WIDTH/2, (float)HEIGHT/2), 
-    						new Vector2(50f, 50f), 
+    						new Vector2(30f, 30f), 
     						100f, 100f, 
     						new Vector2(15f, 15f), 
     						15000f);
     	bulletList = new ArrayList<Bullet>();
+    	enemyList = new ArrayList<Enemy>();
+    	enemyList.add(new Enemy(new Vector2(20f,20f), 
+				new Vector2(20f, 20f), 
+				100f, 100f, 
+				new Vector2(7f, 7f), player));
     }
     
     public void addNotify()
@@ -111,9 +117,32 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     		player.getPos().setY(0+player.getDimentions().getY()/2);
     	if (player.getPos().getY()>HEIGHT - player.getDimentions().getY()/2)
     		player.getPos().setY(HEIGHT-player.getDimentions().getY()/2);
-    	for(int i =0; i < bulletList.size(); i++)
-    		bulletList.get(i).update();
     	
+    	for(int i =0; i < bulletList.size(); i++)
+    	{
+    		bulletList.get(i).update();
+    		for(int j =0; j < enemyList.size(); j++)
+    		{
+    			//TODO: Write a contains method for game objects
+        		if( bulletList.get(i).getPos().getX() <= enemyList.get(j).getPos().getX() 
+        				+ enemyList.get(j).getDimentions().getX() &&
+        				bulletList.get(i).getPos().getX() >= enemyList.get(j).getPos().getX() 
+        				- enemyList.get(j).getDimentions().getX() &&
+        				bulletList.get(i).getPos().getY() <= enemyList.get(j).getPos().getY() 
+        				+ enemyList.get(j).getDimentions().getY() &&
+        				bulletList.get(i).getPos().getY() >= enemyList.get(j).getPos().getY() 
+        				- enemyList.get(j).getDimentions().getY())
+        		{
+        			enemyList.get(j).takeDamage(bulletList.get(i).getDamage());
+        			bulletList.remove(i);
+        			if(enemyList.get(j).enemyStats.isDead())
+        				enemyList.remove(j);
+        		}
+    		}
+    	}
+    	
+    	for(int i =0; i < enemyList.size(); i++)
+    		enemyList.get(i).update();
     }
     
     private void gameRender()
@@ -127,6 +156,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     	
     	for(int i =0; i < bulletList.size(); i++)
     		bulletList.get(i).draw(g);
+    	
+    	for(int i =0; i < enemyList.size(); i++)
+    		enemyList.get(i).draw(g);
     }
     
     private void gameDraw()
@@ -191,7 +223,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		System.out.println("mousepressed");
+		//System.out.println("mousepressed");
 		if(e.getButton()==1)
 		{
 			mouseHeldDown=true;
@@ -208,6 +240,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 				bulletList.add(bullet);
 				//System.out.println("heyy");
 			}
+		
 		}
 	}
 
