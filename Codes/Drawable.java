@@ -1,11 +1,6 @@
-import java.awt.*;
-/**
- * @Author:Alper Þahýstan
- * @Date:02.03.2016
- */
-public interface
-    Drawable {
-    
-    public void draw( Graphics2D g);
-}
+import org.newdawn.slick.Graphics;
 
+public interface Drawable
+{
+	public void draw(Graphics g);
+}

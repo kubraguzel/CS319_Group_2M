@@ -23,10 +23,10 @@ public abstract class DynamicGameObject extends GameObject {
     }
     
     //Getters & setters
-	public float getVelocity() {
+	public float getSpeed() {
 		return speed;
 	}
-	public void setVelocity(float speed) {
+	public void setSpeed(float speed) {
 		this.speed = speed;
 	}
 	

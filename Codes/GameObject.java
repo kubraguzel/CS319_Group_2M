@@ -1,8 +1,7 @@
-import org.newdawn.slick.Renderable;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
-public abstract class GameObject implements Renderable{
+public abstract class GameObject implements Drawable{
 	private Vector2f position;
 	private Vector2f dimentions;
 	Shape shape;
