@@ -1,95 +1,57 @@
-/**
- * 
- */
+import org.newdawn.slick.Renderable;
+import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.geom.Vector2f;
 
-/**
- * @author Alper Þahýstan
- *
- */
-
-
-public abstract class GameObject 
-{
-	//Properities
-    private Vector2 pos;
-    private Vector2 dimentions;   
-    private Vector2 velocity;
-    
+public abstract class GameObject implements Renderable{
+	private Vector2f position;
+	private Vector2f dimentions;
+	Shape shape;
+	
 	//Constructors
-    public GameObject(Vector2 pos, Vector2 dim, Vector2 velocity)
+    public GameObject(Vector2f pos, Vector2f dim)
     {
-    	this.pos = pos;
+    	this.position = pos;
     	this.dimentions = dim;
-    	this.velocity= velocity;
-    }
-    public GameObject(Vector2 pos, Vector2 dim)
-    {
-    	this.pos = pos;
-    	this.dimentions = dim;
-    	this.velocity= new Vector2(0,0);
     }
     
-    public GameObject(float x, float y, float l, float h, Vector2 velocity)
-    {
-    	pos = new Vector2(x, y);
-    	dimentions = new Vector2(l, h);
-    	this.velocity= velocity;
-    }
     public GameObject(float x, float y, float l, float h)
     {
-    	pos = new Vector2(x, y);
-    	dimentions = new Vector2(l, h);
-    	this.velocity= new Vector2(0,0);
-    }
-    
-    public GameObject(float x, float y, Vector2 velocity)
-    {
-    	this.pos = new Vector2(x, y);
-    	this.dimentions = new Vector2(1f, 1f);
-    	this.velocity= velocity;
+    	this.position = new Vector2f(x, y);
+    	this.dimentions = new Vector2f(l, h);
     }
     
     public GameObject(float x, float y)
     {
-    	this.pos = new Vector2(x, y);
-    	this.dimentions = new Vector2(1f, 1f);
-    	this.velocity = new Vector2(0,0);
+    	this.position = new Vector2f(x, y);
+    	this.dimentions = new Vector2f(1f, 1f);
     }
     
-	public GameObject(Vector2 pos)
+    
+	public GameObject(Vector2f pos)
     {
-    	this.pos = pos;
-    	this.dimentions = new Vector2(1f,1f);
-    	this.velocity= new Vector2(0,0);
+    	this.position = pos;
+    	this.dimentions = new Vector2f(1f,1f);
     }
     
     public GameObject()
     {
-    	this.pos = new Vector2();
-    	this.dimentions = new Vector2(1f, 1f);
-    	this.velocity= new Vector2(0,0);
+    	this.position = new Vector2f();
+    	this.dimentions = new Vector2f(1f, 1f);
     }
     
     //Getters & setters
-    public Vector2 getPos() {
-		return pos;
+    public Vector2f getPosition() {
+		return position;
 	}
-	public void setPos(Vector2 pos) {
-		this.pos = pos;
+	public void setPosition(Vector2f pos) {
+		this.position = pos;
 	}
-	public Vector2 getDimentions() {
+	public Vector2f getDimentions() {
 		return dimentions;
 	}
-	public void setDimentions(Vector2 dimentions) {
+	public void setDimentions(Vector2f dimentions) {
 		this.dimentions = dimentions;
 	}
-	public Vector2 getVelocity() {
-		return velocity;
-	}
-	public void setVelocity(Vector2 velocity) {
-		this.velocity = velocity;
-	}
-    
+	
     abstract void update();
-     
 }
