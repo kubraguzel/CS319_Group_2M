@@ -1,4 +1,8 @@
-
+/**
+ * 
+ * Author:Alper Þahýstan
+ * 
+ */
 public class Stats 
 {
 	private float maxHealth;
@@ -9,6 +13,8 @@ public class Stats
 	private float fireRate;
 	private float bulletSpeed;
 	private float bulletDamage;
+	
+	private float bodyDamage;
 
 	//Constructors
 	//For objects that don't shoot
@@ -19,24 +25,27 @@ public class Stats
 		this.bulletSpeed = 0;
 		this.fireRate = 0;
 		this.bulletDamage = 0;
+		this.bodyDamage = 0;
 	}
 	
-	public Stats(float maxHealth, float bulletSpeed, float bulletDamage, float fireRate)
+	public Stats(float maxHealth, float bulletSpeed, float bulletDamage, float fireRate, float bodyDamage)
 	{
 		this.maxHealth= maxHealth;
 		this.curHealth= maxHealth;
 		this.bulletSpeed = bulletSpeed;
 		this.fireRate = fireRate;
 		this.bulletDamage = bulletDamage;
+		this.bodyDamage = bodyDamage;
 	}
 	
-	public Stats(float maxHealth, float curHealth, float bulletSpeed, float bulletDamage, float fireRate)
+	public Stats(float maxHealth, float curHealth, float bulletSpeed, float bulletDamage, float fireRate, float bodyDamage)
 	{
 		this.maxHealth= maxHealth;
 		this.curHealth= curHealth;
 		this.bulletSpeed = bulletSpeed;
 		this.fireRate = fireRate;
 		this.bulletDamage = bulletDamage;
+		this.bodyDamage = bodyDamage;
 	}
 	
 
@@ -88,6 +97,14 @@ public class Stats
 
 	public void setBulletDamage(float bulletDamage) {
 		this.bulletDamage = bulletDamage;
+	}
+
+	public float getBodyDamage() {
+		return bodyDamage;
+	}
+
+	public void setBodyDamage(float bodyDamage) {
+		this.bodyDamage = bodyDamage;
 	}
 
 	public void takeDamage(float dmg)

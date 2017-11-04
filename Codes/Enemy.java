@@ -1,30 +1,39 @@
-import java.awt.Color;
-import java.awt.Graphics2D;
+/**
+ * 
+ * Author:Alper Þahýstan
+ * 
+ */
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Vector2f;
 
-public class Enemy extends GameObject implements Drawable
-{
+public class Enemy extends DynamicGameObject {
+	
 	Stats enemyStats;
-	Bar healthBar;
-	GameObject target;
+	DynamicGameObject target;
+	private boolean stay;
 	
-	public Enemy(Vector2 pos, Vector2 dim, float maxHealth, float curHealth, Vector2 velocity, GameObject target)
+	public Enemy(Vector2f pos, Vector2f dim, float speed, float maxHealth, float curHealth, float bodyDamage, DynamicGameObject target)
 	{
-		super(pos, dim, velocity);
+		super(pos, dim, speed);
 		enemyStats = new Stats(maxHealth, curHealth);
+		enemyStats.setBodyDamage(bodyDamage);
 		this.findTarget(target);
-		Vector2 hbPos = super.getPos().difference(new Vector2(0f, getDimentions().getY() + 5f));
-		hbPos.setX(hbPos.getX() - super.getDimentions().getX());
-		healthBar = new Bar(hbPos, super.getDimentions().getX()*2, 3f);
-		System.out.println("Enemy Spawned" + super.getPos().getX()+ " " +super.getPos().getY());
+		shape= new Rectangle(super.getPosition().getX(), super.getPosition().getY(), 
+				(super.getDimentions().getX()), (super.getDimentions().getY()));
 	}
 	
-	public Enemy(Vector2 pos, Vector2 dim, float maxHealth, float curHealth, Vector2 velocity)
+	public Enemy(Vector2f pos, Vector2f dim, float speed, float maxHealth, DynamicGameObject target)
 	{
-		super(pos, dim, velocity);
-		enemyStats = new Stats(maxHealth, curHealth);
+		super(pos, dim, speed);
+		enemyStats = new Stats(maxHealth, maxHealth);
+		this.target = target;
+		shape= new Rectangle(super.getPosition().getX(), super.getPosition().getY(), 
+				(super.getDimentions().getX()), (super.getDimentions().getY()));
 	}
 	
-	public boolean findTarget(GameObject target)
+	public boolean findTarget(DynamicGameObject target)
 	{
 		this.target = target;
 		if(this.target!= null)
@@ -37,43 +46,58 @@ public class Enemy extends GameObject implements Drawable
 		this.enemyStats.takeDamage(dmg);
 		
 		if(!(this.enemyStats.getCurHealth()>0))
-			System.out.println("Enemy is killed!");
-	}
-	
-	@Override
-	void update() 
-	{
-		if (target != null)
-		{
-			Vector2 targetVector = (target.getPos().difference(super.getPos())).normalized();
-			targetVector.multiply(super.getVelocity().getX());
-			targetVector.add(super.getPos());
-			super.setPos(targetVector);
-			Vector2 hbPos = super.getPos().difference(new Vector2(0f, getDimentions().getY()/2 + 5f ));
-			hbPos.setX(hbPos.getX() - healthBar.getWidth()/2);
-			healthBar.setPos(hbPos);
-			healthBar.setPercentage((enemyStats.getCurHealth()/enemyStats.getMaxHealth()));
-			
-		}
-		
-		
+			setToBeRemoved(true);
 	}
 
 	@Override
-	public void draw(Graphics2D g) 
+	public void draw(Graphics g) 
 	{
 		g.setColor(new Color(0, 255, 100));
 		
 		//getting the object drawn from the center
 		//System.out.println((int)(super.pos.getX()- (super.dimentions.getX()/2)));
-		g.fillRect((int)(super.getPos().getX() - ((super.getDimentions()).getX())/2),
-				(int)(super.getPos().getY()- (super.getDimentions().getY()/2)),
-				(int)super.getDimentions().getX(),
-				(int)super.getDimentions().getY());
-		g.setColor(Color.BLACK);
-		g.drawString("BUG", super.getPos().getX(), super.getPos().getY());
-		//System.out.println("Enemy is drawn");
-		healthBar.draw(g);
+		g.fill(shape);
+		g.setColor(Color.black);
+		//g.drawString("", super.getPosition().getX()-super.getDimentions().getX()/2, super.getPosition().getY());
 	}
+
+	@Override
+	void move() {
+		if (target != null)
+		{
+			Vector2f targetVector = new Vector2f(target.getPosition());
+			targetVector.sub(getPosition()).normalise();
+			targetVector.scale(super.getSpeed());
+			super.setPosition(super.getPosition().add(targetVector));
+		}
+	}
+
+	@Override
+	void update() 
+	{
+		shape.setCenterX(getPosition().getX()); 
+		shape.setCenterY(getPosition().getY());
+		if(!stay)
+			move();
+	}
+
+	public Stats getStats() {
+		return enemyStats;
+	}
+
+	public boolean isStay() {
+		return stay;
+	}
+
+	public void setStay(boolean stay) {
+		this.stay = stay;
+	}
+	
+
+	/*@Override
+	boolean collides(GameObject other) {
+		// TODO Auto-generated method stub
+		return false;
+	}*/
 
 }

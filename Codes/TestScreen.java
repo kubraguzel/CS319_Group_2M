@@ -1,3 +1,10 @@
+/**
+ * 
+ * Author:Alper Þahýstan
+ * 
+ */
+import java.util.ArrayList;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
@@ -9,7 +16,10 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class TestScreen extends BasicGame{
 	Player player;
-	public static int FPS = 50;
+	ArrayList<Bullet> bulletList;
+	ArrayList<Enemy> enemyList;
+	
+	public static int FPS = 60;
 	
 	public static Color BACKGROUND = Color.gray;
 	
@@ -18,6 +28,77 @@ public class TestScreen extends BasicGame{
 		super(title);
 	}
 	
+	public void handleCollisions()
+	{
+		handleEnemyBulletCollisions();
+		handleEnemyPlayerCollisions();
+		handleEnemyEnemyCollisions();
+	}
+	
+	//To avoid the enemies to go through each other.
+	private void handleEnemyEnemyCollisions() 
+	{
+		int j = 0;
+		while(j<enemyList.size())
+		{
+			for (int i=j+1; i< enemyList.size(); i++)
+			{
+				if(enemyList.get(i).collides(enemyList.get(j)))
+				{
+					enemyList.get(i).setStay(true);
+				}
+				else
+					enemyList.get(i).setStay(false);
+			}
+			j++;
+		}
+	}
+
+	private void handleEnemyPlayerCollisions() 
+	{
+		for (int i = 0; i< enemyList.size(); i++)
+		{
+			if(player.collides(enemyList.get(i)))
+			{
+				player.takeDamage(enemyList.get(i).getStats().getBodyDamage());
+				System.out.println(enemyList.get(i).getStats().getBodyDamage());
+				enemyList.get(i).takeDamage(player.getStats().getBodyDamage());
+			}
+		}
+		
+		handleRemovals((ArrayList)enemyList);
+	}
+
+	private void handleEnemyBulletCollisions() 
+	{
+		for (int i = 0; i< bulletList.size(); i++)
+		{
+			for (int j = 0; j< enemyList.size(); j++)
+			{
+				if(bulletList.get(i).collides(enemyList.get(j)) && !bulletList.get(i).isEnemyBullet())
+				{
+					enemyList.get(j).takeDamage(bulletList.get(i).getDamage());
+					bulletList.get(i).setToBeRemoved(true);
+				}
+			}
+		}
+		handleRemovals((ArrayList)bulletList);
+		handleRemovals((ArrayList)enemyList);
+	}
+
+	private void handleRemovals(ArrayList<GameObject> list) {
+		int size = list.size();
+		for (int i = 0; i< list.size(); i++)
+		{
+			if(list.get(i).isToBeRemoved())
+			{
+				list.remove(i);
+				size--;
+			}
+		}
+		
+	}
+
 	private void manageInput(GameContainer container)
 	{
 		Input input = container.getInput();
@@ -46,11 +127,28 @@ public class TestScreen extends BasicGame{
 	      }
     	  else
     		  player.setRight(false);
+	      
+	      if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
+		  {
+	    	  Bullet bullet = player.shoot(new Vector2f(input.getMouseX(), input.getMouseY()));
+	    	  if (bullet != null)
+	    		  bulletList.add(bullet);
+		  }
+	    	  
 	}
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
-		player = new Player (new Vector2f(30f, 30f), new Vector2f(30f, 30f), 10f, 1f);
+		player = new Player (new Vector2f(30f, 30f), new Vector2f(30f, 30f), 
+				3f, 100f, 6f, 10f, 
+				200f, 0f, container.getWidth(), 
+				container.getHeight());
+		bulletList = new ArrayList<Bullet>();
+		enemyList = new ArrayList<Enemy>();
+		enemyList.add(new Enemy(new Vector2f(300f, 30f), new Vector2f(30f, 30f), 
+				4f, 100f, 100f, 3f, player));
+		enemyList.add(new Enemy(new Vector2f(400f, 30f), new Vector2f(30f, 30f), 
+				4f, 100f, 100f, 3f, player));
 	}
 	
 	@Override
@@ -58,6 +156,18 @@ public class TestScreen extends BasicGame{
 	{
 		manageInput(container);
 		player.update();
+		for (int i =0; i < bulletList.size(); i++)
+			bulletList.get(i).update();
+		
+		for (int i =0; i < enemyList.size(); i++)
+			enemyList.get(i).update();
+		
+			//System.out.println(player.getStats().getCurHealth());
+		/*if(player.collides(enemy))
+			System.out.println("Wow");*/
+		//System.out.println(player.getPosition().getX() + ", " + player.getPosition().getY());
+		//enemy.findTarget(player);
+		handleCollisions();
 	}
 
 	@Override
@@ -65,6 +175,10 @@ public class TestScreen extends BasicGame{
 	{
 		g.setBackground(BACKGROUND);
 		player.draw(g);
+		for (int i =0; i < bulletList.size(); i++)
+			bulletList.get(i).draw(g);
+		for (int i =0; i < enemyList.size(); i++)
+			enemyList.get(i).draw(g);
 	}
 	
 	public static void main(String[] args) throws SlickException {

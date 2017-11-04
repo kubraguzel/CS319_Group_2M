@@ -1,6 +1,8 @@
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Ellipse;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Player extends DynamicGameObject implements Shooter{
@@ -17,7 +19,6 @@ public class Player extends DynamicGameObject implements Shooter{
 	private boolean left;
 	
 	//Fields about shooting
-	//float fireRate;
 	long nextTimeToShoot = 0;
 	
 	private Vector2f velocity;
@@ -28,8 +29,8 @@ public class Player extends DynamicGameObject implements Shooter{
 		super(pos, dim, speed);
 		
 		//Constructing the shape to a specific Ellipse
-		super.shape= new Ellipse(super.getPosition().getX(), super.getPosition().getY(), 
-					super.getDimentions().getX(), super.getDimentions().getY());
+		shape= new Circle(super.getPosition().getX(), super.getPosition().getY(), 
+				(super.getDimentions().getX()/2));
 		//Setting velocity
 		velocity = new Vector2f(0f, 0f);
 		
@@ -45,9 +46,9 @@ public class Player extends DynamicGameObject implements Shooter{
 			float bulletDamage, float fireRate) {
 		super(pos, dim, speed);
 		
-		//Constructing the shape to a specific Ellipse
-		super.shape= new Ellipse(super.getPosition().getX(), super.getPosition().getY(), 
-					super.getDimentions().getX(), super.getDimentions().getY());
+		//Constructing the shape to a specific Circle
+		shape= new Circle(super.getPosition().getX(), super.getPosition().getY(), 
+				(super.getDimentions().getX()/2));
 		//Setting velocity
 		velocity = new Vector2f(0f, 0f);
 		
@@ -55,7 +56,25 @@ public class Player extends DynamicGameObject implements Shooter{
 		alternate = Color.red;
 		curColor = normal;
 		
-		playerStats = new Stats(maxHealth, bulletSpeed, bulletDamage, fireRate);
+		playerStats = new Stats(maxHealth, bulletSpeed, bulletDamage, fireRate, 0f);
+	}
+	
+	public Player(Vector2f pos, Vector2f dim, float speed, 
+			float maxHealth, float bulletSpeed,
+			float bulletDamage, float fireRate, float bodyDamage, float sW, float sH) {
+		super(pos, dim, speed, sW, sH);
+		
+		//Constructing the shape to a specific Ellipse
+		shape= new Circle(super.getPosition().getX(), super.getPosition().getY(), 
+					(super.getDimentions().getX()/2));
+		//Setting velocity
+		velocity = new Vector2f(0f, 0f);
+		
+		normal = Color.blue;
+		alternate = Color.red;
+		curColor = normal;
+		
+		playerStats = new Stats(maxHealth, bulletSpeed, bulletDamage, fireRate, bodyDamage);
 	}
 	
 	
@@ -63,8 +82,7 @@ public class Player extends DynamicGameObject implements Shooter{
 	public void draw(Graphics g) 
 	{
 		g.setColor(curColor);
-		g.fillOval(super.getPosition().getX(), super.getPosition().getY(), 
-				super.getDimentions().getX(), super.getDimentions().getY());
+		g.fill(shape);
 	}
 
 	@Override
@@ -83,7 +101,7 @@ public class Player extends DynamicGameObject implements Shooter{
 		//velocity is is scaled to a unit vector
 		velocity = velocity.normalise();
 		//velocity is multiplied with speed
-		velocity = velocity.scale(speed);
+		velocity = velocity.scale(super.getSpeed());
 		
 		//a vector to hold the calculations of next point of move.
 		Vector2f movePos = super.getPosition();
@@ -99,9 +117,11 @@ public class Player extends DynamicGameObject implements Shooter{
 	
 	//The method to be called before every frame
 	@Override
-	void update() {
+	void update() 
+	{
+		shape.setCenterX(getPosition().getX()); 
+		shape.setCenterY(getPosition().getY());
 		move();
-
 	}
 	@Override
 	public Bullet shoot(Vector2f target)
@@ -117,7 +137,20 @@ public class Player extends DynamicGameObject implements Shooter{
 		return null;
 	}
 	
-	//TODO:CONTAINS METHOD
+	public void takeDamage(float dmg)
+	{
+		this.playerStats.takeDamage(dmg);
+		
+		if(!(this.playerStats.getCurHealth()>0))
+			System.out.println("player is killed!");
+	}
+	
+	/*@Override
+	boolean collides(GameObject other) 
+	{
+		return shape.intersects(other.getShape());
+		
+	}*/
 	
 	//getters & setters
 	public Color getAlternate() {
@@ -164,8 +197,17 @@ public class Player extends DynamicGameObject implements Shooter{
 		return left;
 	}
 
+	public Stats getStats() {
+		return playerStats;
+	}
+
+	public void setStats(Stats playerStats) {
+		this.playerStats = playerStats;
+	}
+
 	public void setLeft(boolean left) {
 		this.left = left;
 	}
-	
+
+		
 }

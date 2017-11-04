@@ -1,3 +1,8 @@
+/**
+ * 
+ * Author:Alper Þahýstan
+ * 
+ */
 import org.newdawn.slick.geom.Vector2f;
 
 public interface Shooter {

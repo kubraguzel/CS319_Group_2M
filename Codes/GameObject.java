@@ -1,3 +1,8 @@
+/**
+ * 
+ * Author:Alper Þahýstan
+ * 
+ */
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -5,6 +10,7 @@ public abstract class GameObject implements Drawable{
 	private Vector2f position;
 	private Vector2f dimentions;
 	Shape shape;
+	private boolean toBeRemoved = false;
 	
 	//Constructors
     public GameObject(Vector2f pos, Vector2f dim)
@@ -53,5 +59,27 @@ public abstract class GameObject implements Drawable{
 		this.dimentions = dimentions;
 	}
 	
-    abstract void update();
+    public Shape getShape() {
+		return shape;
+	}
+
+	public void setShape(Shape shape) {
+		this.shape = shape;
+	}
+	
+	public boolean isToBeRemoved() {
+		return toBeRemoved;
+	}
+
+	public void setToBeRemoved(boolean toBeRemoved) {
+		this.toBeRemoved = toBeRemoved;
+	}
+
+	abstract void update();
+    
+	boolean collides(GameObject other) 
+	{
+		return shape.intersects(other.getShape());
+		
+	}
 }
