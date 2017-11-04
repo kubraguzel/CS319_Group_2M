@@ -1,5 +1,8 @@
-package deneme;
-
+/**
+ * 
+ * Author:Alper Þahýstan
+ * 
+ */
 import java.util.ArrayList;
 
 import org.newdawn.slick.AppGameContainer;
@@ -134,12 +137,11 @@ public class TestScreen extends BasicGame{
 	    	  Bullet bullet = player.shoot(new Vector2f(input.getMouseX(), input.getMouseY()));
 	    	  if (bullet != null)
 	    		  bulletList.add(bullet);
-		  }
-	      if (input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON))
+		  }	
+	      if (input.isMousePressed(Input.MOUSE_RIGHT_BUTTON))
 		  {
-	    	  BouncyBullet bullet = player.shootBouncy(new Vector2f(input.getMouseX(), input.getMouseY()));
-	    	  if ((Bullet)bullet != null)
-	    		  bulletList.add(bullet);
+	    	  player.setPowerUpActive(!player.isPowerUpActive());
+	    		  
 		  }
 	    	  
 	}

@@ -1,9 +1,13 @@
-package deneme;
+/**
+ * 
+ * Author:Alper Þahýstan
+ * 
+ */
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Circle;
-//import org.newdawn.slick.geom.Ellipse;
-//import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.geom.Ellipse;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Player extends DynamicGameObject implements Shooter{
@@ -25,6 +29,8 @@ public class Player extends DynamicGameObject implements Shooter{
 	private Vector2f velocity;
 	
 	Stats playerStats;
+	
+	private boolean powerUpActive=false;
 
 	public Player(Vector2f pos, Vector2f dim, float speed, float maxHealth) {
 		super(pos, dim, speed);
@@ -43,13 +49,13 @@ public class Player extends DynamicGameObject implements Shooter{
 	}
 	
 	public Player(Vector2f pos, Vector2f dim, float speed, 
-					float maxHealth, float bulletSpeed,
-					float bulletDamage, float fireRate) {
+			float maxHealth, float bulletSpeed,
+			float bulletDamage, float fireRate) {
 		super(pos, dim, speed);
 		
 		//Constructing the shape to a specific Circle
 		shape= new Circle(super.getPosition().getX(), super.getPosition().getY(), 
-							( super.getDimentions().getX()/2 ));
+				(super.getDimentions().getX()/2));
 		//Setting velocity
 		velocity = new Vector2f(0f, 0f);
 		
@@ -130,24 +136,21 @@ public class Player extends DynamicGameObject implements Shooter{
 		if (System.currentTimeMillis() >= nextTimeToShoot)
 		{
 			nextTimeToShoot = (long)playerStats.getFireRate() + System.currentTimeMillis();
-			Bullet bullet = new Bullet(new Vector2f(super.getPosition()), 
-										target, playerStats.getBulletSpeed(), 
-										playerStats.getBulletDamage());
-			return bullet;
-		}
-		return null;
-	}
-	
-	public BouncyBullet shootBouncy(Vector2f target)
-	{
-		if (System.currentTimeMillis() >= nextTimeToShoot)
-		{
-			nextTimeToShoot = (long)playerStats.getFireRate() + System.currentTimeMillis();
-			BouncyBullet bullet = new BouncyBullet(new Vector2f(super.getPosition()), 
-										target, playerStats.getBulletSpeed(), 
-										playerStats.getBulletDamage(),
-										super.screenWidth,
-										super.screenHeight);
+			Bullet bullet;
+			if(powerUpActive)
+			{
+				bullet = new BouncyBullet(new Vector2f(super.getPosition()), 
+					target, playerStats.getBulletSpeed(), 
+					playerStats.getBulletDamage(),
+					super.screenWidth,
+					super.screenHeight);
+			}
+			else
+			{
+				bullet = new Bullet(new Vector2f(super.getPosition()), 
+					target, playerStats.getBulletSpeed(), 
+					playerStats.getBulletDamage());
+			}
 			return bullet;
 		}
 		return null;
@@ -225,5 +228,13 @@ public class Player extends DynamicGameObject implements Shooter{
 		this.left = left;
 	}
 
+	public boolean isPowerUpActive() {
+		return powerUpActive;
+	}
+
+	public void setPowerUpActive(boolean powerUpActive) {
+		this.powerUpActive = powerUpActive;
+	}
+	
 		
 }
