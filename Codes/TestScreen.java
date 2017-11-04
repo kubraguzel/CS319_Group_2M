@@ -1,8 +1,5 @@
-/**
- * 
- * Author:Alper Þahýstan
- * 
- */
+package deneme;
+
 import java.util.ArrayList;
 
 import org.newdawn.slick.AppGameContainer;
@@ -109,18 +106,21 @@ public class TestScreen extends BasicGame{
 	      }
 	      else
 	    	  player.setUp(false);
+	      
 	      //down
 	      if(input.isKeyDown(Input.KEY_S)){
 	    	  player.setDown(true);
 	      }
 	      else
 	    	  player.setDown(false);
+	      
 	      //left
 	      if(input.isKeyDown(Input.KEY_A)){
 	    	  player.setLeft(true);
 	      }
 	      else
 	    	  player.setLeft(false);
+	      
 	      //right
 	      if(input.isKeyDown(Input.KEY_D)){
 	    	  player.setRight(true);
@@ -128,10 +128,17 @@ public class TestScreen extends BasicGame{
     	  else
     		  player.setRight(false);
 	      
+	      //mouse
 	      if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
 		  {
 	    	  Bullet bullet = player.shoot(new Vector2f(input.getMouseX(), input.getMouseY()));
 	    	  if (bullet != null)
+	    		  bulletList.add(bullet);
+		  }
+	      if (input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON))
+		  {
+	    	  BouncyBullet bullet = player.shootBouncy(new Vector2f(input.getMouseX(), input.getMouseY()));
+	    	  if ((Bullet)bullet != null)
 	    		  bulletList.add(bullet);
 		  }
 	    	  
