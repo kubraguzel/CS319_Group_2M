@@ -1,4 +1,3 @@
-package deneme;
 
 import org.newdawn.slick.geom.Vector2f;
 
@@ -6,7 +5,7 @@ public class BouncyBullet extends Bullet implements Drawable{
 
 	private int numOfBounces = 0;
 	private final int NUM_OF_MAX_BOUNCES = 10;
-	Vector2f velocity2;
+	private Vector2f velocity2;
 	
 	public BouncyBullet(Vector2f pos, Vector2f target, float speed, float damage) {
 		super(pos, target, speed, damage);

@@ -1,4 +1,3 @@
-package deneme;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -7,19 +6,13 @@ import org.newdawn.slick.geom.Vector2f;
 public class Bullet extends DynamicGameObject implements Drawable{
 	
 	private float damage;
-	private Vector2f target;
-	Vector2f velocity;
+	protected Vector2f velocity;
 	
 	public Bullet(Vector2f pos, Vector2f target, float speed, float damage)
 	{
 		super(pos, new Vector2f(15f, 15f), speed);
-		this.target = target;
 		this.damage = damage;
 		velocity = ((target.sub(super.getPosition())).normalise()).scale(speed);
-
-		//super.setSpeed( speed );
-		//super.setSpeed( (target.distance(pos))*speed );
-		//System.out.print("Bullet");
 	}
 	
 	@Override
