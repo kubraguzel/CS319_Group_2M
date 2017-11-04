@@ -1,40 +1,43 @@
-import java.awt.Color;
-import java.awt.Graphics2D;
+package deneme;
 
-public class Bullet extends GameObject implements Drawable {
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Vector2f;
+
+public class Bullet extends DynamicGameObject implements Drawable{
 	
 	private float damage;
-
-	public Bullet(Vector2 pos, Vector2 dim, Vector2 velocity)
-	{
-		super(pos, dim, velocity);
-	}
+	private Vector2f target;
+	Vector2f velocity;
 	
-	public Bullet(Vector2 pos, Vector2 target, float speed, float damage)
+	public Bullet(Vector2f pos, Vector2f target, float speed, float damage)
 	{
-		super(pos, new Vector2(15f, 15f));
-		super.setVelocity( (target.difference(pos).normalized()).multiply(speed));
-		this.damage =damage;
+		super(pos, new Vector2f(15f, 15f), speed);
+		this.target = target;
+		this.damage = damage;
+		velocity = ((target.sub(super.getPosition())).normalise()).scale(speed);
+
+		//super.setSpeed( speed );
+		//super.setSpeed( (target.distance(pos))*speed );
 		//System.out.print("Bullet");
 	}
+	
 	@Override
 	void update() 
 	{
-		Vector2 v = super.getPos();
-		v.add(super.getVelocity());
-		super.setPos(v);
+		move();
 	}
-	@Override
-	public void draw(Graphics2D g) 
+	
+	public void draw(Graphics g) 
 	{
-		g.setColor(Color.RED);
+		g.setColor(Color.red);
 		
 		//getting the object drawn from the center
 		//System.out.println((int)(super.pos.getX()- (super.dimentions.getX()/2)));
-		g.fillOval((int)(super.getPos().getX() - ((super.getDimentions()).getX())/2),
-				(int)(super.getPos().getY()- (super.getDimentions().getY()/2)),
-				(int)super.getDimentions().getX(),
-				(int)super.getDimentions().getY());		
+		g.fillOval((int)(super.getPosition().getX() - ((super.getDimentions()).getX())/2),
+					(int)(super.getPosition().getY()- (super.getDimentions().getY()/2)),
+					(int)super.getDimentions().getX(),
+					(int)super.getDimentions().getY());		
 	}
 	
 	public float getDamage() {
@@ -43,6 +46,11 @@ public class Bullet extends GameObject implements Drawable {
 
 	public void setDamage(float damage) {
 		this.damage = damage;
+	}
+
+	@Override
+	void move() {
+		super.setPosition((super.getPosition().add(velocity)));
 	}
 
 }
