@@ -44,6 +44,7 @@ public abstract class GameObject implements Drawable{
 	}
 	public void setPosition(Vector2f pos) {
 		this.position = pos;
+		//System.out.println(position.getY());
 	}
 	public Vector2f getDimentions() {
 		return dimentions;

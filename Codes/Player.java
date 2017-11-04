@@ -1,138 +1,171 @@
-import java.awt.*;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Ellipse;
+import org.newdawn.slick.geom.Vector2f;
 
-public class Player extends GameObject implements Drawable, Shooter
-{
-	private Stats playerStats;
-	private float fireRate;
-	private float dX=0;
-	private float dY=0;
+public class Player extends DynamicGameObject implements Shooter{
 	
-	private long nextTimeToShoot = 0;
+	//Fields about color changes
+	private Color normal;
+	private Color alternate;
+	private Color curColor;
 	
+	//Fields about controls and directions
 	private boolean up;
 	private boolean down;
 	private boolean right;
 	private boolean left;
 	
+	//Fields about shooting
+	//float fireRate;
+	long nextTimeToShoot = 0;
 	
-	public Player(Vector2 pos, Vector2 dim, float maxHealth, float curHealth, Vector2 velocity, float fireRate)
-	{
-		super(pos, dim, velocity);
-		playerStats = new Stats(maxHealth, curHealth);
-		this.fireRate =fireRate;
-	}
+	private Vector2f velocity;
 	
-	public Player(Vector2 pos, float maxHealth, float curHealth, Vector2 velocity, float fireRate)
-	{
-		super(pos, new Vector2(15f, 15f), velocity);
-		playerStats = new Stats(maxHealth, curHealth);
-		this.fireRate =fireRate;
-	}
-	
-	//Getters & Setters
-	public Stats getPlayerStats() {
-		return playerStats;
-	}
+	Stats playerStats;
 
-	public void setPlayerStats(Stats playerStats) {
-		this.playerStats = playerStats;
-	}
-
-	public float getFireRate() {
-		return fireRate;
-	}
-
-	public void setFireRate(float fireRate) {
-		this.fireRate = fireRate;
-	}
-	
-	public void setUp(boolean up) {
-		this.up = up;
-	}
-	
-	public void setDown(boolean down) {
-		this.down = down;
-	}
-	
-	public void setRight(boolean right) {
-		this.right = right;
-	}
-	
-	public void setLeft(boolean left) {
-		this.left = left;
-	}
-
-	public void takeDamage(float dmg)
-	{
-		this.playerStats.takeDamage(dmg);
+	public Player(Vector2f pos, Vector2f dim, float speed, float maxHealth) {
+		super(pos, dim, speed);
 		
-		if(!(this.playerStats.getCurHealth()>0))
-			System.out.println("player is killed!");
+		//Constructing the shape to a specific Ellipse
+		super.shape= new Ellipse(super.getPosition().getX(), super.getPosition().getY(), 
+					super.getDimentions().getX(), super.getDimentions().getY());
+		//Setting velocity
+		velocity = new Vector2f(0f, 0f);
+		
+		normal = Color.blue;
+		alternate = Color.red;
+		curColor = normal;
+		
+		playerStats = new Stats(maxHealth, maxHealth);
+	}
+	
+	public Player(Vector2f pos, Vector2f dim, float speed, 
+			float maxHealth, float bulletSpeed,
+			float bulletDamage, float fireRate) {
+		super(pos, dim, speed);
+		
+		//Constructing the shape to a specific Ellipse
+		super.shape= new Ellipse(super.getPosition().getX(), super.getPosition().getY(), 
+					super.getDimentions().getX(), super.getDimentions().getY());
+		//Setting velocity
+		velocity = new Vector2f(0f, 0f);
+		
+		normal = Color.blue;
+		alternate = Color.red;
+		curColor = normal;
+		
+		playerStats = new Stats(maxHealth, bulletSpeed, bulletDamage, fireRate);
+	}
+	
+	
+	@Override
+	public void draw(Graphics g) 
+	{
+		g.setColor(curColor);
+		g.fillOval(super.getPosition().getX(), super.getPosition().getY(), 
+				super.getDimentions().getX(), super.getDimentions().getY());
 	}
 
-	public void update() 
+	@Override
+	void move() 
 	{
+		//Controller sent signals are used to construct a vector velocity
 		if (up)
-			dY=-1;
+			velocity.y = -1f;
 		if (down)
-			dY=1;
+			velocity.y = 1f;
 		if(right)
-			dX=1;
+			velocity.x = 1f;
 		if(left)
-			dX=-1;
+			velocity.x = -1f;
 		
-		//System.out.println(velocity.normalized());
+		//velocity is is scaled to a unit vector
+		velocity = velocity.normalise();
+		//velocity is multiplied with speed
+		velocity = velocity.scale(speed);
 		
-		//System.out.println(velocity.getX());
-		//System.out.println(velocity.getY());
+		//a vector to hold the calculations of next point of move.
+		Vector2f movePos = super.getPosition();
+		//velocity is added to current point to become next point to move 
+		movePos = movePos.add(velocity);	
+		//Players position is set to next point to be moved
+		super.setPosition (movePos);
 		
-		Vector2 p = super.getPos();
-		Vector2 v = new Vector2(super.getVelocity().getX()*dX,
-							super.getVelocity().getY()*dY);
-		
-		//Limits the speed to the magnitude
-		if(v.getMagnitude()> v.getX() || v.getMagnitude()> v.getY())
-		{
-			v.setX(v.getX()/1.4142f);
-			v.setY(v.getY()/1.4142f);
-			//System.out.println("hello");
-		}
-		p.add(v);
-		
-		super.setPos(p);
-		
-		/*System.out.println(dX);
-		System.out.println(dY);
-		System.out.println(pos.getX());*/	
-		
-		dX=0;
-		dY=0;
-		
+		//velocity is assigned to (0,0) for next calculations
+		velocity.x = 0f;
+		velocity.y = 0f;
 	}
 	
-	public void draw(Graphics2D g)
-	{
-		g.setColor(Color.BLUE);
-		
-		//getting the object drawn from the center
-		//System.out.println((int)(super.pos.getX()- (super.dimentions.getX()/2)));
-		g.fillOval((int)(super.getPos().getX() - ((super.getDimentions()).getX())/2),
-				(int)(super.getPos().getY()- (super.getDimentions().getY()/2)),
-				(int)super.getDimentions().getX(),
-				(int)super.getDimentions().getY());
+	//The method to be called before every frame
+	@Override
+	void update() {
+		move();
+
 	}
 	
-	public Bullet shoot(Vector2 target)
+	public Bullet shoot(Vector2f target)
 	{
 		if (System.currentTimeMillis() >= nextTimeToShoot)
 		{
-			nextTimeToShoot = (long)fireRate + System.currentTimeMillis();
-			Bullet bullet = new Bullet(new Vector2(super.getPos()), target, 20f, 10f);
+			nextTimeToShoot = (long)playerStats.getFireRate() + System.currentTimeMillis();
+			Bullet bullet = new Bullet(new Vector2f(super.getPosition()), 
+					target, playerStats.getBulletSpeed(), 
+					playerStats.getBulletDamage());
 			return bullet;
 		}
-		//System.out.println("Null");
 		return null;
 	}
 	
+	//TODO:CONTAINS METHOD
+	
+	//getters & setters
+	public Color getAlternate() {
+		return alternate;
+	}
+
+	public void setAlternate(Color alternate) {
+		this.alternate = alternate;
+	}
+
+	public Color getCurColor() {
+		return curColor;
+	}
+
+	public void setCurColor(Color curColor) {
+		this.curColor = curColor;
+	}
+
+	public boolean isUp() {
+		return up;
+	}
+
+	public void setUp(boolean up) {
+		this.up = up;
+	}
+
+	public boolean isDown() {
+		return down;
+	}
+
+	public void setDown(boolean down) {
+		this.down = down;
+	}
+
+	public boolean isRight() {
+		return right;
+	}
+
+	public void setRight(boolean right) {
+		this.right = right;
+	}
+
+	public boolean isLeft() {
+		return left;
+	}
+
+	public void setLeft(boolean left) {
+		this.left = left;
+	}
 	
 }
