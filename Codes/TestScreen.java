@@ -1,8 +1,3 @@
-/**
- * 
- * Author:Alper Þahýstan
- * 
- */
 import java.util.ArrayList;
 
 import org.newdawn.slick.AppGameContainer;
@@ -10,6 +5,7 @@ import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -18,6 +14,18 @@ public class TestScreen extends BasicGame{
 	Player player;
 	ArrayList<Bullet> bulletList;
 	ArrayList<Enemy> enemyList;
+	
+	
+	//*************************ST**************************
+	Icon key;
+	IconXAmount keyXAmount;
+	
+	public static Color color1 = Color.green;
+	public static Color color2 = Color.red;
+	
+	ArrayList<Layer> layerList;
+	//*************************ST**************************
+	
 	
 	public static int FPS = 60;
 	
@@ -84,6 +92,13 @@ public class TestScreen extends BasicGame{
 		}
 		handleRemovals((ArrayList)bulletList);
 		handleRemovals((ArrayList)enemyList);
+		
+		
+		//*************************ST**************************
+		handleRemovals((ArrayList)layerList);
+		//*************************ST**************************
+		
+		
 	}
 
 	private void handleRemovals(ArrayList<GameObject> list) {
@@ -96,11 +111,10 @@ public class TestScreen extends BasicGame{
 				size--;
 			}
 		}
-		
 	}
 
-	private void manageInput(GameContainer container)
-	{
+	private void manageInput(GameContainer container) {
+		
 		Input input = container.getInput();
 		
 	      //up
@@ -142,8 +156,7 @@ public class TestScreen extends BasicGame{
 		  {
 	    	  player.setPowerUpActive(!player.isPowerUpActive());
 	    		  
-		  }
-	    	  
+		  }	  
 	}
 
 	@Override
@@ -154,10 +167,44 @@ public class TestScreen extends BasicGame{
 				container.getHeight());
 		bulletList = new ArrayList<Bullet>();
 		enemyList = new ArrayList<Enemy>();
-		enemyList.add(new Enemy(new Vector2f(300f, 30f), new Vector2f(30f, 30f), 
-				4f, 100f, 100f, 3f, player));
-		enemyList.add(new Enemy(new Vector2f(400f, 30f), new Vector2f(30f, 30f), 
-				4f, 100f, 100f, 3f, player));
+		
+		
+		/*
+		Enemy enemy1 = new Enemy(new Vector2f(300f, 300f), new Vector2f(30f, 30f), 
+				2f, 100f, 100f, 3f, player);
+		enemyList.add(enemy1);
+		
+		Enemy enemy2 = new Enemy(new Vector2f(900f, 300f), new Vector2f(30f, 30f), 
+				2f, 100f, 100f, 3f, player);
+		enemyList.add(enemy2);
+		*/
+		
+		
+		//*************************ST**************************
+		layerList = new ArrayList<Layer>();
+		
+		Enemy enemy1 = new Enemy(new Vector2f(300f, 300f), new Vector2f(30f, 30f), 
+								2.5f, 100f, 100f, 3f, player);
+		enemyList.add(enemy1);
+		layerList.add(new Layer(color1, color2, enemy1.enemyStats.getCurHealth(), enemy1));
+		
+		Enemy enemy2 = new Enemy(new Vector2f(900f, 300f), new Vector2f(30f, 30f), 
+								2.5f, 100f, 100f, 3f, player);
+		enemyList.add(enemy2);
+		layerList.add(new Layer(color1, color2, enemy2.enemyStats.getCurHealth(), enemy2));
+		
+		Enemy enemy3 =new Enemy(new Vector2f(100f, 100f), new Vector2f(30f, 30f),
+								0.5f, 100f, 100f, 1f, player);
+		enemyList.add(enemy3);
+		layerList.add(new Layer(color1, color2, enemy3.enemyStats.getCurHealth(), enemy3));
+		
+		keyXAmount = new IconXAmount(new Vector2f(0f,0f), 
+								new Vector2f(0f,0f), 
+								new Icon(new Image("res/keyX.png")), 
+								0 ); //it will change with the amount of keys player has
+		//*************************ST**************************
+		
+		
 	}
 	
 	@Override
@@ -168,15 +215,27 @@ public class TestScreen extends BasicGame{
 		for (int i =0; i < bulletList.size(); i++)
 			bulletList.get(i).update();
 		
-		for (int i =0; i < enemyList.size(); i++)
+		for (int i =0; i < enemyList.size(); i++){
 			enemyList.get(i).update();
+		}
 		
-			//System.out.println(player.getStats().getCurHealth());
+		//System.out.println(player.getStats().getCurHealth());
 		/*if(player.collides(enemy))
 			System.out.println("Wow");*/
 		//System.out.println(player.getPosition().getX() + ", " + player.getPosition().getY());
 		//enemy.findTarget(player);
 		handleCollisions();
+			
+		
+		//*************************ST**************************
+		if(player.isDown()) // it will change with the if(player collides any key on the game screen)
+			keyXAmount.update();
+		
+		for (int i =0; i < layerList.size(); i++)
+			layerList.get(i).update();
+		//*************************ST**************************
+		
+
 	}
 
 	@Override
@@ -188,6 +247,16 @@ public class TestScreen extends BasicGame{
 			bulletList.get(i).draw(g);
 		for (int i =0; i < enemyList.size(); i++)
 			enemyList.get(i).draw(g);
+		
+		
+		//*************************ST**************************
+		keyXAmount.draw(g);
+		
+		for (int i =0; i < layerList.size(); i++)
+			layerList.get(i).draw(g);
+		//*************************ST**************************
+
+		
 	}
 	
 	public static void main(String[] args) throws SlickException {
@@ -196,7 +265,5 @@ public class TestScreen extends BasicGame{
 		app.setDisplayMode(1080, 720, false);
 		app.setTargetFrameRate(FPS);
 		app.start();
-		
 	}
-
 }
