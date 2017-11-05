@@ -1,13 +1,8 @@
-/**
- * 
- * Author:Alper Þahýstan
- * 
- */
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Circle;
-import org.newdawn.slick.geom.Ellipse;
-import org.newdawn.slick.geom.Shape;
+//import org.newdawn.slick.geom.Ellipse;
+//import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Player extends DynamicGameObject implements Shooter{
@@ -125,10 +120,33 @@ public class Player extends DynamicGameObject implements Shooter{
 	//The method to be called before every frame
 	@Override
 	void update() 
-	{
-		shape.setCenterX(getPosition().getX()); 
+	{	
+		/*
+		shape.setCenterX(getPosition().getX());
 		shape.setCenterY(getPosition().getY());
 		move();
+		*/
+		
+		//*************************ST**************************
+		//if player between the boundary of x and y coordinate can move and update
+		if(this.getPosition().getX()-15f > 0f &&  this.getPosition().getX()+15f < this.screenWidth &&
+			this.getPosition().getY()-15f > 0f &&  this.getPosition().getY()+15f < this.screenHeight){
+			shape.setCenterX(getPosition().getX());
+			shape.setCenterY(getPosition().getY());
+			move();
+		}
+		else{ //player's movement on the boundary conditions
+			if(this.getPosition().getX()-15f < 0f)
+				this.setPosition(new Vector2f(super.getPosition().getX()+10f, super.getPosition().getY()));
+			if(this.getPosition().getX()+15f > this.screenWidth)
+				this.setPosition(new Vector2f(super.getPosition().getX()-10f, super.getPosition().getY()));
+			if(this.getPosition().getY()-15f < 0f)
+				this.setPosition(new Vector2f(super.getPosition().getX(), super.getPosition().getY()+10f));
+			if(this.getPosition().getY()+15f > this.screenHeight)
+				this.setPosition(new Vector2f(super.getPosition().getX(), super.getPosition().getY()-10f));
+		}
+		//*************************ST**************************
+		
 	}
 	@Override
 	public Bullet shoot(Vector2f target)
@@ -235,6 +253,5 @@ public class Player extends DynamicGameObject implements Shooter{
 	public void setPowerUpActive(boolean powerUpActive) {
 		this.powerUpActive = powerUpActive;
 	}
-	
 		
 }
