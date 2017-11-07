@@ -1,3 +1,7 @@
+/**
+ * Author: Alper Þahýstan, Semih Teker
+ */
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Circle;
@@ -26,6 +30,7 @@ public class Player extends DynamicGameObject implements Shooter{
 	Stats playerStats;
 	
 	private boolean powerUpActive=false;
+	
 
 	public Player(Vector2f pos, Vector2f dim, float speed, float maxHealth) {
 		super(pos, dim, speed);
@@ -91,13 +96,17 @@ public class Player extends DynamicGameObject implements Shooter{
 	void move() 
 	{
 		//Controller sent signals are used to construct a vector velocity
-		if (up)
+		if (up && 
+				(this.getPosition().getY() - (super.getDimentions().y/2)> 0f))
 			velocity.y = -1f;
-		if (down)
+		if (down && 
+				(this.getPosition().getY() + (super.getDimentions().y/2) < this.screenHeight))
 			velocity.y = 1f;
-		if(right)
+		if(right && 
+				(this.getPosition().getX() + (super.getDimentions().x/2) < this.screenWidth ))
 			velocity.x = 1f;
-		if(left)
+		if(left &&
+				(this.getPosition().getX() - (super.getDimentions().x/2) > 0f))
 			velocity.x = -1f;
 		
 		//velocity is is scaled to a unit vector
@@ -121,30 +130,11 @@ public class Player extends DynamicGameObject implements Shooter{
 	@Override
 	void update() 
 	{	
-		/*
+		//*************************ST**************************
 		shape.setCenterX(getPosition().getX());
 		shape.setCenterY(getPosition().getY());
 		move();
-		*/
-		
-		//*************************ST**************************
-		//if player between the boundary of x and y coordinate can move and update
-		if(this.getPosition().getX()-15f > 0f &&  this.getPosition().getX()+15f < this.screenWidth &&
-			this.getPosition().getY()-15f > 0f &&  this.getPosition().getY()+15f < this.screenHeight){
-			shape.setCenterX(getPosition().getX());
-			shape.setCenterY(getPosition().getY());
-			move();
-		}
-		else{ //player's movement on the boundary conditions
-			if(this.getPosition().getX()-15f < 0f)
-				this.setPosition(new Vector2f(super.getPosition().getX()+10f, super.getPosition().getY()));
-			if(this.getPosition().getX()+15f > this.screenWidth)
-				this.setPosition(new Vector2f(super.getPosition().getX()-10f, super.getPosition().getY()));
-			if(this.getPosition().getY()-15f < 0f)
-				this.setPosition(new Vector2f(super.getPosition().getX(), super.getPosition().getY()+10f));
-			if(this.getPosition().getY()+15f > this.screenHeight)
-				this.setPosition(new Vector2f(super.getPosition().getX(), super.getPosition().getY()-10f));
-		}
+
 		//*************************ST**************************
 		
 	}
@@ -178,8 +168,8 @@ public class Player extends DynamicGameObject implements Shooter{
 	{
 		this.playerStats.takeDamage(dmg);
 		
-		if(!(this.playerStats.getCurHealth()>0))
-			System.out.println("player is killed!");
+		//if(!(this.playerStats.getCurHealth()>0))
+			//System.out.println("player is killed!");
 	}
 	
 	/*@Override

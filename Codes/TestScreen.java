@@ -1,3 +1,8 @@
+/**
+ * 
+ * Author:Alper Þahýstan
+ * 
+ */
 import java.util.ArrayList;
 
 import org.newdawn.slick.AppGameContainer;
@@ -39,7 +44,8 @@ public class TestScreen extends BasicGame{
 	public void handleCollisions()
 	{
 		handleEnemyBulletCollisions();
-		handleEnemyPlayerCollisions();
+		if(player!=null)
+			handleEnemyPlayerCollisions();
 		handleEnemyEnemyCollisions();
 	}
 	
@@ -53,10 +59,12 @@ public class TestScreen extends BasicGame{
 			{
 				if(enemyList.get(i).collides(enemyList.get(j)))
 				{
-					enemyList.get(i).setStay(true);
+					enemyList.get(i).bounceOff(enemyList.get(j), 
+							enemyList.get(i).getDimentions().x/2);
+					//enemyList.get(i).setStay(true);
 				}
-				else
-					enemyList.get(i).setStay(false);
+				/*else
+					enemyList.get(i).setStay(false);*/
 			}
 			j++;
 		}
@@ -69,8 +77,9 @@ public class TestScreen extends BasicGame{
 			if(player.collides(enemyList.get(i)))
 			{
 				player.takeDamage(enemyList.get(i).getStats().getBodyDamage());
-				System.out.println(enemyList.get(i).getStats().getBodyDamage());
 				enemyList.get(i).takeDamage(player.getStats().getBodyDamage());
+				
+				player.bounceOff(enemyList.get(i), 30f);
 			}
 		}
 		
@@ -210,8 +219,11 @@ public class TestScreen extends BasicGame{
 	@Override
 	public void update(GameContainer container, int arg2) throws SlickException 
 	{
-		manageInput(container);
-		player.update();
+		if(player !=null)
+		{
+			manageInput(container);
+			player.update();
+		}
 		for (int i =0; i < bulletList.size(); i++)
 			bulletList.get(i).update();
 		
@@ -228,13 +240,15 @@ public class TestScreen extends BasicGame{
 			
 		
 		//*************************ST**************************
-		if(player.isDown()) // it will change with the if(player collides any key on the game screen)
-			keyXAmount.update();
+		// it will change with the if(player collides any key on the game screen)
+		keyXAmount.update();
 		
 		for (int i =0; i < layerList.size(); i++)
 			layerList.get(i).update();
 		//*************************ST**************************
 		
+		if (player != null && player.getStats().isDead())
+			player= null;
 
 	}
 
@@ -242,7 +256,10 @@ public class TestScreen extends BasicGame{
 	public void render(GameContainer container, Graphics g) throws SlickException 
 	{
 		g.setBackground(BACKGROUND);
-		player.draw(g);
+		if(player !=null)
+			player.draw(g);
+		if(player == null)
+			g.drawString("GAME OVER!", container.getWidth()/2, container.getHeight()/2);
 		for (int i =0; i < bulletList.size(); i++)
 			bulletList.get(i).draw(g);
 		for (int i =0; i < enemyList.size(); i++)

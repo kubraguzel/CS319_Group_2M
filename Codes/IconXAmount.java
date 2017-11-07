@@ -15,13 +15,14 @@ public class IconXAmount extends UIObject{
 
 	@Override
 	public void update(){
-		amount++;
+		if(false)
+			amount++;
 	}
 	
 	@Override
 	public void draw(Graphics g){
 		g.drawImage(icon.getImage(), 0, 0, Color.yellow); // 25*80 pixels at x=0 and y=0
-		g.drawString(amount+"", 60, 3); // draw at x=60 and y=3
+		g.drawString(amount + "", 60, 3); // draw at x=60 and y=3
 	}
 	
 	public Icon getIcon(){

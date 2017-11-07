@@ -34,6 +34,25 @@ public abstract class DynamicGameObject extends GameObject {
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 	}
+    
+    
+    //Pushes 2 DynamicGameObjects away from eachother
+    public void bounceOff(DynamicGameObject other, float bounceValue)
+    {
+    	Vector2f bounceOffVector = new Vector2f(this.getPosition());
+		bounceOffVector.sub(other.getPosition());
+		bounceOffVector.normalise();
+		bounceOffVector.scale(bounceValue);
+		Vector2f pos = new Vector2f(this.getPosition());
+		pos.add(bounceOffVector);
+		//pushing this away from the other
+		this.setPosition(pos);
+		
+		pos = new Vector2f (other.getPosition());
+		pos.sub(bounceOffVector);
+		//pushing other away from the this
+		other.setPosition(pos);
+    }
 
 	//Getters & setters
 	public float getSpeed() {
