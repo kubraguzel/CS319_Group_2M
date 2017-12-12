@@ -1,3 +1,8 @@
+/**
+ * 
+ * Author:Alper Þahýstan
+ * 
+ */
 import java.util.ArrayList;
 
 import org.newdawn.slick.Color;
@@ -7,23 +12,33 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class Lab extends Enemy 
 {
-	private float spawnRate = 5000f;
+	private float spawnRate =3000f;
 	private long nextTimeToSpawn = System.currentTimeMillis();
 	private ArrayList<Enemy> enemyList;
-	private float proximityDistance = 400f;
+	
 	
 	public Lab(Vector2f pos, Vector2f dim, float speed, float maxHealth, DynamicGameObject target, ArrayList<Enemy> enemyList) {
 		super(pos, dim, speed, maxHealth, target);
 		super.shape = new Rectangle(super.getPosition().getX(), super.getPosition().getY(), 
 				(super.getDimentions().getX()), (super.getDimentions().getY()));
 		this.enemyList = enemyList;
+		super.proximityDistance = 500f;
 	}
 	
 	public Lab(Vector2f pos, float speed, float maxHealth, DynamicGameObject target, ArrayList<Enemy> enemyList) {
-		super(pos, new Vector2f(40f,60f) , speed, maxHealth, target);
+		super(pos, new Vector2f(70f,50f) , speed, maxHealth, target);
 		super.shape = new Rectangle(super.getPosition().getX(), super.getPosition().getY(), 
 				(super.getDimentions().getX()), (super.getDimentions().getY()));
 		this.enemyList = enemyList;
+		super.proximityDistance = 500f;
+	}
+	
+	public Lab(Vector2f pos, float maxHealth, DynamicGameObject target, ArrayList<Enemy> enemyList) {
+		super(pos, new Vector2f(70f,50f) , 1.5f, maxHealth, target);
+		super.shape = new Rectangle(super.getPosition().getX(), super.getPosition().getY(), 
+				(super.getDimentions().getX()), (super.getDimentions().getY()));
+		this.enemyList = enemyList;
+		super.proximityDistance = 500f;
 	}
 	
 	public void spawnBug()
@@ -35,14 +50,15 @@ public class Lab extends Enemy
 		spawnPos.scale(-this.getDimentions().getX());
 		spawnPos.add(this.getPosition());
 		
-		Bug bug = new Bug(spawnPos, new Vector2f(30f, 30f), 2.5f, 100, 100, 3f, target);
+		Bug bug = new Bug(spawnPos, 2.5f, 100, 100, 3f, target);
 		
 		enemyList.add(bug);
 	}
 	
-	public void move()
+	/*public void move()
 	{
-		if (target != null)
+		if (target != null && 
+				this.getPosition().distance(target.getPosition())>= proximityDistance)
 		{
 			Vector2f targetVector = new Vector2f(target.getPosition());
 			targetVector.sub(getPosition()).normalise();
@@ -53,7 +69,7 @@ public class Lab extends Enemy
 					screenWidth-this.getDimentions().getX()/2, targetVector.getX()), 
 					clamp(0+this.getDimentions().getY()/2, screenHeight- this.getDimentions().getY()/2, targetVector.getY())));
 		}
-	}
+	}*/
 	
 	@Override
 	public void draw(Graphics g) 
@@ -69,8 +85,7 @@ public class Lab extends Enemy
 		shape.setCenterX(getPosition().getX()); 
 		shape.setCenterY(getPosition().getY());
 		
-		if(!stay
-			&& this.getPosition().distance(target.getPosition())>= proximityDistance)
+		if(!stay)
 			move();
 		
 

@@ -188,18 +188,16 @@ public class GameMaster extends BasicGame{
 		
 		//*************************ST**************************
 		
-		Enemy enemy1 = new Enemy(new Vector2f(300f, 300f), new Vector2f(30f, 30f), 
-								2.5f, 100f, 100f, 3f, player);
+		Enemy enemy1 = new Bug(new Vector2f(300f, 300f), 100f, 3f, player);
 		enemyList.add(enemy1);
 		
-		Enemy enemy2 = new Enemy(new Vector2f(900f, 300f), new Vector2f(30f, 30f), 
-								2.5f, 100f, 100f, 3f, player);
+		Enemy enemy2 = new Bug(new Vector2f(900f, 300f), 100f, 3f, player);
 		enemyList.add(enemy2);
 		
 		//System.out.println(enemyList==null);
 		
-		Enemy enemy3 =new Lab(new Vector2f(100f, 100f),
-								2.5f, 100f, player, enemyList);
+		Enemy enemy3 =new Lab(new Vector2f(100f, 100f), 
+				100f, player, enemyList);
 		enemyList.add(enemy3);
 		
 		keyXAmount = new IconXAmount(new Vector2f(0f,0f), 
@@ -259,7 +257,7 @@ public class GameMaster extends BasicGame{
 		//*************************ST**************************
 	}
 	public static void main(String[] args) throws SlickException {
-		AppGameContainer app = new AppGameContainer(new GameMaster ("est"));
+		AppGameContainer app = new AppGameContainer(new GameMaster ("Survival in Bilkentv0.1 beta"));
 		
 		app.setDisplayMode(1080, 720, false);
 		app.setTargetFrameRate(FPS);
