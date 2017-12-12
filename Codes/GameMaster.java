@@ -1,8 +1,3 @@
-/**
- * 
- * Author:Alper Þahýstan
- * 
- */
 import java.util.ArrayList;
 
 import org.newdawn.slick.AppGameContainer;
@@ -15,9 +10,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
-public class TestScreen {
-	public static int FPS = 60;
-	/*Player player;
+public class GameMaster extends BasicGame{
+	Player player;
 	ArrayList<Bullet> bulletList;
 	ArrayList<Enemy> enemyList;
 	
@@ -30,12 +24,15 @@ public class TestScreen {
 	public static Color color2 = Color.red;
 	
 	ArrayList<Layer> layerList;
+	
 	//*************************ST**************************
 	
 	
+	public static int FPS = 60;
+	
 	public static Color BACKGROUND = Color.gray;
 	
-	public TestScreen(String title)
+	public GameMaster(String title)
 	{
 		super(title);
 	}
@@ -63,7 +60,7 @@ public class TestScreen {
 					//enemyList.get(i).setStay(true);
 				}
 				/*else
-					enemyList.get(i).setStay(false);
+					enemyList.get(i).setStay(false);*/
 			}
 			j++;
 		}
@@ -100,13 +97,14 @@ public class TestScreen {
 		}
 		handleRemovals((ArrayList)bulletList);
 		handleRemovals((ArrayList)enemyList);
-		
-		
-		//*************************ST**************************
-		handleRemovals((ArrayList)layerList);
-		//*************************ST**************************
-		
-		
+	}
+	
+	private void handleBulletBoundaryCollisions()
+	{
+		for (int i = 0; i< bulletList.size(); i++)
+		{
+			
+		}
 	}
 
 	private void handleRemovals(ArrayList<GameObject> list) {
@@ -177,7 +175,7 @@ public class TestScreen {
 		enemyList = new ArrayList<Enemy>();
 		
 		
-		
+		/*
 		Enemy enemy1 = new Enemy(new Vector2f(300f, 300f), new Vector2f(30f, 30f), 
 				2f, 100f, 100f, 3f, player);
 		enemyList.add(enemy1);
@@ -185,26 +183,24 @@ public class TestScreen {
 		Enemy enemy2 = new Enemy(new Vector2f(900f, 300f), new Vector2f(30f, 30f), 
 				2f, 100f, 100f, 3f, player);
 		enemyList.add(enemy2);
-		
+		*/
 		
 		
 		//*************************ST**************************
-		layerList = new ArrayList<Layer>();
 		
 		Enemy enemy1 = new Enemy(new Vector2f(300f, 300f), new Vector2f(30f, 30f), 
 								2.5f, 100f, 100f, 3f, player);
 		enemyList.add(enemy1);
-		layerList.add(new Layer(color1, color2, enemy1.enemyStats.getCurHealth(), enemy1));
 		
 		Enemy enemy2 = new Enemy(new Vector2f(900f, 300f), new Vector2f(30f, 30f), 
 								2.5f, 100f, 100f, 3f, player);
 		enemyList.add(enemy2);
-		layerList.add(new Layer(color1, color2, enemy2.enemyStats.getCurHealth(), enemy2));
 		
-		Enemy enemy3 =new Enemy(new Vector2f(100f, 100f), new Vector2f(30f, 30f),
-								0.5f, 100f, 100f, 1f, player);
+		//System.out.println(enemyList==null);
+		
+		Enemy enemy3 =new Lab(new Vector2f(100f, 100f),
+								2.5f, 100f, player, enemyList);
 		enemyList.add(enemy3);
-		layerList.add(new Layer(color1, color2, enemy3.enemyStats.getCurHealth(), enemy3));
 		
 		keyXAmount = new IconXAmount(new Vector2f(0f,0f), 
 								new Vector2f(0f,0f), 
@@ -229,22 +225,14 @@ public class TestScreen {
 		for (int i =0; i < enemyList.size(); i++){
 			enemyList.get(i).update();
 		}
-		
-		//System.out.println(player.getStats().getCurHealth());
-		/*if(player.collides(enemy))
-			System.out.println("Wow");
-		//System.out.println(player.getPosition().getX() + ", " + player.getPosition().getY());
-		//enemy.findTarget(player);
-		handleCollisions();
 			
 		
 		//*************************ST**************************
 		// it will change with the if(player collides any key on the game screen)
 		keyXAmount.update();
 		
-		for (int i =0; i < layerList.size(); i++)
-			layerList.get(i).update();
-		//*************************ST**************************
+		handleCollisions();
+		
 		
 		if (player != null && player.getStats().isDead())
 			player= null;
@@ -268,15 +256,10 @@ public class TestScreen {
 		//*************************ST**************************
 		keyXAmount.draw(g);
 		
-		for (int i =0; i < layerList.size(); i++)
-			layerList.get(i).draw(g);
 		//*************************ST**************************
-
-		
-	} */
-	
+	}
 	public static void main(String[] args) throws SlickException {
-		AppGameContainer app = new AppGameContainer(new GameMaster ("Test"));
+		AppGameContainer app = new AppGameContainer(new GameMaster ("est"));
 		
 		app.setDisplayMode(1080, 720, false);
 		app.setTargetFrameRate(FPS);

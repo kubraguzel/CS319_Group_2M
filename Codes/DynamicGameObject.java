@@ -35,22 +35,35 @@ public abstract class DynamicGameObject extends GameObject {
 		this.screenHeight = screenHeight;
 	}
     
+    //returns a clamped value of the given float between min and max
+    public float clamp(float min, float max, float value)
+    {
+    	return Math.min(max,(Math.max(min, value)));
+    }
+    
     
     //Pushes 2 DynamicGameObjects away from eachother
     public void bounceOff(DynamicGameObject other, float bounceValue)
     {
     	Vector2f bounceOffVector = new Vector2f(this.getPosition());
+    	//initializes an vector that is the difference between 2 colliding objects
 		bounceOffVector.sub(other.getPosition());
+		//Make the vector a unit vector
 		bounceOffVector.normalise();
+		//bounce value times that unit vector
 		bounceOffVector.scale(bounceValue);
 		Vector2f pos = new Vector2f(this.getPosition());
 		pos.add(bounceOffVector);
 		//pushing this away from the other
+		pos.set(clamp(0+this.getDimentions().getX()/2, screenWidth-this.getDimentions().getX()/2, pos.getX()), 
+				clamp(0+this.getDimentions().getY()/2, screenHeight- this.getDimentions().getY()/2, pos.getY()));
 		this.setPosition(pos);
 		
 		pos = new Vector2f (other.getPosition());
 		pos.sub(bounceOffVector);
 		//pushing other away from the this
+		pos.set(clamp(0+this.getDimentions().getX()/2, screenWidth-this.getDimentions().getX()/2, pos.getX()), 
+				clamp(0+this.getDimentions().getY()/2, screenHeight- this.getDimentions().getY()/2, pos.getY()));
 		other.setPosition(pos);
     }
 

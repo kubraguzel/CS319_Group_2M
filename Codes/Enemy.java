@@ -12,7 +12,7 @@ public class Enemy extends DynamicGameObject {
 	
 	Stats enemyStats;
 	DynamicGameObject target;
-	private boolean stay;
+	protected boolean stay;
 	
 	public Enemy(Vector2f pos, Vector2f dim, float speed, float maxHealth, float curHealth, float bodyDamage, DynamicGameObject target)
 	{

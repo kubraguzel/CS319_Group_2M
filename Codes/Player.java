@@ -147,7 +147,7 @@ public class Player extends DynamicGameObject implements Shooter{
 			Bullet bullet;
 			if(powerUpActive)
 			{
-				bullet = new BouncyBullet(new Vector2f(super.getPosition()), 
+					bullet = new BouncyBullet(new Vector2f(super.getPosition()), 
 					target, playerStats.getBulletSpeed(), 
 					playerStats.getBulletDamage(),
 					super.screenWidth,
