@@ -3,6 +3,8 @@
  * Author:Alper Þahýstan
  * 
  */
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Bug extends Enemy 
@@ -23,5 +25,13 @@ public class Bug extends Enemy
 	{
 		super(pos, new Vector2f(25f,25f), 2.5f, maxHealth, bodyDamage, target);
 	}
+
+	@Override
+	public void draw(Graphics g) {
+		g.setColor(Color.green);
+		super.draw(g);
+	}
+	
+	
 	
 }

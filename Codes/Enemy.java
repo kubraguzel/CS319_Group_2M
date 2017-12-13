@@ -30,6 +30,7 @@ public class Enemy extends DynamicGameObject {
 		super(pos, dim, speed);
 		enemyStats = new Stats(maxHealth, maxHealth);
 		this.target = target;
+		enemyStats.setBodyDamage(3f);
 		shape= new Rectangle(super.getPosition().getX(), super.getPosition().getY(), 
 				(super.getDimentions().getX()), (super.getDimentions().getY()));
 	}
@@ -53,10 +54,6 @@ public class Enemy extends DynamicGameObject {
 	@Override
 	public void draw(Graphics g) 
 	{
-		g.setColor(new Color(0, 255, 100));
-		
-		//getting the object drawn from the center
-		//System.out.println((int)(super.pos.getX()- (super.dimentions.getX()/2)));
 		g.fill(shape);
 		g.setColor(Color.black);
 		//g.drawString("", super.getPosition().getX()-super.getDimentions().getX()/2, super.getPosition().getY());
@@ -84,6 +81,7 @@ public class Enemy extends DynamicGameObject {
 	{
 		shape.setCenterX(getPosition().getX()); 
 		shape.setCenterY(getPosition().getY());
+		
 		if(!stay)
 			move();
 	}

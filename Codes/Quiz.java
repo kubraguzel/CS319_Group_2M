@@ -1,21 +1,93 @@
+import java.util.ArrayList;
+
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Quiz extends Enemy implements Shooter {
+	
+	private long nextTimeToShoot = 0;
+	private final float FIRE_RATE = 900f;
+	private final float BULLET_SPEED = 10f;
+	private final float PROXIMITY = 100f;
+	private final float BULLET_DAMAGE = 20f;
+	private ArrayList<Bullet> bulletList;
 
-	public Quiz(Vector2f pos, Vector2f dim, float speed, float maxHealth, float bodyDamage, DynamicGameObject target) {
+	public Quiz(Vector2f pos, Vector2f dim, float speed, float maxHealth, float bodyDamage, DynamicGameObject target, ArrayList<Bullet> bulletList) {
 		super(pos, dim, speed, maxHealth, bodyDamage, target);
-		// TODO Auto-generated constructor stub
+		super.getStats().setFireRate(FIRE_RATE);
+		super.getStats().setBulletSpeed(BULLET_SPEED);
+		super.getStats().setBulletDamage(BULLET_DAMAGE);
+		super.shape = new Ellipse(super.getPosition().x,super.getPosition().y,
+				super.getDimentions().x, super.getDimentions().y);
+		this.bulletList = bulletList;
+		super.proximityDistance = PROXIMITY;
 	}
 
-	public Quiz(Vector2f pos, Vector2f dim, float speed, float maxHealth, DynamicGameObject target) {
+	public Quiz(Vector2f pos, Vector2f dim, float speed, float maxHealth, DynamicGameObject target, ArrayList<Bullet> bulletList) {
 		super(pos, dim, speed, maxHealth, target);
-		// TODO Auto-generated constructor stub
+		super.getStats().setFireRate(FIRE_RATE);
+		super.getStats().setBulletSpeed(BULLET_SPEED);
+		super.getStats().setBulletDamage(BULLET_DAMAGE);
+		super.shape = new Ellipse(super.getPosition().x,super.getPosition().y,
+				super.getDimentions().x, super.getDimentions().y);
+		this.bulletList = bulletList;
+		super.proximityDistance = PROXIMITY;
+	}
+	
+	public Quiz(Vector2f pos, float speed, float maxHealth, DynamicGameObject target, ArrayList<Bullet> bulletList) {
+		super(pos, new Vector2f(10f, 10f), speed, maxHealth, target);
+		super.getStats().setFireRate(FIRE_RATE);
+		super.getStats().setBulletSpeed(BULLET_SPEED);
+		super.getStats().setBulletDamage(BULLET_DAMAGE);
+		super.shape = new Ellipse(super.getPosition().x,super.getPosition().y,
+				super.getDimentions().x, super.getDimentions().y);
+		this.bulletList = bulletList;
+		super.proximityDistance = PROXIMITY;
+	}
+	
+	public Quiz(Vector2f pos, float maxHealth, DynamicGameObject target, ArrayList<Bullet> bulletList) {
+		super(pos, new Vector2f(10f, 10f), 4f, maxHealth, target);
+		super.getStats().setFireRate(FIRE_RATE);
+		super.getStats().setBulletSpeed(BULLET_SPEED);
+		super.getStats().setBulletDamage(BULLET_DAMAGE);
+		super.shape = new Ellipse(super.getPosition().x,super.getPosition().y,
+				super.getDimentions().x, super.getDimentions().y);
+		this.bulletList = bulletList;
+		super.proximityDistance = PROXIMITY;
 	}
 
 	@Override
 	public Bullet shoot(Vector2f target) {
-		// TODO Auto-generated method stub
+		if (System.currentTimeMillis() >= nextTimeToShoot)
+		{
+			nextTimeToShoot = (long)super.getStats().getFireRate() + System.currentTimeMillis();
+			Vector2f currentPos = new Vector2f(super.getPosition());
+			Bullet bullet = new Bullet (currentPos, target, super.getStats().getBulletSpeed(),
+					super.getStats().getBulletDamage(), true);
+			return bullet;
+		}
 		return null;
 	}
+
+	@Override
+	public void draw(Graphics g) {
+		g.setColor(Color.orange);
+		super.draw(g);
+	}
+
+	@Override
+	void update() 
+	{
+		super.update();
+		
+		Vector2f targetPos = new Vector2f(super.target.getPosition());
+		Bullet bullet = shoot(targetPos);
+		if (bullet!=null)
+			bulletList.add(bullet);
+	}
+	
+	
 
 }

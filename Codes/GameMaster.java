@@ -39,7 +39,7 @@ public class GameMaster extends BasicGame{
 	
 	public void handleCollisions()
 	{
-		handleEnemyBulletCollisions();
+		handleBulletCollisions();
 		if(player!=null)
 			handleEnemyPlayerCollisions();
 		handleEnemyEnemyCollisions();
@@ -82,29 +82,31 @@ public class GameMaster extends BasicGame{
 		handleRemovals((ArrayList)enemyList);
 	}
 
-	private void handleEnemyBulletCollisions() 
+	private void handleBulletCollisions() 
 	{
 		for (int i = 0; i< bulletList.size(); i++)
 		{
+			Bullet curBullet = bulletList.get(i);
 			for (int j = 0; j< enemyList.size(); j++)
 			{
-				if(bulletList.get(i).collides(enemyList.get(j)) && !bulletList.get(i).isEnemyBullet())
+				if(curBullet.collides(enemyList.get(j)) && !curBullet.isEnemyBullet())
 				{
-					enemyList.get(j).takeDamage(bulletList.get(i).getDamage());
-					bulletList.get(i).setToBeRemoved(true);
+					enemyList.get(j).takeDamage(curBullet.getDamage());
+					curBullet.setToBeRemoved(true);
+				}
+			}
+			
+			if (player != null)
+			{
+				if (curBullet.collides(player) && curBullet.isEnemyBullet())
+				{
+					player.takeDamage(curBullet.getDamage());
+					curBullet.setToBeRemoved(true);
 				}
 			}
 		}
 		handleRemovals((ArrayList)bulletList);
 		handleRemovals((ArrayList)enemyList);
-	}
-	
-	private void handleBulletBoundaryCollisions()
-	{
-		for (int i = 0; i< bulletList.size(); i++)
-		{
-			
-		}
 	}
 
 	private void handleRemovals(ArrayList<GameObject> list) {
@@ -188,10 +190,10 @@ public class GameMaster extends BasicGame{
 		
 		//*************************ST**************************
 		
-		Enemy enemy1 = new Bug(new Vector2f(300f, 300f), 100f, 3f, player);
-		enemyList.add(enemy1);
+		/*Enemy enemy1 = new Bug(new Vector2f(300f, 300f), 100f, 3f, player);
+		enemyList.add(enemy1);*/
 		
-		Enemy enemy2 = new Bug(new Vector2f(900f, 300f), 100f, 3f, player);
+		Enemy enemy2 = new Quiz(new Vector2f(900f, 300f), 100f, player, bulletList);
 		enemyList.add(enemy2);
 		
 		//System.out.println(enemyList==null);

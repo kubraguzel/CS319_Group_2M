@@ -12,9 +12,9 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class Lab extends Enemy 
 {
-	private float spawnRate =3000f;
 	private long nextTimeToSpawn = System.currentTimeMillis();
 	private ArrayList<Enemy> enemyList;
+	private final float SPAWN_RATE = 3000f;
 	
 	
 	public Lab(Vector2f pos, Vector2f dim, float speed, float maxHealth, DynamicGameObject target, ArrayList<Enemy> enemyList) {
@@ -23,6 +23,7 @@ public class Lab extends Enemy
 				(super.getDimentions().getX()), (super.getDimentions().getY()));
 		this.enemyList = enemyList;
 		super.proximityDistance = 500f;
+		super.getStats().setFireRate(SPAWN_RATE);
 	}
 	
 	public Lab(Vector2f pos, float speed, float maxHealth, DynamicGameObject target, ArrayList<Enemy> enemyList) {
@@ -31,6 +32,7 @@ public class Lab extends Enemy
 				(super.getDimentions().getX()), (super.getDimentions().getY()));
 		this.enemyList = enemyList;
 		super.proximityDistance = 500f;
+		super.getStats().setFireRate(SPAWN_RATE);
 	}
 	
 	public Lab(Vector2f pos, float maxHealth, DynamicGameObject target, ArrayList<Enemy> enemyList) {
@@ -39,6 +41,7 @@ public class Lab extends Enemy
 				(super.getDimentions().getX()), (super.getDimentions().getY()));
 		this.enemyList = enemyList;
 		super.proximityDistance = 500f;
+		super.getStats().setFireRate(SPAWN_RATE);
 	}
 	
 	public void spawnBug()
@@ -55,56 +58,27 @@ public class Lab extends Enemy
 		enemyList.add(bug);
 	}
 	
-	/*public void move()
-	{
-		if (target != null && 
-				this.getPosition().distance(target.getPosition())>= proximityDistance)
-		{
-			Vector2f targetVector = new Vector2f(target.getPosition());
-			targetVector.sub(getPosition()).normalise();
-			targetVector.scale(super.getSpeed());
-			targetVector.add(super.getPosition());
-			
-			super.setPosition(new Vector2f (clamp(0+this.getDimentions().getX()/2, 
-					screenWidth-this.getDimentions().getX()/2, targetVector.getX()), 
-					clamp(0+this.getDimentions().getY()/2, screenHeight- this.getDimentions().getY()/2, targetVector.getY())));
-		}
-	}*/
-	
 	@Override
 	public void draw(Graphics g) 
 	{
 		g.setColor(new Color(150, 255, 150));
-		g.fill(shape);
+		super.draw(g);
 		//g.drawString("", super.getPosition().getX()-super.getDimentions().getX()/2, super.getPosition().getY());
 	}
 	
 	@Override
 	void update() 
 	{
-		shape.setCenterX(getPosition().getX()); 
-		shape.setCenterY(getPosition().getY());
-		
-		if(!stay)
-			move();
+		super.update();
 		
 
 		if (System.currentTimeMillis() >= nextTimeToSpawn)
 		{
-			nextTimeToSpawn = (long)spawnRate + System.currentTimeMillis();
+			nextTimeToSpawn = (long)super.getStats().getFireRate() + System.currentTimeMillis();
 			spawnBug();
-			
 		}
 	}
 	
-	public float getSpawnRate() {
-		return spawnRate;
-	}
-	
-	public void setSpawnRate(float spawnRate) {
-		this.spawnRate = spawnRate;
-	}
-
 	public void setEnemyList(ArrayList<Enemy> enemyList) {
 		this.enemyList = enemyList;
 	}
