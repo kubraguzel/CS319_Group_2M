@@ -30,7 +30,7 @@ public class Enemy extends DynamicGameObject {
 		super(pos, dim, speed);
 		enemyStats = new Stats(maxHealth, maxHealth);
 		this.target = target;
-		enemyStats.setBodyDamage(3f);
+		enemyStats.setBodyDamage(5f);
 		shape= new Rectangle(super.getPosition().getX(), super.getPosition().getY(), 
 				(super.getDimentions().getX()), (super.getDimentions().getY()));
 	}

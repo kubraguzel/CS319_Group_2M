@@ -9,6 +9,8 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class Bug extends Enemy 
 {
+	private final float BODY_DAMAGE = 7f;
+	
 	public Bug(Vector2f pos, Vector2f dim, float speed, float maxHealth, 
 			float bodyDamage, DynamicGameObject target)
 	{
@@ -30,6 +32,13 @@ public class Bug extends Enemy
 	{
 		super(pos, new Vector2f(20f,20f), speed, maxHealth, bodyDamage, target);
 	}
+	
+	public Bug(Vector2f pos, float maxHealth, DynamicGameObject target)
+	{
+		super(pos, new Vector2f(20f,20f), 3.2f, maxHealth, target);
+		super.getStats().setBodyDamage(BODY_DAMAGE);
+	}
+
 
 
 	@Override

@@ -171,7 +171,7 @@ public class GameMaster extends BasicGame{
 	public void init(GameContainer container) throws SlickException {
 		player = new Player (new Vector2f(30f, 30f), new Vector2f(30f, 30f), 
 				4f, 100f, 6f, 10f, 
-				350f, 0f, container.getWidth(), 
+				400f, 0f, container.getWidth(), 
 				container.getHeight());
 		bulletList = new ArrayList<Bullet>();
 		enemyList = new ArrayList<Enemy>();
@@ -205,6 +205,9 @@ public class GameMaster extends BasicGame{
 		Enemy enemy4 =new Assignment(new Vector2f(400f, 500f), 1.6f,
 				100f, player);
 		enemyList.add(enemy4);
+		
+		Enemy enemy5= new Midterm(new Vector2f(1000f, 600f), 150f, player, bulletList);
+		enemyList.add(enemy5);
 		
 		keyXAmount = new IconXAmount(new Vector2f(0f,0f), 
 								new Vector2f(0f,0f), 

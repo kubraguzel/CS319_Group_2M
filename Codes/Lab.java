@@ -53,7 +53,7 @@ public class Lab extends Enemy
 		spawnPos.scale(-this.getDimentions().getX());
 		spawnPos.add(this.getPosition());
 		
-		Bug bug = new Bug(spawnPos, 40, 3f, target);
+		Bug bug = new Bug(spawnPos, 40, target);
 		
 		enemyList.add(bug);
 	}
