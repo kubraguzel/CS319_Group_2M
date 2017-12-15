@@ -2,8 +2,11 @@ import java.util.ArrayList;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.MorphShape;
 import org.newdawn.slick.geom.Polygon;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Final extends Enemy implements Shooter {
@@ -14,7 +17,15 @@ public class Final extends Enemy implements Shooter {
 	private final float BULLET_DAMAGE = 30f;
 	private final float BULLET_SPEED = 7f;
 	private long nextTimeToShoot =0;
+	
+	private boolean shieldUp=true;
+	private final float DOWN_TIME = 3000f;
 	private final float PROXIMITY = 500f;
+	private long nextTimeToShieldUp =0;
+	private final float MAX_SHIELD = 100f;
+	private float shieldHealth=MAX_SHIELD;
+	private Shape shield = new Ellipse(super.getPosition().x , (super.getPosition().y), 
+			super.getDimentions().x+ 2f, super.getDimentions().y+ 2f);
 
 	public Final(Vector2f pos, Vector2f dim, float speed, float maxHealth, float bodyDamage, 
 			DynamicGameObject target, ArrayList<Bullet> bulletList) {
@@ -93,12 +104,32 @@ public class Final extends Enemy implements Shooter {
 
 	@Override
 	public void takeDamage(float dmg) {
-		// TODO Auto-generated method stub
-		super.takeDamage(dmg);
+		
+		if(!shieldUp)
+			super.takeDamage(dmg);
+		else
+		{
+			shieldHealth = shieldHealth - dmg;
+			if (shieldHealth <= 0)
+			{
+				lowerShield();
+			}
+		}
+	}
+
+	private void lowerShield() 
+	{
+		shieldUp= false;
+		nextTimeToShieldUp = (long) (System.currentTimeMillis() + DOWN_TIME);
 	}
 
 	@Override
 	public void draw(Graphics g) {
+		if(shieldUp)
+		{
+			g.setColor(new Color(0f, 1f, 1f, 0.7f));
+			g.draw(shield);
+		}
 		g.setColor(Color.black);
 		super.draw(g);
 	}
@@ -112,6 +143,15 @@ public class Final extends Enemy implements Shooter {
 	@Override
 	void update() {
 		((MorphShape) shape).updateMorphTime(0.03f);
+		
+		shield.setCenterX(getPosition().getX()); 
+		shield.setCenterY(getPosition().getY());
+		
+		if(System.currentTimeMillis() >= nextTimeToShieldUp && !shieldUp)
+		{
+			shieldUp=true;
+			shieldHealth = MAX_SHIELD;
+		}
 		super.update();
 	}
 	

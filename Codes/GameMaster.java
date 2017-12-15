@@ -1,3 +1,5 @@
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 
 import org.newdawn.slick.AppGameContainer;
@@ -269,7 +271,10 @@ public class GameMaster extends BasicGame{
 	public static void main(String[] args) throws SlickException {
 		AppGameContainer app = new AppGameContainer(new GameMaster ("Survival in Bilkentv0.1 beta"));
 		
-		app.setDisplayMode(1080, 720, false);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		double width = screenSize.getWidth();
+		double height = screenSize.getHeight();
+		app.setDisplayMode((int)width, (int)height, false);
 		app.setTargetFrameRate(FPS);
 		app.start();
 	}

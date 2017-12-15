@@ -3,6 +3,9 @@
  * Author:Alper Þahýstan
  * 
  */
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
@@ -14,6 +17,7 @@ public class Enemy extends DynamicGameObject {
 	DynamicGameObject target;
 	protected boolean stay;
 	protected float proximityDistance = 0f;
+	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
 	public Enemy(Vector2f pos, Vector2f dim, float speed, float maxHealth, float bodyDamage, DynamicGameObject target)
 	{
@@ -23,6 +27,9 @@ public class Enemy extends DynamicGameObject {
 		this.findTarget(target);
 		shape= new Rectangle(super.getPosition().getX(), super.getPosition().getY(), 
 				(super.getDimentions().getX()), (super.getDimentions().getY()));
+		super.setScreenWidth((float) screenSize.getWidth()); 
+		super.setscreenHeight((float)screenSize.getHeight());
+		
 	}
 	
 	public Enemy(Vector2f pos, Vector2f dim, float speed, float maxHealth, DynamicGameObject target)
@@ -33,6 +40,8 @@ public class Enemy extends DynamicGameObject {
 		enemyStats.setBodyDamage(5f);
 		shape= new Rectangle(super.getPosition().getX(), super.getPosition().getY(), 
 				(super.getDimentions().getX()), (super.getDimentions().getY()));
+		super.setScreenWidth((float) screenSize.getWidth()); 
+		super.setscreenHeight((float)screenSize.getHeight());
 	}
 	
 	public boolean findTarget(DynamicGameObject target)

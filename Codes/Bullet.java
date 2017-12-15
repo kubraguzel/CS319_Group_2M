@@ -3,6 +3,9 @@
  * Author:Alper Þahýstan, Semih Teker
  * 
  */
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Ellipse;
@@ -15,8 +18,9 @@ public class Bullet extends DynamicGameObject implements Drawable{
 	protected Vector2f velocity;
 	private boolean enemyBullet;
 	private static float BULLET_SIZE = 5f;
-	private Rectangle boundary = new Rectangle(-2*BULLET_SIZE,-2*BULLET_SIZE, 
-			 super.getScreenWidth()+ 2*BULLET_SIZE, super.getscreenHeight()+ 2*BULLET_SIZE);
+	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	private Rectangle boundary = new Rectangle(-30*BULLET_SIZE, -30*BULLET_SIZE, 
+			 super.getScreenWidth()+60*BULLET_SIZE, super.getscreenHeight()+ 60*BULLET_SIZE);
 
 	public Bullet(Vector2f pos, Vector2f target, float speed, float damage)
 	{
@@ -26,6 +30,8 @@ public class Bullet extends DynamicGameObject implements Drawable{
 		shape = new Ellipse(super.getPosition().getX(), super.getPosition().getY(), 
 				super.getDimentions().getX(), super.getDimentions().getY());
 		this.enemyBullet= false;
+		super.setScreenWidth((float) screenSize.getWidth()); 
+		super.setscreenHeight((float)screenSize.getHeight());
 	}
 	
 	public Bullet(Vector2f pos, Vector2f target, float speed, float damage, boolean enemyBullet)
@@ -36,6 +42,8 @@ public class Bullet extends DynamicGameObject implements Drawable{
 		shape = new Ellipse(super.getPosition().getX(), super.getPosition().getY(), 
 				super.getDimentions().getX(), super.getDimentions().getY());
 		this.enemyBullet= enemyBullet;
+		super.setScreenWidth((float) screenSize.getWidth()); 
+		super.setscreenHeight((float)screenSize.getHeight());
 		
 	}
 	
