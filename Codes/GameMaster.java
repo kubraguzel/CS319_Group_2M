@@ -1,9 +1,4 @@
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.util.ArrayList;
-
-import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -11,8 +6,10 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.StateBasedGame;
 
-public class GameMaster extends BasicGame{
+public class GameMaster extends BasicGameState{
 	Player player;
 	ArrayList<Bullet> bulletList;
 	ArrayList<Enemy> enemyList;
@@ -29,14 +26,11 @@ public class GameMaster extends BasicGame{
 	
 	//*************************ST**************************
 	
-	
-	public static int FPS = 60;
-	
 	public static Color BACKGROUND = Color.gray;
 	
-	public GameMaster(String title)
+	public GameMaster()
 	{
-		super(title);
+		super();
 	}
 	
 	public void handleCollisions()
@@ -170,7 +164,7 @@ public class GameMaster extends BasicGame{
 	}
 
 	@Override
-	public void init(GameContainer container) throws SlickException {
+	public void init(GameContainer container,  StateBasedGame game) throws SlickException {
 		player = new Player (new Vector2f(30f, 30f), new Vector2f(30f, 30f), 
 				4f, 100f, 6f, 10f, 
 				400f, 0f, container.getWidth(), 
@@ -222,7 +216,7 @@ public class GameMaster extends BasicGame{
 	}
 	
 	@Override
-	public void update(GameContainer container, int arg2) throws SlickException 
+	public void update(GameContainer container, StateBasedGame game, int arg2) throws SlickException 
 	{
 		if(player !=null)
 		{
@@ -250,7 +244,7 @@ public class GameMaster extends BasicGame{
 	}
 
 	@Override
-	public void render(GameContainer container, Graphics g) throws SlickException 
+	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException 
 	{
 		g.setBackground(BACKGROUND);
 		if(player !=null)
@@ -268,14 +262,10 @@ public class GameMaster extends BasicGame{
 		
 		//*************************ST**************************
 	}
-	public static void main(String[] args) throws SlickException {
-		AppGameContainer app = new AppGameContainer(new GameMaster ("Survival in Bilkentv0.1 beta"));
-		
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		double width = screenSize.getWidth();
-		double height = screenSize.getHeight();
-		app.setDisplayMode((int)width, (int)height, false);
-		app.setTargetFrameRate(FPS);
-		app.start();
+	
+	@Override
+	public int getID() {
+		return 2;
 	}
+
 }

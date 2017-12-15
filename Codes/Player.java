@@ -1,3 +1,6 @@
+/**
+ * Author: Alper Þahýstan, Semih Teker
+ */
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -28,9 +31,6 @@ public class Player extends DynamicGameObject implements Shooter{
 	
 	private boolean powerUpActive=false;
 	
-	//*************************ST**************************
-	int numberOfKey;
-	//*************************ST**************************
 
 	public Player(Vector2f pos, Vector2f dim, float speed, float maxHealth) {
 		super(pos, dim, speed);
@@ -46,10 +46,6 @@ public class Player extends DynamicGameObject implements Shooter{
 		curColor = normal;
 		
 		playerStats = new Stats(maxHealth, maxHealth);
-		
-		//*************************ST**************************
-		numberOfKey=0;
-		//*************************ST**************************
 	}
 	
 	public Player(Vector2f pos, Vector2f dim, float speed, 
@@ -68,10 +64,6 @@ public class Player extends DynamicGameObject implements Shooter{
 		curColor = normal;
 		
 		playerStats = new Stats(maxHealth, bulletSpeed, bulletDamage, fireRate, 0f);
-		
-		//*************************ST**************************
-		numberOfKey=0;
-		//*************************ST**************************
 	}
 	
 	public Player(Vector2f pos, Vector2f dim, float speed, 
@@ -90,10 +82,6 @@ public class Player extends DynamicGameObject implements Shooter{
 		curColor = normal;
 		
 		playerStats = new Stats(maxHealth, bulletSpeed, bulletDamage, fireRate, bodyDamage);
-		
-		//*************************ST**************************
-		numberOfKey=0;
-		//*************************ST**************************
 	}
 	
 	
@@ -159,7 +147,7 @@ public class Player extends DynamicGameObject implements Shooter{
 			Bullet bullet;
 			if(powerUpActive)
 			{
-				bullet = new BouncyBullet(new Vector2f(super.getPosition()), 
+					bullet = new BouncyBullet(new Vector2f(super.getPosition()), 
 					target, playerStats.getBulletSpeed(), 
 					playerStats.getBulletDamage(),
 					super.screenWidth,
@@ -190,18 +178,6 @@ public class Player extends DynamicGameObject implements Shooter{
 		return shape.intersects(other.getShape());
 		
 	}*/
-	//*************************ST**************************
-	boolean collidesKey(Icon other) 
-	{
-		return shape.intersects(other.getShape());
-	}
-	
-	void takeKey(){
-		numberOfKey++;
-		System.out.println(numberOfKey);
-	}
-	
-	//*************************ST**************************
 	
 	//getters & setters
 	public Color getAlternate() {

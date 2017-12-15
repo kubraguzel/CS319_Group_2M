@@ -19,13 +19,15 @@ public class Final extends Enemy implements Shooter {
 	private long nextTimeToShoot =0;
 	
 	private boolean shieldUp=true;
-	private final float DOWN_TIME = 3000f;
+	private final float DOWN_TIME = 10000f;
 	private final float PROXIMITY = 500f;
-	private long nextTimeToShieldUp =0;
-	private final float MAX_SHIELD = 100f;
+	private long nextTimeToShieldUp = 0;
+	private final float MAX_SHIELD = 60f;
 	private float shieldHealth=MAX_SHIELD;
 	private Shape shield = new Ellipse(super.getPosition().x , (super.getPosition().y), 
 			super.getDimentions().x+ 2f, super.getDimentions().y+ 2f);
+	private Vector2f velocity;
+	
 
 	public Final(Vector2f pos, Vector2f dim, float speed, float maxHealth, float bodyDamage, 
 			DynamicGameObject target, ArrayList<Bullet> bulletList) {
@@ -97,8 +99,8 @@ public class Final extends Enemy implements Shooter {
 	}
 
 	@Override
-	public Bullet shoot(Vector2f target) {
-		// TODO Auto-generated method stub
+	public Bullet shoot(Vector2f target) 
+	{
 		return null;
 	}
 
@@ -120,41 +122,63 @@ public class Final extends Enemy implements Shooter {
 	private void lowerShield() 
 	{
 		shieldUp= false;
-		nextTimeToShieldUp = (long) (System.currentTimeMillis() + DOWN_TIME);
+		nextTimeToShieldUp =  (System.currentTimeMillis() + (long)DOWN_TIME);
+		((MorphShape) shape).setMorphTime(0f);
+		
+		velocity = new Vector2f(target.getPosition());
+		velocity.sub(getPosition());
+		velocity.normalise();
+		velocity.scale(getSpeed()*10f);
 	}
 
 	@Override
 	public void draw(Graphics g) {
-		if(shieldUp)
-		{
-			g.setColor(new Color(0f, 1f, 1f, 0.7f));
-			g.draw(shield);
-		}
 		g.setColor(Color.black);
 		super.draw(g);
+		if(shieldUp)
+		{
+			g.setColor(new Color(1f, 1f, 0f, 0.2f));
+			g.fill(shield);
+		}
 	}
 
 	@Override
 	public void move() {
-		// TODO Auto-generated method stub
-		super.move();
+		if(shieldUp)
+			super.move();
+		else
+		{
+			super.setPosition((super.getPosition().add(velocity)));
+			if(super.getPosition().getX()<0 || super.getPosition().getX()>super.screenWidth)
+				bounce(false);
+			else if(super.getPosition().getY()<0 || super.getPosition().getY()>super.screenHeight)
+				bounce(true);
+		}
 	}
-
+	private void bounce (boolean hitToAYBoundary)
+	{
+		if((!hitToAYBoundary)){
+			velocity.set(-velocity.x, velocity.y);
+		}
+		else if(hitToAYBoundary){
+			velocity.set(velocity.x, -velocity.y);
+		}
+	}
 	@Override
 	void update() {
-		((MorphShape) shape).updateMorphTime(0.03f);
 		
 		shield.setCenterX(getPosition().getX()); 
 		shield.setCenterY(getPosition().getY());
 		
+		if(shieldUp)
+			((MorphShape) shape).updateMorphTime(0.03f);
 		if(System.currentTimeMillis() >= nextTimeToShieldUp && !shieldUp)
 		{
 			shieldUp=true;
 			shieldHealth = MAX_SHIELD;
 		}
+		
 		super.update();
 	}
-	
-	
 
 }
