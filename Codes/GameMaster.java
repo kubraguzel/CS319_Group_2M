@@ -208,7 +208,8 @@ public class GameMaster extends BasicGame{
 		
 		Enemy enemy5= new Midterm(new Vector2f(1000f, 600f), 150f, player, bulletList);
 		enemyList.add(enemy5);
-		
+		Enemy enemy6= new Final(new Vector2f(1200f, 200f), 150f, player, bulletList);
+		enemyList.add(enemy6);
 		keyXAmount = new IconXAmount(new Vector2f(0f,0f), 
 								new Vector2f(0f,0f), 
 								new Icon(new Image("res/keyX.png")), 
