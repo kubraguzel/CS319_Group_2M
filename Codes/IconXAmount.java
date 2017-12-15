@@ -1,3 +1,4 @@
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -15,13 +16,12 @@ public class IconXAmount extends UIObject{
 
 	@Override
 	public void update(){
-		if(false)
-			amount++;
+		amount++;
 	}
 	
 	@Override
 	public void draw(Graphics g){
-		g.drawImage(icon.getImage(), 0, 0, Color.yellow); // 25*80 pixels at x=0 and y=0
+		g.drawImage(icon.getImage(), 0, 0, Color.gray); // 25*80 pixels at x=0 and y=0
 		g.drawString(amount + "", 60, 3); // draw at x=60 and y=3
 	}
 	

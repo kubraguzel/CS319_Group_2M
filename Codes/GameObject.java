@@ -1,15 +1,13 @@
-/**
- * 
- * Author:Alper Þahýstan
- * 
- */
+
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
+//import org.newdawn.slick.geom.Shape;
+//import org.newdawn.slick.geom.Vector2f;
 
 public abstract class GameObject implements Drawable{
 	private Vector2f position;
 	private Vector2f dimentions;
-	protected Shape shape;
+	Shape shape;
 	private boolean toBeRemoved = false;
 	
 	//Constructors
@@ -78,6 +76,12 @@ public abstract class GameObject implements Drawable{
 	abstract void update();
     
 	boolean collides(GameObject other) 
+	{
+		return shape.intersects(other.getShape());
+		
+	}
+	
+	boolean collidesKey(GameObject other) 
 	{
 		return shape.intersects(other.getShape());
 		

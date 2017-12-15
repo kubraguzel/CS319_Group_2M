@@ -1,8 +1,4 @@
-/**
- * 
- * Author:Alper Þahýstan
- * 
- */
+
 import java.util.ArrayList;
 
 import org.newdawn.slick.AppGameContainer;
@@ -15,9 +11,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
-public class TestScreen {
-	public static int FPS = 60;
-	/*Player player;
+public class TestScreen extends BasicGame{
+	Player player;
 	ArrayList<Bullet> bulletList;
 	ArrayList<Enemy> enemyList;
 	
@@ -26,12 +21,18 @@ public class TestScreen {
 	Icon key;
 	IconXAmount keyXAmount;
 	
-	public static Color color1 = Color.green;
-	public static Color color2 = Color.red;
+	/*public static Color color1 = Color.white;
+	public static Color color2 = Color.blue;
+	public static Color color3 = Color.red;*/
 	
-	ArrayList<Layer> layerList;
+	//ArrayList<Layer> layerList;
+	
+	
+	ArrayList<MultiBar> multiBarList;
 	//*************************ST**************************
 	
+	
+	public static int FPS = 60;
 	
 	public static Color BACKGROUND = Color.gray;
 	
@@ -46,6 +47,9 @@ public class TestScreen {
 		if(player!=null)
 			handleEnemyPlayerCollisions();
 		handleEnemyEnemyCollisions();
+		//*************************ST**************************
+		handleKeyCollisions();
+		//*************************ST**************************
 	}
 	
 	//To avoid the enemies to go through each other.
@@ -59,11 +63,11 @@ public class TestScreen {
 				if(enemyList.get(i).collides(enemyList.get(j)))
 				{
 					enemyList.get(i).bounceOff(enemyList.get(j), 
-							enemyList.get(i).getDimentions().x/10);
+							enemyList.get(i).getDimentions().x/2);
 					//enemyList.get(i).setStay(true);
 				}
 				/*else
-					enemyList.get(i).setStay(false);
+					enemyList.get(i).setStay(false);*/
 			}
 			j++;
 		}
@@ -103,12 +107,22 @@ public class TestScreen {
 		
 		
 		//*************************ST**************************
-		handleRemovals((ArrayList)layerList);
+		//handleRemovals((ArrayList)layerList);
+		handleRemovals((ArrayList)multiBarList);
 		//*************************ST**************************
 		
 		
 	}
-
+	//*************************ST**************************
+	private void handleKeyCollisions(){
+		/*if(player.collidesKey(key))
+		{
+			player.takeKey();
+			key.setToBeRemoved(true);
+		}	*/	
+	}
+	//*************************ST**************************
+	
 	private void handleRemovals(ArrayList<GameObject> list) {
 		int size = list.size();
 		for (int i = 0; i< list.size(); i++)
@@ -169,8 +183,8 @@ public class TestScreen {
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
-		player = new Player (new Vector2f(30f, 30f), new Vector2f(30f, 30f), 
-				3f, 100f, 6f, 10f, 
+		player = new Player (new Vector2f(400f, 400f), new Vector2f(30f, 30f), 
+				3f, 100f, 6f, 5f, 
 				200f, 0f, container.getWidth(), 
 				container.getHeight());
 		bulletList = new ArrayList<Bullet>();
@@ -178,6 +192,8 @@ public class TestScreen {
 		
 		
 		
+		
+		/*
 		Enemy enemy1 = new Enemy(new Vector2f(300f, 300f), new Vector2f(30f, 30f), 
 				2f, 100f, 100f, 3f, player);
 		enemyList.add(enemy1);
@@ -185,31 +201,57 @@ public class TestScreen {
 		Enemy enemy2 = new Enemy(new Vector2f(900f, 300f), new Vector2f(30f, 30f), 
 				2f, 100f, 100f, 3f, player);
 		enemyList.add(enemy2);
-		
+		*/
 		
 		
 		//*************************ST**************************
-		layerList = new ArrayList<Layer>();
+		//layerList = new ArrayList<Layer>();
+		multiBarList = new ArrayList<MultiBar>();
+		
+		multiBarList.add(new MultiBar(player, false)); //not horizontal
+		
+		
 		
 		Enemy enemy1 = new Enemy(new Vector2f(300f, 300f), new Vector2f(30f, 30f), 
 								2.5f, 100f, 100f, 3f, player);
 		enemyList.add(enemy1);
-		layerList.add(new Layer(color1, color2, enemy1.enemyStats.getCurHealth(), enemy1));
+		//MultiBar mb1 = new MultiBar(enemy1, true);
+		multiBarList.add(new MultiBar(enemy1, true));
+		//mb1.addLayer( enemy1);
+		//mb1.addLayer( enemy1);
+		//mb1.addLayer( enemy1);
+/*      layerList.add(new Layer(color1, enemy1.enemyStats.getMaxHealth(), enemy1, true));
+		layerList.add(new Layer(color2, enemy1.enemyStats.getCurHealth(), enemy1, false));*/
 		
 		Enemy enemy2 = new Enemy(new Vector2f(900f, 300f), new Vector2f(30f, 30f), 
 								2.5f, 100f, 100f, 3f, player);
 		enemyList.add(enemy2);
-		layerList.add(new Layer(color1, color2, enemy2.enemyStats.getCurHealth(), enemy2));
+		//MultiBar mb2 = new MultiBar(enemy2, true);
+		multiBarList.add(new MultiBar(enemy2, true));
+		//mb2.addLayer( enemy2);
+		//mb2.addLayer( enemy2);
+		//mb2.addLayer( enemy2);
+/*		layerList.add(new Layer(color1, enemy2.enemyStats.getMaxHealth(), enemy2, true));
+		layerList.add(new Layer(color2, enemy2.enemyStats.getCurHealth(), enemy2, false));*/
 		
 		Enemy enemy3 =new Enemy(new Vector2f(100f, 100f), new Vector2f(30f, 30f),
 								0.5f, 100f, 100f, 1f, player);
 		enemyList.add(enemy3);
-		layerList.add(new Layer(color1, color2, enemy3.enemyStats.getCurHealth(), enemy3));
-		
+		//MultiBar mb3 = new MultiBar(enemy3, true);
+		multiBarList.add(new MultiBar(enemy3, true));
+		//mb3.addLayer( enemy3);
+		//mb3.addLayer( enemy3);
+		//mb3.addLayer( enemy3);
+/*		layerList.add(new Layer(color1, enemy3.enemyStats.getMaxHealth(), enemy3, true));
+		layerList.add(new Layer(color2, enemy3.enemyStats.getCurHealth(), enemy3, false));*/
+	
 		keyXAmount = new IconXAmount(new Vector2f(0f,0f), 
 								new Vector2f(0f,0f), 
 								new Icon(new Image("res/keyX.png")), 
 								0 ); //it will change with the amount of keys player has
+		
+		key = new Icon(new Image("res/key.png"));
+		
 		//*************************ST**************************
 		
 		
@@ -232,7 +274,7 @@ public class TestScreen {
 		
 		//System.out.println(player.getStats().getCurHealth());
 		/*if(player.collides(enemy))
-			System.out.println("Wow");
+			System.out.println("Wow");*/
 		//System.out.println(player.getPosition().getX() + ", " + player.getPosition().getY());
 		//enemy.findTarget(player);
 		handleCollisions();
@@ -240,10 +282,20 @@ public class TestScreen {
 		
 		//*************************ST**************************
 		// it will change with the if(player collides any key on the game screen)
-		keyXAmount.update();
 		
-		for (int i =0; i < layerList.size(); i++)
-			layerList.get(i).update();
+		//if(player.collidesKey(key)){
+			keyXAmount.update();
+		//}
+		
+		/*for (int i =0; i < layerList.size(); i++)
+			layerList.get(i).update();*/
+		
+		
+		for (int i =0; i < multiBarList.size(); i++){
+			multiBarList.get(i).update();
+		}
+		
+		
 		//*************************ST**************************
 		
 		if (player != null && player.getStats().isDead())
@@ -268,15 +320,22 @@ public class TestScreen {
 		//*************************ST**************************
 		keyXAmount.draw(g);
 		
-		for (int i =0; i < layerList.size(); i++)
-			layerList.get(i).draw(g);
+		/*for (int i =0; i < layerList.size(); i++)
+			layerList.get(i).draw(g);*/
+		
+		
+		for (int i =0; i < multiBarList.size(); i++)
+			multiBarList.get(i).draw(g);
+		
+		key.draw(g);
+		
 		//*************************ST**************************
 
 		
-	} */
+	}
 	
 	public static void main(String[] args) throws SlickException {
-		AppGameContainer app = new AppGameContainer(new GameMaster ("Test"));
+		AppGameContainer app = new AppGameContainer(new TestScreen ("Test"));
 		
 		app.setDisplayMode(1080, 720, false);
 		app.setTargetFrameRate(FPS);
