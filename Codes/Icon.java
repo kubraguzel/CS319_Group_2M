@@ -1,3 +1,10 @@
+package deneme;
+
+/**
+ * 
+ * Author: Semih Teker
+ * 
+ */
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -12,13 +19,20 @@ public class Icon extends UIObject{
 	public Icon(Image icon) {
 		super(position, dimension);
 		this.icon = icon;
-		// TODO Auto-generated constructor stub
 	}
 	
-	public Icon(Vector2f position, Vector2f dimension, Image icon) {
-		super(position, dimension);
+	/*public Icon(Vector2f position, Vector2f dimension, Image icon) {
+		//super(position, dimension);
+		this.position = position;
+		this.dimension = dimension;
 		this.icon = icon;
-		// TODO Auto-generated constructor stub
+	}*/
+	
+	public Icon(Vector2f position, Image icon) {
+		//super(position, dimension);
+		this.position = position;
+		//this.dimension = dimension;
+		this.icon = icon;
 	}
 	
 	public Image getImage(){
@@ -27,11 +41,11 @@ public class Icon extends UIObject{
 	
 	@Override
 	public void update(){
-	
+		
 	}
 	
 	@Override
 	public void draw(Graphics g){
-		g.drawImage(getImage(), 350, 350, Color.gray); // 8*18 pixels at x=0 and y=0
+		g.drawImage(icon, this.position.x, this.position.y, Color.gray); // 8*18 pixels at x=0 and y=0
 	}
 }
