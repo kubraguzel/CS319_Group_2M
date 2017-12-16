@@ -11,6 +11,9 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+
+import test2.GameMaster;
+
 import org.newdawn.slick.Animation;
 
 import java.awt.Font;
@@ -309,11 +312,17 @@ public class GameMaster extends BasicGameState
 		
 		background = new Image ("res/pauseMenuImage.jpg");
 		background = background.getScaledCopy(0.6f);
+		
 		resumeGameButton = new Image("res/Buttons/resumeGameButton.png");
 		resumeGameButton = resumeGameButton.getScaledCopy(0.6f);
+		
 		settingsButton = new Image("res/Buttons/settingsButton.png");
 		settingsButton = settingsButton.getScaledCopy(0.6f);
 		
+		
+		//make it unclickable??
+		settingsInfoButton = new Image("res/Buttons/settingsInfoButton.png");
+		settingsInfoButton = settingsInfoButton.getScaledCopy(0.6f);
 		
 		a.addFrame("res/pauseMenuImage.jpg", 10);
 		a.addFrame("res/Buttons/resumeGameButton.png", 10);
@@ -389,6 +398,10 @@ public class GameMaster extends BasicGameState
 				{
 					//game.enterState(1);
 					//this.setPlayerName(nameField.getText());
+					
+					BasicGameState prevState = GameMaster.prevState;
+					GameMaster.prevState = this;
+					game.enterState(prevState.getID());
 				}
 				
 			}
@@ -405,6 +418,70 @@ public class GameMaster extends BasicGameState
 				settingsButton.setImageColor(1f, 1f, 1f, 1f);
 				if(Mouse.isButtonDown(0))
 					//game.enterState(1);
+					
+				Animation b = new Animation();
+				
+				background = new Image ("res/settingsMenuImage.jpg");
+				background = background.getScaledCopy(0.6f);
+				
+				
+				//textfield 1
+				nameField2 = new TextField(container, new TrueTypeFont (new Font("arial", Font.BOLD, 55), false),
+						(int)(container.getScreenWidth()/2 - 250f),
+						(int)(1.3f*container.getScreenHeight()/3)-2, 500, 70);
+				nameField2.setFocus(true);
+				nameField2.setBorderColor(new Color (0.15f, 0.15f, 0.15f));
+				nameField2.setBackgroundColor(new Color (0f, 0.65f, 0.9f));
+				nameField2.setTextColor(new Color (0.15f, 0.15f, 0.15f));
+				nameField2.setCursorVisible(false);
+				nameField2.setMaxLength(20);
+				
+				
+				//textfield 2
+				nameField3 = new TextField(container, new TrueTypeFont (new Font("arial", Font.BOLD, 55), false),
+						(int)(container.getScreenWidth()/2 - 250f),
+						(int)(1.3f*container.getScreenHeight()/3)-2, 500, 70);
+				nameField3.setFocus(true);
+				nameField3.setBorderColor(new Color (0.15f, 0.15f, 0.15f));
+				nameField3.setBackgroundColor(new Color (0f, 0.65f, 0.9f));
+				nameField3.setTextColor(new Color (0.15f, 0.15f, 0.15f));
+				nameField3.setCursorVisible(false);
+				nameField3.setMaxLength(15);
+				
+				/*resumeGameButton = new Image("res/Buttons/resumeGameButton.png");
+				resumeGameButton = resumeGameButton.getScaledCopy(0.6f);
+				settingsButton = new Image("res/Buttons/settingsButton.png");
+				settingsButton = settingsButton.getScaledCopy(0.6f);
+				*/
+				
+				b.addFrame(nameField2);
+				//b.addFrame("res/Buttons/resumeGameButton.png", 10);
+			//	a.addFrame("res/Buttons/settingsButton.png", 10);
+				b.getFrame();
+				
+				
+				/////////////////////////////////draw deneme2
+				
+				b.draw();
+				System.out.println("try");
+				
+				//Draw the animation at a specific location
+				b.draw(100,100);
+				System.out.println("try1");
+				
+				//Draw the animation at a specific location
+				b.draw(100,100,a.getFrame());
+				System.out.println("try2");
+				
+				//Draw the animation
+				b.draw(10,10,5,5);
+				System.out.println("try3");
+				//Draw the animation with color
+				b.draw(10,10,5,5,trans);
+				System.out.println("try4");
+				
+				/////////////////////////////////draw deneme2
+				
 			}
 			else
 			{
@@ -453,8 +530,31 @@ public class GameMaster extends BasicGameState
 			resumeGameButton.draw(container.getScreenWidth()/2 - resumeGameButton.getWidth()/2, 3*container.getScreenHeight()/5- resumeGameButton.getHeight()/2);
 			settingsButton.draw(container.getScreenWidth()/2-settingsButton.getWidth()/2, 3*container.getScreenHeight()/4- settingsButton.getHeight()/2);
 			//nameField.render(container, g);
+			
+			
+			////////////////////////////////////draw deneme2
+			
+			b.draw();
+			System.out.println("try");
+			
+			//Draw the animation at a specific location
+			b.draw(100,100);
+			System.out.println("try1");
+			
+			//Draw the animation at a specific location
+			b.draw(100,100,a.getFrame());
+			System.out.println("try2");
+			//Draw the animation
+			b.draw(10,10,5,5);
+			System.out.println("try3");
+			//Draw the animation with color
+			b.draw(10,10,5,5,trans);
+			System.out.println("try4");
+			
+			///////////////////////////////////////draw deneme2
 		
 		}
+		
 	}
 	
 	
