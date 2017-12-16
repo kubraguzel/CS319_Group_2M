@@ -5,7 +5,6 @@ package deneme;
  * Author: Semih Teker
  * 
  */
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -46,6 +45,7 @@ public class Icon extends UIObject{
 	
 	@Override
 	public void draw(Graphics g){
-		g.drawImage(icon, this.position.x, this.position.y, Color.gray); // 8*18 pixels at x=0 and y=0
+		icon.draw(this.position.x, this.position.y);
+		//g.drawImage(icon, this.position.x, this.position.y, Color.gray); // 8*18 pixels at x=0 and y=0
 	}
 }
