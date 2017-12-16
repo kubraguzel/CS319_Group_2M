@@ -1,6 +1,6 @@
 /**
  * 
- * Author:Alper Þahýstan
+ * Author:Alper ÃžahÃ½stan
  * 
  */
 import java.awt.Dimension;
@@ -18,6 +18,9 @@ public class Enemy extends DynamicGameObject {
 	protected boolean stay;
 	protected float proximityDistance = 0f;
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	//*************************ST**************************
+	int numOfLayer;
+	//*************************ST**************************
 	
 	public Enemy(Vector2f pos, Vector2f dim, float speed, float maxHealth, float bodyDamage, DynamicGameObject target)
 	{
@@ -29,7 +32,9 @@ public class Enemy extends DynamicGameObject {
 				(super.getDimentions().getX()), (super.getDimentions().getY()));
 		super.setScreenWidth((float) screenSize.getWidth()); 
 		super.setscreenHeight((float)screenSize.getHeight());
-		
+		//*************************ST**************************
+		numOfLayer = 2;
+		//*************************ST**************************		
 	}
 	
 	public Enemy(Vector2f pos, Vector2f dim, float speed, float maxHealth, DynamicGameObject target)
@@ -42,6 +47,9 @@ public class Enemy extends DynamicGameObject {
 				(super.getDimentions().getX()), (super.getDimentions().getY()));
 		super.setScreenWidth((float) screenSize.getWidth()); 
 		super.setscreenHeight((float)screenSize.getHeight());
+		//*************************ST**************************
+		numOfLayer = 2;
+		//*************************ST**************************
 	}
 	
 	public boolean findTarget(DynamicGameObject target)
