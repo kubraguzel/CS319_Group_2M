@@ -36,7 +36,12 @@ public class Player extends DynamicGameObject implements Shooter{
 	
 	private String playerName;
 	
+	
+	private final float ALTERNATE_TIME = 90f;
+	private long nextTimeToNormalise = 0;
+	
 	private static Player player = null;
+	
 	
 	public static Player getPlayer()
 	{
@@ -64,7 +69,7 @@ public class Player extends DynamicGameObject implements Shooter{
 		velocity = new Vector2f(0f, 0f);
 		
 		normal = Color.blue;
-		alternate = Color.red;
+		alternate = new Color(1f, 0f, 0f, 0.6f);
 		curColor = normal;
 		
 		playerStats = new Stats(maxHealth, maxHealth);
@@ -82,7 +87,7 @@ public class Player extends DynamicGameObject implements Shooter{
 		velocity = new Vector2f(0f, 0f);
 		
 		normal = Color.blue;
-		alternate = Color.red;
+		alternate = new Color(1f, 0f, 0f, 0.4f);
 		curColor = normal;
 		
 		playerStats = new Stats(maxHealth, bulletSpeed, bulletDamage, fireRate, 0f);
@@ -100,7 +105,7 @@ public class Player extends DynamicGameObject implements Shooter{
 		velocity = new Vector2f(0f, 0f);
 		
 		normal = Color.blue;
-		alternate = Color.red;
+		alternate = new Color(1f, 0f, 0f, 0.4f);
 		curColor = normal;
 		
 		playerStats = new Stats(maxHealth, bulletSpeed, bulletDamage, fireRate, bodyDamage);
@@ -115,7 +120,7 @@ public class Player extends DynamicGameObject implements Shooter{
 		if(playerName != null)
 		{
 			g.setColor(new Color (0.14f, 0.25f, 0.6f));
-			g.drawString(playerName, this.getPosition().x - this.getDimentions().x - playerName.length() ,
+			g.drawString(playerName, this.getPosition().x /*- this.getDimentions().x*/ - playerName.length()*4.6f ,
 					this.getPosition().y + this.getDimentions().y/2 + 10f);
 		}	
 		
@@ -159,13 +164,12 @@ public class Player extends DynamicGameObject implements Shooter{
 	@Override
 	void update() 
 	{	
-		//*************************ST**************************
 		shape.setCenterX(getPosition().getX());
 		shape.setCenterY(getPosition().getY());
 		move();
-
-		//*************************ST**************************
 		
+		if(System.currentTimeMillis() > nextTimeToNormalise)
+			curColor = normal;
 	}
 	@Override
 	public Bullet shoot(Vector2f target)
@@ -197,16 +201,11 @@ public class Player extends DynamicGameObject implements Shooter{
 	{
 		this.playerStats.takeDamage(dmg);
 		
-		//if(!(this.playerStats.getCurHealth()>0))
-			//System.out.println("player is killed!");
+		curColor = alternate;
+		nextTimeToNormalise = System.currentTimeMillis() + (long)ALTERNATE_TIME;
 	}
 	
-	/*@Override
-	boolean collides(GameObject other) 
-	{
-		return shape.intersects(other.getShape());
-		
-	}*/
+	
 	
 	//getters & setters
 	public Color getAlternate() {

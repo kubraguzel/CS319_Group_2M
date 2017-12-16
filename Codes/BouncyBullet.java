@@ -3,6 +3,9 @@
  * Author:Semih Teker
  * 
  */
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 import org.newdawn.slick.geom.Vector2f;
 
 public class BouncyBullet extends Bullet{
@@ -15,6 +18,16 @@ public class BouncyBullet extends Bullet{
 		super(pos, target, speed, damage);
 		super.setScreenWidth(width);
 		super.setscreenHeight(height);
+	}
+	
+	public BouncyBullet(Vector2f pos, Vector2f target, float speed, float damage, boolean enemyBullet) {
+		super(pos, target, speed, damage);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		double width = screenSize.getWidth();
+		double height = screenSize.getHeight();
+		super.setScreenWidth((float)width);
+		super.setscreenHeight((float)height);
+		super.setEnemyBullet(enemyBullet);
 	}
 	
 	@Override

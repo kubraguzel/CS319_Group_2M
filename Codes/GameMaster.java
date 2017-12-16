@@ -18,6 +18,7 @@ public class GameMaster extends BasicGameState{
 	//*************************ST**************************
 	Icon key;
 	IconXAmount keyXAmount;
+	Image background;
 	
 	public static Color color1 = Color.green;
 	public static Color color2 = Color.red;
@@ -166,6 +167,9 @@ public class GameMaster extends BasicGameState{
 
 	@Override
 	public void init(GameContainer container,  StateBasedGame game) throws SlickException {
+		background = new Image("res/Background.png");
+		background = background.getScaledCopy(1.5f);
+		
 		player = Player.getPlayer();
 		System.out.println("GameMaster: "+ playerName);
 		player.setPlayerName(playerName);
@@ -190,7 +194,7 @@ public class GameMaster extends BasicGameState{
 		/*Enemy enemy1 = new Bug(new Vector2f(300f, 300f), 50f, 3f, player);
 		enemyList.add(enemy1);*/
 		
-		Enemy enemy2 = new Quiz(new Vector2f(900f, 300f), 100f, player, bulletList);
+		/*Enemy enemy2 = new Quiz(new Vector2f(900f, 300f), 100f, player, bulletList);
 		enemyList.add(enemy2);
 		
 		//System.out.println(enemyList==null);
@@ -204,8 +208,8 @@ public class GameMaster extends BasicGameState{
 		enemyList.add(enemy4);
 		
 		Enemy enemy5= new Midterm(new Vector2f(1000f, 600f), 150f, player, bulletList);
-		enemyList.add(enemy5);
-		Enemy enemy6= new Final(new Vector2f(1200f, 200f), 150f, player, bulletList);
+		enemyList.add(enemy5);*/
+		Enemy enemy6= new Final(new Vector2f(1200f, 200f), 500f, player, bulletList);
 		enemyList.add(enemy6);
 		keyXAmount = new IconXAmount(new Vector2f(0f,0f), 
 								new Vector2f(0f,0f), 
@@ -241,13 +245,20 @@ public class GameMaster extends BasicGameState{
 		
 		if (player != null && player.getStats().isDead())
 			player= null;
+		
+		if (container.getInput().isMousePressed(Input.MOUSE_RIGHT_BUTTON))
+		  {
+	    	  game.enterState(0);
+	    		  
+		  }	 
 
 	}
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException 
 	{
-		g.setBackground(BACKGROUND);
+		//g.setBackground(BACKGROUND);
+		background.draw();
 		if(player !=null)
 			player.draw(g);
 		if(player == null)

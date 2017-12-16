@@ -12,21 +12,23 @@ import org.newdawn.slick.geom.Vector2f;
 public class Final extends Enemy implements Shooter {
 	
 	private ArrayList<Bullet> bulletList;
-	private final float FIRE_RATE= 700f;
+	private final float FIRE_RATE= 750f;
 	private final float BODY_DAMAGE = 60f;
-	private final float BULLET_DAMAGE = 30f;
+	private final float BULLET_DAMAGE = 40f;
 	private final float BULLET_SPEED = 7f;
 	private long nextTimeToShoot =0;
+	private final float THETA = 10f;
 	
 	private boolean shieldUp=true;
-	private final float DOWN_TIME = 10000f;
-	private final float PROXIMITY = 500f;
+	private final float DOWN_TIME = 9500f;
+	private final float PROXIMITY = 700f;
 	private long nextTimeToShieldUp = 0;
 	private final float MAX_SHIELD = 60f;
 	private float shieldHealth=MAX_SHIELD;
 	private Shape shield = new Ellipse(super.getPosition().x , (super.getPosition().y), 
 			super.getDimentions().x+ 2f, super.getDimentions().y+ 2f);
 	private Vector2f velocity;
+	private boolean shootSingle = false;
 	
 
 	public Final(Vector2f pos, Vector2f dim, float speed, float maxHealth, float bodyDamage, 
@@ -101,7 +103,89 @@ public class Final extends Enemy implements Shooter {
 	@Override
 	public Bullet shoot(Vector2f target) 
 	{
-		return null;
+		if(System.currentTimeMillis() > nextTimeToShoot)
+		{
+			Bullet bullet1;
+			nextTimeToShoot = System.currentTimeMillis() 
+					+ (long)super.getStats().getFireRate();
+			
+			if(shootSingle)
+			{
+				Vector2f curPos = new Vector2f(super.getPosition());
+				Vector2f targetPos = new Vector2f(target);
+				
+				//Creating 3 bullets with different angles
+				//Directly aimed bullet(will be returned)
+				bullet1 = new Bullet(curPos, targetPos, getStats().getBulletSpeed()*0.8f,
+						2*getStats().getBulletDamage(), true);
+				bullet1.setDimentions(new Vector2f(90f,90f));
+			}
+			else
+			{
+				
+				Vector2f curPos = new Vector2f(super.getPosition());
+				Vector2f targetPos = new Vector2f(target);
+				
+				//Creating 3 bullets with different angles
+				//Directly aimed bullet(will be returned)
+				bullet1 = new BouncyBullet(curPos, targetPos, getStats().getBulletSpeed(),
+						getStats().getBulletDamage(), true);
+				
+				/*Bullet with +10degrees off set*/
+				Vector2f targetPos2 = new Vector2f (target);
+				Vector2f curPos2 = new Vector2f (super.getPosition());
+				
+				targetPos2.sub(curPos2);
+				targetPos2.add(THETA);
+				targetPos2.add(curPos2);
+				
+				Bullet bullet2 = new BouncyBullet(curPos2, targetPos2, getStats().getBulletSpeed(),
+						getStats().getBulletDamage() ,true);
+				
+				//Bullet with +20 offset
+				Vector2f targetPos3 = new Vector2f (target);
+				Vector2f curPos3 = new Vector2f (super.getPosition());
+				
+				targetPos3.sub(curPos3);
+				targetPos3.add(2*THETA);
+				targetPos3.add(curPos3);
+				
+				Bullet bullet3 = new BouncyBullet(curPos3, targetPos3, getStats().getBulletSpeed(),
+						getStats().getBulletDamage() ,true);
+				
+				//Bullet with -10 offset
+				Vector2f targetPos4 = new Vector2f (target);
+				Vector2f curPos4 = new Vector2f (super.getPosition());
+				
+				targetPos4.sub(curPos4);
+				targetPos4.sub(THETA);
+				targetPos4.add(curPos4);
+				
+				Bullet bullet4 = new BouncyBullet(curPos4, targetPos4, getStats().getBulletSpeed(),
+						getStats().getBulletDamage(), true);
+				
+				//Bullet with -20 offset
+				Vector2f targetPos5 = new Vector2f (target);
+				Vector2f curPos5 = new Vector2f (super.getPosition());
+				
+				targetPos5.sub(curPos5);
+				targetPos5.sub(2*THETA);
+				targetPos5.add(curPos5);
+				
+				Bullet bullet5 = new BouncyBullet(curPos5, targetPos5, getStats().getBulletSpeed(),
+						getStats().getBulletDamage(), true);
+				
+				bulletList.add(bullet5);
+				bulletList.add(bullet4);
+				bulletList.add(bullet3);
+				bulletList.add(bullet2);
+			}
+			shootSingle=!shootSingle;
+			bulletList.add(bullet1);
+			return bullet1;
+		}
+		else
+			return null;
 	}
 
 	@Override
@@ -171,12 +255,16 @@ public class Final extends Enemy implements Shooter {
 		shield.setCenterY(getPosition().getY());
 		
 		if(shieldUp)
+		{
 			((MorphShape) shape).updateMorphTime(0.03f);
+			shoot(target.getPosition());
+		}
 		if(System.currentTimeMillis() >= nextTimeToShieldUp && !shieldUp)
 		{
 			shieldUp=true;
 			shieldHealth = MAX_SHIELD;
 		}
+			
 		
 		super.update();
 	}

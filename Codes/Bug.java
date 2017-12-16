@@ -43,7 +43,7 @@ public class Bug extends Enemy
 
 	@Override
 	public void draw(Graphics g) {
-		g.setColor(Color.green);
+		g.setColor(new Color(0.09f, 0.47f, 0.16f));
 		super.draw(g);
 	}
 	

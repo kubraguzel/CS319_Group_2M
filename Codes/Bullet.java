@@ -63,7 +63,7 @@ public class Bullet extends DynamicGameObject implements Drawable{
 		if(isEnemyBullet())
 			g.setColor(Color.red);
 		else
-			g.setColor(new Color(66, 236, 255));
+			g.setColor(new Color(0.1f, 0.25f, 0.7f));
 		
 		//getting the object drawn from the center
 		//System.out.println((int)(super.pos.getX()- (super.dimentions.getX()/2)));
