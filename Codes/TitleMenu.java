@@ -2,14 +2,12 @@ import java.awt.Font;
 import java.util.jar.Attributes.Name;
 
 import org.lwjgl.input.Mouse;
-import org.newdawn.slick.BigImage;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
-import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -21,12 +19,10 @@ public class TitleMenu extends BasicGameState {
 	Image exitButton;
 	Image background;
 	TextField nameField;
-	private boolean flag = false;
-	private GameMaster gm ;
+	boolean flag = true;
 
-	public TitleMenu(GameMaster gm) 
-	{
-		this.gm=gm;
+	public TitleMenu(){
+		super();
 	}
 
 	@Override
@@ -37,17 +33,17 @@ public class TitleMenu extends BasicGameState {
 		exitButton = new Image("res/Buttons/ExitButton.png");
 		exitButton = exitButton.getScaledCopy(0.6f);
 		
-		background = new Image ("res/BilkentVector2.jpg");
-		background = background.getScaledCopy(0.6f);
+		background = new Image ("res/BilkentVector4.jpg");
+		background = background.getScaledCopy(0.57f);
 		
 		nameField = new TextField(container, new TrueTypeFont (new Font("arial", Font.BOLD, 55), false),
-				(int)(container.getScreenWidth()/2 - 250f),
-				(int)(1.3f*container.getScreenHeight()/3)-2, 500, 70);
+				(int)(container.getScreenWidth()/2 - 230f),
+				(int)(1.3f*container.getScreenHeight()/3)-2, 470, 70);
 		nameField.setFocus(true);
-		nameField.setBorderColor(new Color (0.15f, 0.15f, 0.15f));
-		nameField.setBackgroundColor(new Color (0f, 0.65f, 0.9f));
+		nameField.setBorderColor(Color.transparent);
+		nameField.setBackgroundColor(Color.transparent);
 		nameField.setTextColor(new Color (0.15f, 0.15f, 0.15f));
-		nameField.setCursorVisible(false);
+		nameField.setCursorVisible(true);
 		nameField.setMaxLength(15);
 	}
 
@@ -55,10 +51,14 @@ public class TitleMenu extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame arg1, Graphics g) throws SlickException 
 	{	
 		background.draw();
-		g.drawString("Welcome To Bilkent \nThis will be your end...", container.getScreenWidth()/2 - 80f, container.getScreenHeight()/3);
+		g.setColor(Color.blue);
+		nameField.render(container, g);
+		g.setColor(Color.black);
+		g.setFont(new TrueTypeFont (new Font("Rockwell Extra Bold", Font.BOLD, 30), true));
+		g.drawString("Welcome to Bilkent!", container.getScreenWidth()/2 - 150f, container.getScreenHeight()/3);
+		g.drawString("This will be your end...", container.getScreenWidth()/2 - 150f, container.getScreenHeight()/3 + 40f);
 		playButton.draw(container.getScreenWidth()/2 - playButton.getWidth()/2, 3*container.getScreenHeight()/5- playButton.getHeight()/2);
 		exitButton.draw(container.getScreenWidth()/2-exitButton.getWidth()/2, 3*container.getScreenHeight()/4- exitButton.getHeight()/2);
-		nameField.render(container, g);
 	}
 
 	@Override
@@ -75,8 +75,8 @@ public class TitleMenu extends BasicGameState {
 			playButton.setImageColor(1f, 1f, 1f, 1f);
 			if(Mouse.isButtonDown(0))
 			{
+				Player.getPlayer().setPlayerName(nameField.getText());
 				sbg.enterState(1);
-				gm.setPlayerName(nameField.getText());
 			}
 		}
 		else
@@ -97,6 +97,9 @@ public class TitleMenu extends BasicGameState {
 		{
 			exitButton.setImageColor(0.8f, 0.8f, 0.8f, 1f);
 		}
+		
+		nameField.setCursorVisible(flag);
+		flag = !flag;
 	}
 
 	@Override

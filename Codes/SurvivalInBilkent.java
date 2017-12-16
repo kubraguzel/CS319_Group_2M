@@ -8,6 +8,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class SurvivalInBilkent extends StateBasedGame {
 	public static int FPS = 60;
+	private String playerName;
 	
 	public SurvivalInBilkent(String name) {
 		super(name);
@@ -17,8 +18,8 @@ public class SurvivalInBilkent extends StateBasedGame {
 	@Override
 	public void initStatesList(GameContainer arg0) throws SlickException 
 	{
+		TitleMenu titleMenu = new TitleMenu();
 		GameMaster gm = new GameMaster();
-		TitleMenu titleMenu = new TitleMenu(gm);
 		addState(titleMenu);
 		addState(gm);
 	}
@@ -29,9 +30,18 @@ public class SurvivalInBilkent extends StateBasedGame {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		double width = screenSize.getWidth();
 		double height = screenSize.getHeight();
-		app.setDisplayMode((int)width, (int)height, false);
+		app.setDisplayMode((int)width, (int)height, true);
 		app.setTargetFrameRate(FPS);
 		app.start();
 	}
+
+	public String getPlayerName() {
+		return playerName;
+	}
+
+	public void setPlayerName(String playerName) {
+		this.playerName = playerName;
+	}
+	
 
 }

@@ -2,6 +2,9 @@
  * Author: Alper Þahýstan, Semih Teker
  */
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Circle;
@@ -33,8 +36,25 @@ public class Player extends DynamicGameObject implements Shooter{
 	
 	private String playerName;
 	
+	private static Player player = null;
+	
+	public static Player getPlayer()
+	{
+		if (player==null)
+		{
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			double width = screenSize.getWidth();
+			double height = screenSize.getHeight();
+			player = new Player (new Vector2f(30f, 30f), new Vector2f(30f, 30f), 
+					4f, 100f, 6f, 10f, 
+					400f, 0f, (float)width, 
+					(float)height);
+		}
+		return player;
+	}
+	
 
-	public Player(Vector2f pos, Vector2f dim, float speed, float maxHealth) {
+	private Player(Vector2f pos, Vector2f dim, float speed, float maxHealth) {
 		super(pos, dim, speed);
 		
 		//Constructing the shape to a specific Ellipse
@@ -50,7 +70,7 @@ public class Player extends DynamicGameObject implements Shooter{
 		playerStats = new Stats(maxHealth, maxHealth);
 	}
 	
-	public Player(Vector2f pos, Vector2f dim, float speed, 
+	private Player(Vector2f pos, Vector2f dim, float speed, 
 			float maxHealth, float bulletSpeed,
 			float bulletDamage, float fireRate) {
 		super(pos, dim, speed);
@@ -68,7 +88,7 @@ public class Player extends DynamicGameObject implements Shooter{
 		playerStats = new Stats(maxHealth, bulletSpeed, bulletDamage, fireRate, 0f);
 	}
 	
-	public Player(Vector2f pos, Vector2f dim, float speed, 
+	private Player(Vector2f pos, Vector2f dim, float speed, 
 			float maxHealth, float bulletSpeed,
 			float bulletDamage, float fireRate, float bodyDamage, float sW, float sH) {
 		super(pos, dim, speed, sW, sH);
@@ -95,8 +115,8 @@ public class Player extends DynamicGameObject implements Shooter{
 		if(playerName != null)
 		{
 			g.setColor(new Color (0.14f, 0.25f, 0.6f));
-			g.drawString(playerName, this.getPosition().x, this.getPosition().y + this.getDimentions().y/2 + 10f);
-			System.out.println(playerName);
+			g.drawString(playerName, this.getPosition().x - this.getDimentions().x - playerName.length() ,
+					this.getPosition().y + this.getDimentions().y/2 + 10f);
 		}	
 		
 	}

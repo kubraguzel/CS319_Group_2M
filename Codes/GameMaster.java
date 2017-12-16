@@ -166,10 +166,7 @@ public class GameMaster extends BasicGameState{
 
 	@Override
 	public void init(GameContainer container,  StateBasedGame game) throws SlickException {
-		player = new Player (new Vector2f(30f, 30f), new Vector2f(30f, 30f), 
-				4f, 100f, 6f, 10f, 
-				400f, 0f, container.getWidth(), 
-				container.getHeight());
+		player = Player.getPlayer();
 		System.out.println("GameMaster: "+ playerName);
 		player.setPlayerName(playerName);
 		
