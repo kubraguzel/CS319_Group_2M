@@ -1,4 +1,10 @@
 
+/**
+ * 
+ * Author: Semih Teker
+ * 
+ */
+
 import java.util.ArrayList;
 
 import org.newdawn.slick.Color;
@@ -26,12 +32,12 @@ public class MultiBar extends UIObject {
 	}*/
 	
 	public MultiBar(Enemy enemy, boolean horizontal) {
-		position = enemy.getPosition().add(new Vector2f(-15f, -15f));
-		dimension = new Vector2f(1f,1f); 
+		position = enemy.getPosition().add(new Vector2f(-20f, -20f));
+		dimension = new Vector2f(2f,2f); 
 		layerList = new ArrayList<Layer>();
 		this.enemy = enemy;
 		//this.layerList = layerList;
-		addLayer(enemy);
+		addLayer(enemy, enemy.numOfLayer);
 	}
 	
 	public MultiBar(Player player, boolean horizontal) {
@@ -42,18 +48,18 @@ public class MultiBar extends UIObject {
 		addLayer(player);
 	}
 			
-	public void addLayer(Enemy enemy){
+	public void addLayer(Enemy enemy, int num){
 		
-		//if(layerList.size()<1){
-			layerList.add(new Layer(color1, enemy.enemyStats.getMaxHealth(), enemy, true));
-		//}
-		//else if(layerList.size()<2){
-			layerList.add(new Layer(color2, enemy.enemyStats.getCurHealth(), enemy, false));
-		//}
-		//else{
+		layerList.add(new Layer(color1, enemy.enemyStats.getMaxHealth(), enemy, true));
+		if(num <= 2){
 			layerList.add(new Layer(color3, enemy.enemyStats.getCurHealth(), enemy, false));
-		//}
+		}
+		else if(num > 2){
+			layerList.add(new Layer(color3, enemy.enemyStats.getCurHealth(), enemy, false));
+			layerList.add(new Layer(color2, enemy.enemyStats.getCurHealth(), enemy, false));
+		}
 	}
+	
 	public void addLayer(Player player){
 		layerList.add(new Layer(color1, player.playerStats.getMaxHealth(), player, true));
 		//layerList.add(new Layer(color2, player.playerStats.getCurHealth(), player, false));
@@ -68,8 +74,21 @@ public class MultiBar extends UIObject {
 		
 	}
 	
-	public void setLayerPercentage(int index,float percentage){
-			
+	public void setLayerPercentage(int index, float percentage, int num){
+		/*	
+		if(num<=2){
+			rate = (player.playerStats.getCurHealth()/player.playerStats.getMaxHealth())*100;
+			layerList.get(index).percentage = percentage;
+		}
+		else{
+			rate = (enemy.enemyStats.getCurHealth()/enemy.enemyStats.getMaxHealth())*100;
+			if(rate>50){
+				layerList.get(index).percentage = percentage; //((rate-50)/50)*100;
+			}
+			else{
+				layerList.get(index).percentage = (rate/50)*100;
+			}
+		}*/
 	}
 	
 	@Override
