@@ -1,6 +1,6 @@
 /**
  * 
- * Author:Alper Þahýstan
+ * Author:Alper Sahistan
  * 
  */
 import java.awt.Dimension;

@@ -3,9 +3,9 @@
  * Author:Semih Teker
  * 
  */
-
 import java.awt.Dimension;
 import java.awt.Toolkit;
+
 import org.newdawn.slick.geom.Vector2f;
 
 public class BouncyBullet extends Bullet{
@@ -39,7 +39,6 @@ public class BouncyBullet extends Bullet{
 		else if(super.getPosition().getY()<0 || super.getPosition().getY()>super.screenHeight)
 			bounce(true);
 	}
-	
 	private void bounce (boolean hitToAYBoundary)
 	{
 		if((!hitToAYBoundary) && canBounce()){
@@ -55,5 +54,4 @@ public class BouncyBullet extends Bullet{
 	private boolean canBounce(){
 		return (NUM_OF_MAX_BOUNCES >= numOfBounces);
 	}
-	
 }

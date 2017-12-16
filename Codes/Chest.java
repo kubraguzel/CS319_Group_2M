@@ -1,4 +1,3 @@
-
 import org.newdawn.slick.Graphics;
 
 public class Chest extends Bonus {

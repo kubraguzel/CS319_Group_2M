@@ -42,7 +42,7 @@ public class Final extends Enemy implements Shooter {
 		super.proximityDistance =PROXIMITY;
 		setShape();
 		//*************************ST**************************
-		numOfLayer = 3;
+		//numOfLayer = 3;
 		//*************************ST**************************
 	}
 
@@ -57,7 +57,7 @@ public class Final extends Enemy implements Shooter {
 		super.proximityDistance =PROXIMITY;
 		setShape();
 		//*************************ST**************************
-		numOfLayer = 3;
+		//numOfLayer = 3;
 		//*************************ST**************************
 	}
 	
@@ -72,7 +72,7 @@ public class Final extends Enemy implements Shooter {
 		super.proximityDistance =PROXIMITY;
 		setShape();
 		//*************************ST**************************
-		numOfLayer = 3;
+		//numOfLayer = 3;
 		//*************************ST**************************
 	}
 	
@@ -87,7 +87,7 @@ public class Final extends Enemy implements Shooter {
 		super.proximityDistance =PROXIMITY;
 		setShape();
 		//*************************ST**************************
-		numOfLayer = 3;
+		//numOfLayer = 3;
 		//*************************ST**************************
 	}
 	

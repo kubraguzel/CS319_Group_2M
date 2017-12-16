@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -226,27 +225,10 @@ public class GameMaster extends BasicGameState{
 		background = background.getScaledCopy(1.5f);
 		
 		player = Player.getPlayer();
-		System.out.println("GameMaster: "+ playerName);
 		player.setPlayerName(playerName);
 		
-		/*player = new Player (new Vector2f(30f, 30f), new Vector2f(30f, 30f), 
-				4f, 100f, 6f, 10f, 
-				400f, 0f, container.getWidth(), 
-				container.getHeight());*/
 		bulletList = new ArrayList<Bullet>();
 		enemyList = new ArrayList<Enemy>();
-		
-		
-		/*
-		Enemy enemy1 = new Enemy(new Vector2f(300f, 300f), new Vector2f(30f, 30f), 
-				2f, 100f, 100f, 3f, player);
-		enemyList.add(enemy1);
-		
-		Enemy enemy2 = new Enemy(new Vector2f(900f, 300f), new Vector2f(30f, 30f), 
-				2f, 100f, 100f, 3f, player);
-		enemyList.add(enemy2);
-		*/
-		
 		
 		//*************************ST**************************
 		multiBarList = new ArrayList<MultiBar>();
@@ -257,7 +239,7 @@ public class GameMaster extends BasicGameState{
 		/*Enemy enemy1 = new Bug(new Vector2f(300f, 300f), 50f, 3f, player);
 		enemyList.add(enemy1);*/
 		
-		Enemy enemy2 = new Quiz(new Vector2f(900f, 300f), 100f, player, bulletList);
+		/*Enemy enemy2 = new Quiz(new Vector2f(900f, 300f), 100f, player, bulletList);
 		enemyList.add(enemy2);
 		multiBarList.add(new MultiBar(enemy2, true));
 		//System.out.println(enemyList==null);
@@ -278,7 +260,7 @@ public class GameMaster extends BasicGameState{
 		
 		Enemy enemy6= new Final(new Vector2f(1200f, 200f), 500f, player, bulletList);
 		enemyList.add(enemy6);
-		multiBarList.add(new MultiBar(enemy6, true));
+		multiBarList.add(new MultiBar(enemy6, true));*/
 		
 		keyXAmount 			 = new IconXAmount(new Vector2f(5f,5f), 
 								new Vector2f(0f,0f), 

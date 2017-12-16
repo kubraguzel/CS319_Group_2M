@@ -1,5 +1,5 @@
 /**
- * Author: Alper Þahýstan, Semih Teker
+ * Author: Alper Sahistan, Semih Teker
  */
 
 import java.awt.Dimension;

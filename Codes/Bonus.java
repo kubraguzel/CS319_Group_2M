@@ -1,4 +1,3 @@
-
 public abstract class Bonus extends GameObject implements Collectable {
 
 	boolean pickedUp;
