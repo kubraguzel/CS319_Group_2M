@@ -33,8 +33,8 @@ public class IconXAmount extends UIObject{
 	@Override
 	public void draw(Graphics g){
 		g.setColor(Color.black);
-		g.drawImage(icon.getImage(), position.x, position.y, Color.gray); // 25*90 pixels at x=0 and y=0
-		g.drawString(amount + "", position.x+60, 3); // draw at x=60 and y=3
+		g.drawImage(icon.getImage(), position.x, position.y, new Color(0.85f, 0.85f, 0.85f) ); // 30*100 pixels at x=0 and y=0
+		g.drawString(" " + amount, position.x+60, 11); // draw at x=60 and y=11
 	}
 	
 	public Icon getIcon(){
