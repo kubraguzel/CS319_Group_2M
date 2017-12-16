@@ -1,5 +1,5 @@
 /**
- * Author: Alper Þahýstan, Semih Teker
+ * Author: Alper ÃžahÃ½stan, Semih Teker
  */
 
 import java.awt.Dimension;
@@ -36,12 +36,15 @@ public class Player extends DynamicGameObject implements Shooter{
 	
 	private String playerName;
 	
-	
 	private final float ALTERNATE_TIME = 90f;
 	private long nextTimeToNormalise = 0;
 	
 	private static Player player = null;
 	
+	//*************************ST**************************
+	int numberOfKey;
+	int score;
+	//*************************ST**************************	
 	
 	public static Player getPlayer()
 	{
@@ -57,7 +60,6 @@ public class Player extends DynamicGameObject implements Shooter{
 		}
 		return player;
 	}
-	
 
 	private Player(Vector2f pos, Vector2f dim, float speed, float maxHealth) {
 		super(pos, dim, speed);
@@ -73,6 +75,11 @@ public class Player extends DynamicGameObject implements Shooter{
 		curColor = normal;
 		
 		playerStats = new Stats(maxHealth, maxHealth);
+		
+		//*************************ST**************************
+		numberOfKey=0;
+		score=0;
+		//*************************ST**************************
 	}
 	
 	private Player(Vector2f pos, Vector2f dim, float speed, 
@@ -91,6 +98,11 @@ public class Player extends DynamicGameObject implements Shooter{
 		curColor = normal;
 		
 		playerStats = new Stats(maxHealth, bulletSpeed, bulletDamage, fireRate, 0f);
+		
+		//*************************ST**************************
+		numberOfKey=0;
+		score=0;
+		//*************************ST**************************
 	}
 	
 	private Player(Vector2f pos, Vector2f dim, float speed, 
@@ -109,6 +121,11 @@ public class Player extends DynamicGameObject implements Shooter{
 		curColor = normal;
 		
 		playerStats = new Stats(maxHealth, bulletSpeed, bulletDamage, fireRate, bodyDamage);
+		
+		//*************************ST**************************
+		numberOfKey=0;
+		score=0;
+		//*************************ST**************************
 	}
 	
 	
@@ -171,6 +188,7 @@ public class Player extends DynamicGameObject implements Shooter{
 		if(System.currentTimeMillis() > nextTimeToNormalise)
 			curColor = normal;
 	}
+	
 	@Override
 	public Bullet shoot(Vector2f target)
 	{
@@ -205,7 +223,12 @@ public class Player extends DynamicGameObject implements Shooter{
 		nextTimeToNormalise = System.currentTimeMillis() + (long)ALTERNATE_TIME;
 	}
 	
-	
+	//*************************ST**************************
+	void takeKey(){
+		numberOfKey++;
+		//System.out.println(numberOfKey);
+	}
+	//*************************ST**************************
 	
 	//getters & setters
 	public Color getAlternate() {
@@ -280,5 +303,4 @@ public class Player extends DynamicGameObject implements Shooter{
 		this.playerName = playerName;
 	}
 	
-		
 }
