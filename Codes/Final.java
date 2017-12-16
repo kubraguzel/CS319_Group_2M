@@ -41,6 +41,9 @@ public class Final extends Enemy implements Shooter {
 		super.getStats().setBulletSpeed(BULLET_SPEED);
 		super.proximityDistance =PROXIMITY;
 		setShape();
+		//*************************ST**************************
+		numOfLayer = 3;
+		//*************************ST**************************
 	}
 
 	public Final(Vector2f pos, Vector2f dim, float speed, float maxHealth, 
@@ -53,6 +56,9 @@ public class Final extends Enemy implements Shooter {
 		super.getStats().setBulletSpeed(BULLET_SPEED);
 		super.proximityDistance =PROXIMITY;
 		setShape();
+		//*************************ST**************************
+		numOfLayer = 3;
+		//*************************ST**************************
 	}
 	
 	public Final(Vector2f pos, float speed, float maxHealth, 
@@ -65,6 +71,9 @@ public class Final extends Enemy implements Shooter {
 		super.getStats().setBulletSpeed(BULLET_SPEED);
 		super.proximityDistance =PROXIMITY;
 		setShape();
+		//*************************ST**************************
+		numOfLayer = 3;
+		//*************************ST**************************
 	}
 	
 	public Final(Vector2f pos, float maxHealth, 
@@ -77,6 +86,9 @@ public class Final extends Enemy implements Shooter {
 		super.getStats().setBulletSpeed(BULLET_SPEED);
 		super.proximityDistance =PROXIMITY;
 		setShape();
+		//*************************ST**************************
+		numOfLayer = 3;
+		//*************************ST**************************
 	}
 	
 	private void setShape()
@@ -239,6 +251,7 @@ public class Final extends Enemy implements Shooter {
 				bounce(true);
 		}
 	}
+	
 	private void bounce (boolean hitToAYBoundary)
 	{
 		if((!hitToAYBoundary)){
@@ -248,6 +261,7 @@ public class Final extends Enemy implements Shooter {
 			velocity.set(velocity.x, -velocity.y);
 		}
 	}
+	
 	@Override
 	void update() {
 		
@@ -259,14 +273,15 @@ public class Final extends Enemy implements Shooter {
 			((MorphShape) shape).updateMorphTime(0.03f);
 			shoot(target.getPosition());
 		}
+		
 		if(System.currentTimeMillis() >= nextTimeToShieldUp && !shieldUp)
 		{
 			shieldUp=true;
 			shieldHealth = MAX_SHIELD;
 		}
-			
 		
 		super.update();
+		
 	}
 
 }
