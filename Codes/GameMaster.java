@@ -23,6 +23,7 @@ public class GameMaster extends BasicGameState{
 	public static Color color2 = Color.red;
 	
 	ArrayList<Layer> layerList;
+	private String playerName;
 	
 	//*************************ST**************************
 	
@@ -169,6 +170,9 @@ public class GameMaster extends BasicGameState{
 				4f, 100f, 6f, 10f, 
 				400f, 0f, container.getWidth(), 
 				container.getHeight());
+		System.out.println("GameMaster: "+ playerName);
+		player.setPlayerName(playerName);
+		
 		bulletList = new ArrayList<Bullet>();
 		enemyList = new ArrayList<Enemy>();
 		
@@ -265,7 +269,17 @@ public class GameMaster extends BasicGameState{
 	
 	@Override
 	public int getID() {
-		return 2;
+		return 1;
 	}
+
+	public String getPlayerName() {
+		return playerName;
+	}
+
+	public void setPlayerName(String playerName) {
+		this.playerName = playerName;
+	}
+	
+	
 
 }

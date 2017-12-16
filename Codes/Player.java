@@ -31,6 +31,8 @@ public class Player extends DynamicGameObject implements Shooter{
 	
 	private boolean powerUpActive=false;
 	
+	private String playerName;
+	
 
 	public Player(Vector2f pos, Vector2f dim, float speed, float maxHealth) {
 		super(pos, dim, speed);
@@ -90,6 +92,13 @@ public class Player extends DynamicGameObject implements Shooter{
 	{
 		g.setColor(curColor);
 		g.fill(shape);
+		if(playerName != null)
+		{
+			g.setColor(new Color (0.14f, 0.25f, 0.6f));
+			g.drawString(playerName, this.getPosition().x, this.getPosition().y + this.getDimentions().y/2 + 10f);
+			System.out.println(playerName);
+		}	
+		
 	}
 
 	@Override
@@ -243,5 +252,14 @@ public class Player extends DynamicGameObject implements Shooter{
 	public void setPowerUpActive(boolean powerUpActive) {
 		this.powerUpActive = powerUpActive;
 	}
+
+	public String getPlayerName() {
+		return playerName;
+	}
+
+	public void setPlayerName(String playerName) {
+		this.playerName = playerName;
+	}
+	
 		
 }
