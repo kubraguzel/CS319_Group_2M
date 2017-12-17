@@ -137,7 +137,7 @@ public class Player extends DynamicGameObject implements Shooter{
 		if(playerName != null)
 		{
 			g.setColor(new Color (0.14f, 0.25f, 0.6f));
-			g.drawString(playerName, this.getPosition().x /*- this.getDimentions().x*/ - playerName.length()*4.6f ,
+			g.drawString(playerName, this.getPosition().x - playerName.length()*4.6f ,
 					this.getPosition().y + this.getDimentions().y/2 + 10f);
 		}	
 		

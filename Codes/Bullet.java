@@ -17,10 +17,22 @@ public class Bullet extends DynamicGameObject implements Drawable{
 	private float damage;
 	protected Vector2f velocity;
 	private boolean enemyBullet;
-	private static float BULLET_SIZE = 5f;
+	private static float BULLET_SIZE = 7f;
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	private Rectangle boundary = new Rectangle(-30*BULLET_SIZE, -30*BULLET_SIZE, 
 			 super.getScreenWidth()+60*BULLET_SIZE, super.getscreenHeight()+ 60*BULLET_SIZE);
+	
+	public Bullet(Vector2f pos, Vector2f dim, Vector2f target, float speed, float damage, boolean enemyBullet)
+	{
+		super(pos, dim, speed);
+		this.damage = damage;
+		velocity = ((target.sub(super.getPosition())).normalise()).scale(speed);
+		shape = new Ellipse(super.getPosition().getX(), super.getPosition().getY(), 
+				super.getDimentions().getX(), super.getDimentions().getY());
+		this.enemyBullet= enemyBullet;
+		super.setScreenWidth((float) screenSize.getWidth()); 
+		super.setscreenHeight((float)screenSize.getHeight());
+	}
 
 	public Bullet(Vector2f pos, Vector2f target, float speed, float damage)
 	{
@@ -44,7 +56,6 @@ public class Bullet extends DynamicGameObject implements Drawable{
 		this.enemyBullet= enemyBullet;
 		super.setScreenWidth((float) screenSize.getWidth()); 
 		super.setscreenHeight((float)screenSize.getHeight());
-		
 	}
 	
 	@Override

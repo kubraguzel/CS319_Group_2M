@@ -12,7 +12,7 @@ import org.newdawn.slick.geom.Vector2f;
 public class Final extends Enemy implements Shooter {
 	
 	private ArrayList<Bullet> bulletList;
-	private final float FIRE_RATE= 750f;
+	private final float FIRE_RATE= 800f;
 	private final float BODY_DAMAGE = 60f;
 	private final float BULLET_DAMAGE = 40f;
 	private final float BULLET_SPEED = 7f;
@@ -23,7 +23,7 @@ public class Final extends Enemy implements Shooter {
 	private final float DOWN_TIME = 9500f;
 	private final float PROXIMITY = 700f;
 	private long nextTimeToShieldUp = 0;
-	private final float MAX_SHIELD = 60f;
+	private final float MAX_SHIELD = 150f;
 	private float shieldHealth=MAX_SHIELD;
 	private Shape shield = new Ellipse(super.getPosition().x , (super.getPosition().y), 
 			super.getDimentions().x+ 2f, super.getDimentions().y+ 2f);
@@ -128,9 +128,9 @@ public class Final extends Enemy implements Shooter {
 				
 				//Creating 3 bullets with different angles
 				//Directly aimed bullet(will be returned)
-				bullet1 = new Bullet(curPos, targetPos, getStats().getBulletSpeed()*0.8f,
+				bullet1 = new Bullet(curPos,new Vector2f(20f,20f), targetPos, getStats().getBulletSpeed()*0.8f,
 						2*getStats().getBulletDamage(), true);
-				bullet1.setDimentions(new Vector2f(90f,90f));
+				//bullet1.setDimentions(new Vector2f(90f,90f));
 			}
 			else
 			{

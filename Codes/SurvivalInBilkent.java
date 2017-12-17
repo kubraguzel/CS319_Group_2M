@@ -14,14 +14,13 @@ public class SurvivalInBilkent extends StateBasedGame {
 		super(name);
 		// TODO Auto-generated constructor stub
 	}
+	
 
 	@Override
 	public void initStatesList(GameContainer arg0) throws SlickException 
 	{
-		TitleMenu titleMenu = new TitleMenu();
-		GameMaster gm = new GameMaster();
-		addState(titleMenu);
-		addState(gm);
+		addState(new TitleMenu());
+		addState(GameMaster.getGameMaster());
 		addState(new CreditsMenu());
 		
 	}

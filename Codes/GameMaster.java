@@ -7,6 +7,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -15,8 +16,11 @@ public class GameMaster extends BasicGameState{
 	Player player;
 	ArrayList<Bullet> bulletList;
 	ArrayList<Enemy> enemyList;
-	private String playerName;
 	Image background;
+	
+	private Sound pew;
+	private Sound boom;
+	private Sound playerBoom;
 	
 	//*************************ST**************************
 	int score=0;
@@ -29,13 +33,25 @@ public class GameMaster extends BasicGameState{
 
 	ArrayList<MultiBar> multiBarList;
 	ArrayList<Key> keyList;
+	private boolean paused;
 	//*************************ST**************************
 	
 	public static Color BACKGROUND = Color.gray;
 	
-	public GameMaster()
+	private static GameMaster gm = null;
+	
+	private GameMaster()
 	{
 		super();
+	}
+	
+	public static GameMaster getGameMaster()
+	{
+		if(gm==null)
+		{
+			gm = new GameMaster();
+		}
+		return gm;
 	}
 	
 	public void handleCollisions()
@@ -100,6 +116,7 @@ public class GameMaster extends BasicGameState{
 					//*************************ST**************************
 					if(enemyList.get(j).isToBeRemoved()){
 						score = (int) (score + enemyList.get(j).enemyStats.getMaxHealth());
+						boom.play();
 					}
 					//*************************ST**************************
 				}
@@ -193,13 +210,19 @@ public class GameMaster extends BasicGameState{
 			Bullet bullet = player.shoot(new Vector2f(input.getMouseX(), input.getMouseY()));
 			if (bullet != null){
 				bulletList.add(bullet);
+				pew.play();
 			}
 		}	
 	  
 		if (input.isMousePressed(Input.MOUSE_RIGHT_BUTTON))
 		{
 			player.setPowerUpActive(!player.isPowerUpActive());	  
-		}	  
+		}
+		if (input.isKeyDown(Input.KEY_ESCAPE))
+		{
+			paused = true;
+		}
+		
 	}
 
 	//*************************ST**************************
@@ -217,29 +240,35 @@ public class GameMaster extends BasicGameState{
 		}
 	}
 	//*************************ST**************************
-	
 	@Override
-	public void init(GameContainer container,  StateBasedGame game) throws SlickException {
+	public void init(GameContainer container,  StateBasedGame game) throws SlickException 
+	{
+		pew = new Sound("res/Sound/pew.wav");
+		boom = new Sound("res/Sound/kaboom.wav");
+		playerBoom = new Sound("res/Sound/playerboom.wav");
+		paused=false;
+		
+		container.setShowFPS(false); 
 		
 		background = new Image("res/Background.png");
 		background = background.getScaledCopy(1.5f);
 		
 		player = Player.getPlayer();
-		player.setPlayerName(playerName);
+		player.getStats().setCurHealth(player.getStats().getMaxHealth());
+		player.getStats().setDead(false);
+		player.setPosition(new Vector2f((float)container.getScreenWidth()/2, (float)container.getScreenHeight()/2));
 		
 		bulletList = new ArrayList<Bullet>();
 		enemyList = new ArrayList<Enemy>();
-		
 		//*************************ST**************************
 		multiBarList = new ArrayList<MultiBar>();
 		keyList = new ArrayList<Key>();
-		
 		multiBarList.add(new MultiBar(player, false)); //not horizontal
 				
 		/*Enemy enemy1 = new Bug(new Vector2f(300f, 300f), 50f, 3f, player);
 		enemyList.add(enemy1);*/
 		
-		/*Enemy enemy2 = new Quiz(new Vector2f(900f, 300f), 100f, player, bulletList);
+		Enemy enemy2 = new Quiz(new Vector2f(900f, 300f), 100f, player, bulletList);
 		enemyList.add(enemy2);
 		multiBarList.add(new MultiBar(enemy2, true));
 		//System.out.println(enemyList==null);
@@ -254,13 +283,13 @@ public class GameMaster extends BasicGameState{
 		enemyList.add(enemy4);
 		multiBarList.add(new MultiBar(enemy4, true));
 		
-		Enemy enemy5= new Midterm(new Vector2f(1000f, 600f), 150f, player, bulletList);
+		Enemy enemy5= new Midterm(new Vector2f(1500f, 600f), 150f, player, bulletList);
 		enemyList.add(enemy5);
 		multiBarList.add(new MultiBar(enemy5, true));
 		
 		Enemy enemy6= new Final(new Vector2f(1200f, 200f), 500f, player, bulletList);
 		enemyList.add(enemy6);
-		multiBarList.add(new MultiBar(enemy6, true));*/
+		multiBarList.add(new MultiBar(enemy6, true));
 		
 		keyXAmount 			 = new IconXAmount(new Vector2f(5f,5f), 
 								new Vector2f(0f,0f), 
@@ -338,12 +367,17 @@ public class GameMaster extends BasicGameState{
 		//*************************ST**************************
 		
 		if (player != null && player.getStats().isDead()){
-			player= null;
+			
+			player = null;
+			game.enterState(0);
+			playerBoom.play();
+			//gameOver=true;
 		}
-		
-		if (container.getInput().isMousePressed(Input.MOUSE_RIGHT_BUTTON)){
-	    	  game.enterState(0);	  
-		 }
+		if(paused)
+		{
+			game.enterState(0);
+			paused= !paused;
+		}
 		
 	}
 
@@ -397,14 +431,6 @@ public class GameMaster extends BasicGameState{
 	@Override
 	public int getID() {
 		return 1;
-	}
-	
-	public String getPlayerName() {
-		return playerName;
-	}
-
-	public void setPlayerName(String playerName) {
-		this.playerName = playerName;
 	}
 
 }
