@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -36,7 +35,6 @@ public class GameMaster extends BasicGameState{
 	ArrayList<MultiBar> multiBarList;
 	ArrayList<Bonus> bonusList;
 	private boolean paused;
-	private boolean soundOn;
 	
 	final float KEY_SPAWN_RATE = 20f;
 	final float COIN_SPAWN_RATE = 25f;
@@ -44,7 +42,7 @@ public class GameMaster extends BasicGameState{
 	final float SOPHOMORE_CHEST_SPAWN_RATE = 7.5f;
 	final float JUNIOR_CHEST_SPAWN_RATE = 5f;
 	final float SENIOR_CHEST_SPAWN_RATE = 2.5f;
-	final float BONUS_RATE = 2000f;
+	final float BONUS_RATE = 3000f;
 	
 	private long nextTimeToSpawn = 0;
 	
@@ -66,17 +64,6 @@ public class GameMaster extends BasicGameState{
 			gm = new GameMaster();
 		}
 		return gm;
-	}
-	
-	public void toggleMusic()
-	{
-		//TODO: add gameMusic and toggle it
-	}
-	
-	public void toggleSound()
-	{
-		soundOn = !soundOn;
-		System.out.println("Music is on :" + soundOn);
 	}
 	
 	public void handleCollisions()
@@ -362,27 +349,27 @@ public class GameMaster extends BasicGameState{
 		enemyList.add(enemy1);*/
 		
 		Enemy enemy2 = new Quiz(new Vector2f(900f, 300f), 100f, player, bulletList);
-//		enemyList.add(enemy2);
-//		multiBarList.add(new MultiBar(enemy2, true));
+		enemyList.add(enemy2);
+		multiBarList.add(new MultiBar(enemy2, true));
 		//System.out.println(enemyList==null);
 		
 		Enemy enemy3 =new Lab(new Vector2f(400f, 500f), 
 				100f, player, enemyList);
-//		enemyList.add(enemy3);
-//		multiBarList.add(new MultiBar(enemy3, true));
+		enemyList.add(enemy3);
+		multiBarList.add(new MultiBar(enemy3, true));
 		
 		Enemy enemy4 =new Assignment(new Vector2f(400f, 500f), 1.6f,
 				100f, player);
-//		enemyList.add(enemy4);
-//		multiBarList.add(new MultiBar(enemy4, true));
+		enemyList.add(enemy4);
+		multiBarList.add(new MultiBar(enemy4, true));
 		
 		Enemy enemy5= new Midterm(new Vector2f(1500f, 600f), 150f, player, bulletList);
-//		enemyList.add(enemy5);
-//		multiBarList.add(new MultiBar(enemy5, true));
+		enemyList.add(enemy5);
+		multiBarList.add(new MultiBar(enemy5, true));
 		
 		Enemy enemy6= new Final(new Vector2f(1200f, 200f), 500f, player, bulletList);
-//		enemyList.add(enemy6);
-//		multiBarList.add(new MultiBar(enemy6, true)); 
+		enemyList.add(enemy6);
+		multiBarList.add(new MultiBar(enemy6, true)); 
 		
 		keyXAmount 			 = new IconXAmount(new Vector2f(5f,5f), 
 								new Vector2f(0f,0f), 
@@ -473,7 +460,8 @@ public class GameMaster extends BasicGameState{
 		if (player != null && player.getStats().isDead()){
 			
 			player = null;
-			game.enterState(0);
+			game.getState(5).init(container, game);
+			game.enterState(5);
 			playerBoom.play();
 			//gameOver=true;
 		}
