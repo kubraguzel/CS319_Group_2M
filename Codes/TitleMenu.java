@@ -39,7 +39,7 @@ public class TitleMenu extends BasicGameState {
 	{
 		music = new Music("res/Music/title.wav");
 		music.loop();
-		music.setVolume(0.5f);
+		music.setVolume(0.3f);
 		
 		logo = new Image("res/logo2.png");
 		logo = logo.getScaledCopy(0.4f);
@@ -99,7 +99,7 @@ public class TitleMenu extends BasicGameState {
 		
 		if(alpha < 1f)
 		{
-			alpha = alpha + 0.03f;
+			alpha = alpha + 0.01f;
 			logo.setAlpha(alpha);
 		}
 		
@@ -112,6 +112,7 @@ public class TitleMenu extends BasicGameState {
 			playButton.setImageColor(1f, 1f, 1f, 1f);
 			if(Mouse.isButtonDown(0))
 			{
+				music.stop();
 				Player.getPlayer().setPlayerName(nameField.getText());
 				sbg.getState(1).init(container, sbg);
 				sbg.enterState(1);
