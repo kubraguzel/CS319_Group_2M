@@ -30,10 +30,21 @@ public class GameMaster extends BasicGameState{
 	IconXAmount SophomoreChestXAmount;
 	IconXAmount JuniorChestXAmount;
 	IconXAmount SeniorChestXAmount;
+	IconXAmount coinXAmount;
 
 	ArrayList<MultiBar> multiBarList;
-	ArrayList<Key> keyList;
+	ArrayList<Bonus> bonusList;
 	private boolean paused;
+	
+	final float keySpawnRate = 0.3f;
+	final float coinSpawnRate = 0.35f;
+	final float fChestSpawnRate = 0.125f;
+	final float sopChestSpawnRate = 0.1f;
+	final float jChestSpawnRate = 0.075f;
+	final float senChestSpawnRate = 0.05f;
+	
+	private long nextTimeToSpawn = System.currentTimeMillis();
+	
 	//*************************ST**************************
 	
 	public static Color BACKGROUND = Color.gray;
@@ -60,7 +71,7 @@ public class GameMaster extends BasicGameState{
 		if(player!=null){
 			handleEnemyPlayerCollisions();
 			//*************************ST**************************
-			handleKeyCollisions();
+			handleBonusCollisions();
 			//*************************ST**************************
 		}
 		handleEnemyEnemyCollisions();
@@ -140,18 +151,29 @@ public class GameMaster extends BasicGameState{
 	}
 	
 	//*************************ST**************************
-	private void handleKeyCollisions()
+	private void handleBonusCollisions()
 	{
-		for(int i=0; i<keyList.size(); i++){
-			if(player.collides(keyList.get(i)))
+		for(int i=0; i<bonusList.size(); i++){
+			if(player.collides(bonusList.get(i)))
 			{
 				//player.takeKey();
-				keyList.get(i).setToBeRemoved(true);
-				keyXAmount.amount++;	
+				bonusList.get(i).setToBeRemoved(true);
+				if(bonusList.get(i) instanceof Key)
+					keyXAmount.amount++;	
+				if(bonusList.get(i) instanceof Coin)
+					coinXAmount.amount++;
+				if(bonusList.get(i) instanceof FreshmenChest)
+					FreshmenChestXAmount.amount++;
+				if(bonusList.get(i) instanceof SophomoreChest)
+					SophomoreChestXAmount.amount++;
+				if(bonusList.get(i) instanceof JuniorChest)
+					JuniorChestXAmount.amount++;
+				if(bonusList.get(i) instanceof SeniorChest)
+					SeniorChestXAmount.amount++;
 			}
 		}
 		//System.out.println(myKey.isToBeRemoved());
-		handleRemovals((ArrayList)keyList);
+		handleRemovals((ArrayList)bonusList);
 	}
 	//*************************ST**************************
 	
@@ -226,15 +248,26 @@ public class GameMaster extends BasicGameState{
 	}
 
 	//*************************ST**************************
-	private void spawnKey() {
+	private void spawnBonus() {
 		Random rnd = new Random();
-		float velX = rnd.nextFloat()*2000f;
-		float velY = rnd.nextFloat()*2000f;
+		float velX = rnd.nextFloat()*1920f;
+		float velY = rnd.nextFloat()*1080f;
 		
 		Key k;
+		Coin c;
 		try {
 			k = new Key(new Vector2f(velX, velY), new Image("res/key.png"), 800, 800);
-			keyList.add(k); 
+			bonusList.add(k); 
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+		Random rnd2 = new Random();
+		float velX2 = rnd2.nextFloat()*1920f;
+		float velY2 = rnd2.nextFloat()*1080f;
+		
+		try {
+			c = new Coin(new Vector2f(velX2, velY2), new Image("res/coin.png"), 800, 800);
+			bonusList.add(c); 
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
@@ -262,7 +295,7 @@ public class GameMaster extends BasicGameState{
 		enemyList = new ArrayList<Enemy>();
 		//*************************ST**************************
 		multiBarList = new ArrayList<MultiBar>();
-		keyList = new ArrayList<Key>();
+		bonusList = new ArrayList<Bonus>();
 		multiBarList.add(new MultiBar(player, false)); //not horizontal
 				
 		/*Enemy enemy1 = new Bug(new Vector2f(300f, 300f), 50f, 3f, player);
@@ -289,7 +322,7 @@ public class GameMaster extends BasicGameState{
 		
 		Enemy enemy6= new Final(new Vector2f(1200f, 200f), 500f, player, bulletList);
 		enemyList.add(enemy6);
-		multiBarList.add(new MultiBar(enemy6, true));
+		multiBarList.add(new MultiBar(enemy6, true)); 
 		
 		keyXAmount 			 = new IconXAmount(new Vector2f(5f,5f), 
 								new Vector2f(0f,0f), 
@@ -314,13 +347,24 @@ public class GameMaster extends BasicGameState{
 								new Vector2f(0f,0f), 
 								new Icon(new Image("res/iconXAmount/SeniorChestX.png")), 
 								0 ); //it will change with the amount of chest player has
+		
+		coinXAmount = new IconXAmount(new Vector2f(605f,5f), 
+				new Vector2f(0f,0f), 
+				new Icon(new Image("res/iconXAmount/coinX.png")), 
+				0 ); //it will change with the amount of chest player has
 
-		for(int i=0; i<10; i++){
+		for(int i=0; i<3; i++){
 			Random rnd = new Random();
 			float velX = rnd.nextFloat()*1800f;
 			float velY = rnd.nextFloat()*1600f;
 
-			keyList.add(new Key(new Vector2f(velX, velY), new Image("res/key.png"), 800, 800));
+			bonusList.add(new Key(new Vector2f(velX, velY), new Image("res/key.png"), 800, 800));
+			
+			Random rnd2 = new Random();
+			float velX2 = rnd2.nextFloat()*1800f;
+			float velY2 = rnd2.nextFloat()*1600f;
+			
+			bonusList.add(new Coin(new Vector2f(velX2, velY2), new Image("res/coin.png"), 800, 800));
 		}
 		
 		//*************************ST**************************
@@ -351,17 +395,18 @@ public class GameMaster extends BasicGameState{
 		SophomoreChestXAmount.update();
 		JuniorChestXAmount.update();
 		SeniorChestXAmount.update();
+		coinXAmount.update();
 		
 		for (int i=0; i<multiBarList.size(); i++){
 			multiBarList.get(i).update();
 		}
 		
-		for (int i=0; i<keyList.size(); i++){
-			keyList.get(i).update();
+		for (int i=0; i<bonusList.size(); i++){
+			bonusList.get(i).update();
 		}
 		
-		if(keyList.size() < 4){
-			spawnKey();
+		if(bonusList.size() < 3){
+			spawnBonus();
 		}
 		
 		//*************************ST**************************
@@ -393,13 +438,14 @@ public class GameMaster extends BasicGameState{
 		SophomoreChestXAmount.draw(g);
 		JuniorChestXAmount.draw(g);
 		SeniorChestXAmount.draw(g);
+		coinXAmount.draw(g);
 		
 		for (int i =0; i < multiBarList.size(); i++){
 			multiBarList.get(i).draw(g);
 		}
 
-		for (int i =0; i < keyList.size(); i++){
-			keyList.get(i).draw(g);
+		for (int i =0; i < bonusList.size(); i++){
+			bonusList.get(i).draw(g);
 		}
 
 		g.setColor(Color.black);
