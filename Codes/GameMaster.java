@@ -375,7 +375,7 @@ public class GameMaster extends BasicGameState{
 		}
 		if(paused)
 		{
-			game.enterState(0);
+			game.enterState(3);
 			paused= !paused;
 		}
 		
