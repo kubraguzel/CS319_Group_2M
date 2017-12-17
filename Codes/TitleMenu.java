@@ -37,7 +37,7 @@ public class TitleMenu extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame arg1) throws SlickException 
 	{
-		music = new Music("res/Music/title.ogg");
+		music = new Music("res/Music/title.wav");
 		music.loop();
 		music.setVolume(0.5f);
 		
