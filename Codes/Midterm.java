@@ -149,6 +149,9 @@ public class Midterm extends Enemy implements Shooter
 
 	@Override
 	public void draw(Graphics g) {
+		g.setColor(Color.black);
+		g.drawString("Midterm", this.getPosition().x - 7*4.6f ,
+				this.getPosition().y + this.getDimentions().y + 5f);
 		g.setColor(curColor);
 		super.draw(g);
 	}

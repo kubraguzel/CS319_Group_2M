@@ -28,7 +28,8 @@ public class TitleMenu extends BasicGameState {
 	private final float BLINK_DURATION = 300f;
 	private float alpha;
 	
-	Music music;
+	private Music music;
+	private Music gameMusic;
 
 	public TitleMenu(){
 		super();
@@ -37,6 +38,9 @@ public class TitleMenu extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame arg1) throws SlickException 
 	{
+		container.setMusicOn(true);
+		gameMusic = new Music ("res/Music/ingame.wav");
+		
 		music = new Music("res/Music/title.wav");
 		music.loop();
 		music.setVolume(0.3f);
@@ -69,7 +73,7 @@ public class TitleMenu extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame arg1, Graphics g) throws SlickException 
 	{	
-		background.draw();
+		background.draw(-3f, -3f);
 		g.setColor(Color.black);
 		g.setFont(new TrueTypeFont (new Font("Pixeled Regular", Font.PLAIN, 20), true));
 		
@@ -99,7 +103,7 @@ public class TitleMenu extends BasicGameState {
 		
 		if(alpha < 1f)
 		{
-			alpha = alpha + 0.01f;
+			alpha = alpha + 0.02f;
 			logo.setAlpha(alpha);
 		}
 		
@@ -112,7 +116,8 @@ public class TitleMenu extends BasicGameState {
 			playButton.setImageColor(1f, 1f, 1f, 1f);
 			if(Mouse.isButtonDown(0))
 			{
-				music.stop();
+				gameMusic.loop();
+				container.setMusicVolume(0.22f);
 				Player.getPlayer().setPlayerName(nameField.getText());
 				sbg.getState(1).init(container, sbg);
 				sbg.enterState(1);

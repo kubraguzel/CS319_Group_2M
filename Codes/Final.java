@@ -1,7 +1,9 @@
+import java.awt.Font;
 import java.util.ArrayList;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.MorphShape;
@@ -12,10 +14,10 @@ import org.newdawn.slick.geom.Vector2f;
 public class Final extends Enemy implements Shooter {
 	
 	private ArrayList<Bullet> bulletList;
-	private final float FIRE_RATE= 800f;
+	private final float FIRE_RATE= 850f;
 	private final float BODY_DAMAGE = 60f;
 	private final float BULLET_DAMAGE = 40f;
-	private final float BULLET_SPEED = 7f;
+	private final float BULLET_SPEED = 6.4f;
 	private long nextTimeToShoot =0;
 	private final float THETA = 10f;
 	
@@ -23,7 +25,7 @@ public class Final extends Enemy implements Shooter {
 	private final float DOWN_TIME = 9500f;
 	private final float PROXIMITY = 700f;
 	private long nextTimeToShieldUp = 0;
-	private final float MAX_SHIELD = 150f;
+	private final float MAX_SHIELD = 130f;
 	private float shieldHealth=MAX_SHIELD;
 	private Shape shield = new Ellipse(super.getPosition().x , (super.getPosition().y), 
 			super.getDimentions().x+ 2f, super.getDimentions().y+ 2f);
@@ -236,6 +238,10 @@ public class Final extends Enemy implements Shooter {
 			g.setColor(new Color(1f, 1f, 0f, 0.2f));
 			g.fill(shield);
 		}
+		
+		g.setColor(Color.white);
+		g.drawString("Final", this.getPosition().x - 5*4.6f ,
+				this.getPosition().y - this.getDimentions().y/4);
 	}
 
 	@Override

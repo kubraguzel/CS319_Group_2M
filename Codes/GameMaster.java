@@ -6,6 +6,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
@@ -264,9 +265,6 @@ public class GameMaster extends BasicGameState{
 		JuniorChest j;
 		SeniorChest sen;
 		
-		
-		
-		
 		if(rnd>=(100-SENIOR_CHEST_SPAWN_RATE)){
 			try {
 				sen = new SeniorChest(new Vector2f(velX, velY), new Image("res/Chest/SeniorChest.png"), 800, 800);
@@ -367,10 +365,6 @@ public class GameMaster extends BasicGameState{
 		enemyList.add(enemy5);
 		multiBarList.add(new MultiBar(enemy5, true));
 		
-		Enemy enemy6= new Final(new Vector2f(1200f, 200f), 500f, player, bulletList);
-		enemyList.add(enemy6);
-		multiBarList.add(new MultiBar(enemy6, true)); 
-		
 		keyXAmount 			 = new IconXAmount(new Vector2f(5f,5f), 
 								new Vector2f(0f,0f), 
 								new Icon(new Image("res/iconXAmount/keyX.png")), 
@@ -411,7 +405,6 @@ public class GameMaster extends BasicGameState{
 		bonusList.add(new Coin(new Vector2f(velX2, velY2), new Image("res/coin.png"), 800, 800));
 		*/
 		//*************************ST**************************
-		
 	}
 	
 	@Override
@@ -455,22 +448,26 @@ public class GameMaster extends BasicGameState{
 			}
 		}
 		
-		//*************************ST**************************
+		if(enemyList.isEmpty())
+		{
+			Enemy enemy6= new Final(new Vector2f(1200f, 200f), 500f, player, bulletList);
+			enemyList.add(enemy6);
+			multiBarList.add(new MultiBar(enemy6, true)); 
+		}
 		
 		if (player != null && player.getStats().isDead()){
 			
 			player = null;
+			container.setMusicOn(false);
 			game.getState(5).init(container, game);
 			game.enterState(5);
 			playerBoom.play();
-			//gameOver=true;
 		}
 		if(paused)
 		{
 			game.enterState(3);
 			paused= !paused;
 		}
-		
 	}
 
 	@Override

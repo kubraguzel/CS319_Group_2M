@@ -63,7 +63,10 @@ public class Lab extends Enemy
 	{
 		g.setColor(new Color(150, 255, 150));
 		super.draw(g);
-		//g.drawString("", super.getPosition().getX()-super.getDimentions().getX()/2, super.getPosition().getY());
+		
+		g.setColor(Color.black);
+		g.drawString("Lab", this.getPosition().x - 3*4.6f ,
+				this.getPosition().y + this.getDimentions().y -5f);
 	}
 	
 	@Override

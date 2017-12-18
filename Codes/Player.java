@@ -54,7 +54,7 @@ public class Player extends DynamicGameObject implements Shooter{
 			double width = screenSize.getWidth();
 			double height = screenSize.getHeight();
 			player = new Player (new Vector2f(30f, 30f), new Vector2f(30f, 30f), 
-					4f, 100f, 6f, 10f, 
+					5f, 600f, 9f, 10f, 
 					400f, 0f, (float)width, 
 					(float)height);
 		}

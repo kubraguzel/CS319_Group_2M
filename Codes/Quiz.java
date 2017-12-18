@@ -73,6 +73,9 @@ public class Quiz extends Enemy implements Shooter {
 
 	@Override
 	public void draw(Graphics g) {
+		g.setColor(Color.black);
+		g.drawString("Quiz", this.getPosition().x - 3*4.6f ,
+				this.getPosition().y + this.getDimentions().y );
 		g.setColor(new Color(0.9f,0.64f, 0.4f));
 		super.draw(g);
 	}

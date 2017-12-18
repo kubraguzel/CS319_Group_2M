@@ -72,6 +72,9 @@ public class Assignment extends Enemy {
 			g.setColor(Color.cyan);
 			g.draw(shield);
 		}
+		g.setColor(Color.black);
+		g.drawString("Assignment", this.getPosition().x - 9*4.6f ,
+				this.getPosition().y + this.getDimentions().y + 10f);
 		
 		g.setColor(Color.white);
 		super.draw(g);

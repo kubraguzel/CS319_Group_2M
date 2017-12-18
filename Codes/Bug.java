@@ -43,6 +43,9 @@ public class Bug extends Enemy
 
 	@Override
 	public void draw(Graphics g) {
+		g.setColor(Color.black);
+		g.drawString("Bug", this.getPosition().x - 3*4.6f ,
+				this.getPosition().y + this.getDimentions().y);
 		g.setColor(new Color(0.09f, 0.47f, 0.16f));
 		super.draw(g);
 	}

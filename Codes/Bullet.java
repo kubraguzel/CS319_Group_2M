@@ -17,7 +17,7 @@ public class Bullet extends DynamicGameObject implements Drawable{
 	private float damage;
 	protected Vector2f velocity;
 	private boolean enemyBullet;
-	private static float BULLET_SIZE = 7f;
+	private static float BULLET_SIZE = 8.7f;
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	private Rectangle boundary = new Rectangle(-30*BULLET_SIZE, -30*BULLET_SIZE, 
 			 super.getScreenWidth()+60*BULLET_SIZE, super.getscreenHeight()+ 60*BULLET_SIZE);

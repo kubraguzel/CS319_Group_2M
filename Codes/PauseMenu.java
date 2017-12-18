@@ -18,8 +18,6 @@ public class PauseMenu extends BasicGameState {
 	private Image soundButton;
 	private Image musicButton;
 	
-	private boolean soundOn = true;
-	private boolean musicOn = true;
 	private boolean mousePressed;
 
 	public PauseMenu() 
@@ -57,7 +55,7 @@ public class PauseMenu extends BasicGameState {
 		soundButton.draw(container.getScreenWidth()/2 - 1.6f*soundButton.getWidth(),
 				7f*container.getScreenHeight()/10);
 		
-		if(!soundOn)
+		if(!container.isSoundOn())
 		{
 			g.setColor(Color.white);
 			g.setLineWidth(10f);
@@ -68,9 +66,9 @@ public class PauseMenu extends BasicGameState {
 		}
 		
 		musicButton.draw(container.getScreenWidth()/2 + 0.8f* musicButton.getWidth(),
-				7f*container.getScreenHeight()/10);
+				7.2f*container.getScreenHeight()/10);
 		
-		if(!musicOn)
+		if(!container.isMusicOn())
 		{
 			g.setColor(Color.white);
 			g.setLineWidth(10f);
@@ -129,9 +127,8 @@ public class PauseMenu extends BasicGameState {
 			soundButton.setImageColor(1f, 1f, 1f, 1f);
 			if(Mouse.isButtonDown(0) && !mousePressed)
 			{
-				soundOn=!soundOn;
 				mousePressed = true;
-				GameMaster.getGameMaster().toggleSound();
+				container.setSoundOn(!container.isSoundOn());
 			}
 		}
 		else
@@ -141,15 +138,14 @@ public class PauseMenu extends BasicGameState {
 		
 		if(((x >= container.getScreenWidth()/2 + 0.8f* musicButton.getWidth())
 				&& x <= container.getScreenWidth()/2 + 2f*musicButton.getWidth())
-				&&(( y >=  3f*container.getScreenHeight()/10 - musicButton.getHeight()) 
-						&& (y <=  3f*container.getScreenHeight()/10)))
+				&&(( y >=  2.8f*container.getScreenHeight()/10 - musicButton.getHeight()) 
+						&& (y <=  2.8f*container.getScreenHeight()/10)))
 		{
 			musicButton.setImageColor(1f, 1f, 1f, 1f);
 			if(Mouse.isButtonDown(0) && !mousePressed)
 			{
-				musicOn=!musicOn;
 				mousePressed = true;
-				GameMaster.getGameMaster().toggleMusic();
+				container.setMusicOn(!container.isMusicOn());
 			}
 		}
 		else
