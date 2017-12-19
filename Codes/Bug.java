@@ -1,4 +1,4 @@
-package deneme;
+
 import java.util.ArrayList;
 
 import org.newdawn.slick.Color;
