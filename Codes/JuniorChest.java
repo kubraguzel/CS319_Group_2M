@@ -75,7 +75,26 @@ public class JuniorChest extends Chest {
 	}
 
 	public Item unlock(){
-		return null;
+		double rand =  Math.random();
+		if (rand<=0.3)
+		{
+			return new CaramelMacchiato();
+		}
+		
+		else if (rand > 0.3 && rand <= 0.65)
+		{
+			return new OldExams();
+		}
+		
+		else if (rand > 0.65 && rand <= 0.9)
+		{
+			return new Prozac();
+		}
+		
+		else
+		{
+			return new HigherIQ();
+		}
 	}
 
 }
