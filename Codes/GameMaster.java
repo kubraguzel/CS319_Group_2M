@@ -38,23 +38,32 @@ public class GameMaster extends BasicGameState{
 	IconXAmount coinXAmount;
 
 	//Bonus Constants 
-	final float KEY_SPAWN_RATE = 20f;
-	final float COIN_SPAWN_RATE = 25f;
-	final float FRESHMEN_CHEST_SPAWN_RATE = 10f;
-	final float SOPHOMORE_CHEST_SPAWN_RATE = 7.5f;
-	final float JUNIOR_CHEST_SPAWN_RATE = 5f;
-	final float SENIOR_CHEST_SPAWN_RATE = 2.5f;
+	float keySpawnRate;
+	float coinSpawnRate;
+	float freshmenChestSpawnRate;
+	float sophomoreChestSpawnRate ;
+	float juniorChestSpawnRate;
+	float seniorChestSpawnRate;
 	final float BONUS_SPAWN = 2000f;
 	private long nextTimeToSpawnBonus = 0;
 	
 	//Enemy Constants
-	final float BUG_SPAWN_RATE = 25f;
-	final float QUIZ_SPAWN_RATE = 25f;
-	final float LAB_SPAWN_RATE = 20f;
-	final float ASSIGNMENT_SPAWN_RATE = 20f;
-	final float MIDTERM_SPAWN_RATE = 15f;
-	final float ENEMY_SPAWN = 2000f;
+	float bugSpawnRate;
+	float quizSpawnRate;
+	float labSpawnRate;
+	float assignmentSpawnRate;
+	float midtermSpawnRate;
+	final float ENEMY_SPAWN = 5000f;
 	private long nextTimeToSpawnEnemy = 0;
+	
+	//Number of Waves of Levels level1=6, level2=8, level3=10, level4=12 WAVE
+	final int WAVES_LEVEL_1 = 2;
+	final int WAVES_LEVEL_2 = 2;
+	final int WAVES_LEVEL_3 = 2;
+	final int WAVES_LEVEL_4 = 2;
+	
+	//level
+	private int level = 1;
 	
 	public static Color BACKGROUND = Color.gray;
 	private static GameMaster gm = null;
@@ -242,7 +251,7 @@ public class GameMaster extends BasicGameState{
 		
 	}
 
-		
+	
 	private void spawnBonus(){
 		
 		float rnd = (float) (Math.random()*100f);
@@ -257,7 +266,7 @@ public class GameMaster extends BasicGameState{
 		JuniorChest j;
 		SeniorChest sen;
 		
-		if(rnd>=(100-SENIOR_CHEST_SPAWN_RATE)){
+		if(rnd>=(100-seniorChestSpawnRate)){
 			try {
 				sen = new SeniorChest(new Vector2f(velX, velY), new Image("res/Chest/SeniorChest.png"), 800, 800);
 				bonusList.add(sen); 
@@ -266,7 +275,7 @@ public class GameMaster extends BasicGameState{
 			}
 		}
 		
-		else if(rnd>=(100-SENIOR_CHEST_SPAWN_RATE-JUNIOR_CHEST_SPAWN_RATE)){
+		else if(rnd>=(100-seniorChestSpawnRate-juniorChestSpawnRate)){
 			try {
 				j = new JuniorChest(new Vector2f(velX, velY), new Image("res/Chest/JuniorChest.png"), 800, 800);
 				bonusList.add(j); 
@@ -275,7 +284,7 @@ public class GameMaster extends BasicGameState{
 			}
 		}
 		
-		else if(rnd>=(100-SENIOR_CHEST_SPAWN_RATE-JUNIOR_CHEST_SPAWN_RATE-SOPHOMORE_CHEST_SPAWN_RATE)){
+		else if(rnd>=(100-seniorChestSpawnRate-juniorChestSpawnRate-sophomoreChestSpawnRate)){
 			try {
 				sop = new SophomoreChest(new Vector2f(velX, velY), new Image("res/Chest/SophomoreChest.png"), 800, 800);
 				bonusList.add(sop); 
@@ -283,7 +292,7 @@ public class GameMaster extends BasicGameState{
 				e.printStackTrace();
 			}
 		}
-		else if(rnd>=(100-SENIOR_CHEST_SPAWN_RATE-JUNIOR_CHEST_SPAWN_RATE-SOPHOMORE_CHEST_SPAWN_RATE-FRESHMEN_CHEST_SPAWN_RATE)){
+		else if(rnd>=(100-seniorChestSpawnRate-juniorChestSpawnRate-sophomoreChestSpawnRate-freshmenChestSpawnRate)){
 			try {
 				f = new FreshmenChest(new Vector2f(velX, velY), new Image("res/Chest/FreshmenChest.png"), 800, 800);
 				bonusList.add(f); 
@@ -291,7 +300,7 @@ public class GameMaster extends BasicGameState{
 				e.printStackTrace();
 			}
 		}
-		else if(rnd>=(100-SENIOR_CHEST_SPAWN_RATE-JUNIOR_CHEST_SPAWN_RATE-SOPHOMORE_CHEST_SPAWN_RATE-FRESHMEN_CHEST_SPAWN_RATE-COIN_SPAWN_RATE)){
+		else if(rnd>=(100-seniorChestSpawnRate-juniorChestSpawnRate-sophomoreChestSpawnRate-freshmenChestSpawnRate-coinSpawnRate)){
 			try {
 				c = new Coin(new Vector2f(velX, velY), new Image("res/coin.png"), 800, 800);
 				bonusList.add(c); 
@@ -299,7 +308,7 @@ public class GameMaster extends BasicGameState{
 				e.printStackTrace();
 			}
 		}
-		else if(rnd>=(100-SENIOR_CHEST_SPAWN_RATE-JUNIOR_CHEST_SPAWN_RATE-SOPHOMORE_CHEST_SPAWN_RATE-FRESHMEN_CHEST_SPAWN_RATE-COIN_SPAWN_RATE-KEY_SPAWN_RATE)){
+		else if(rnd>=(100-seniorChestSpawnRate-juniorChestSpawnRate-sophomoreChestSpawnRate-freshmenChestSpawnRate-coinSpawnRate-keySpawnRate)){
 			try {
 				k = new Key(new Vector2f(velX, velY), new Image("res/key.png"), 800, 800);
 				bonusList.add(k); 
@@ -309,7 +318,7 @@ public class GameMaster extends BasicGameState{
 		}
 	}
 	
-private void spawnEnemy(){
+	private void spawnEnemy(){
 		
 		float rnd = (float) (Math.random()*100f);
 		
@@ -322,32 +331,92 @@ private void spawnEnemy(){
 		Assignment a;
 		Midterm m;
 		
-		if(rnd>=(100-MIDTERM_SPAWN_RATE)){
+		if(rnd>=(100-midtermSpawnRate)){
 			m =  new Midterm(new Vector2f(velX, velY), 150f, player, bulletList);
 			enemyList.add(m);
 		}
 		
-		else if(rnd>=(100-MIDTERM_SPAWN_RATE-ASSIGNMENT_SPAWN_RATE)){
+		else if(rnd>=(100-midtermSpawnRate-assignmentSpawnRate)){
 			a = new Assignment(new Vector2f(velX, velY), 1.6f,
 					100f, player);
 			enemyList.add(a);
 		}
 		
-		else if(rnd>=(100-MIDTERM_SPAWN_RATE-ASSIGNMENT_SPAWN_RATE-LAB_SPAWN_RATE)){
+		else if(rnd>=(100-midtermSpawnRate-assignmentSpawnRate-labSpawnRate)){
 			l = new Lab(new Vector2f(velX, velY), 
 					100f, player, enemyList);
 			enemyList.add(l);
 		}
-		else if(rnd>=(100-MIDTERM_SPAWN_RATE-ASSIGNMENT_SPAWN_RATE-LAB_SPAWN_RATE-QUIZ_SPAWN_RATE)){
+		else if(rnd>=(100-midtermSpawnRate-assignmentSpawnRate-labSpawnRate-quizSpawnRate)){
 			q = new Quiz(new Vector2f(velX, velY), 
 					100f, player, bulletList);
 			enemyList.add(q);
 		}
-		else if(rnd>=(100-MIDTERM_SPAWN_RATE-ASSIGNMENT_SPAWN_RATE-LAB_SPAWN_RATE-QUIZ_SPAWN_RATE-BUG_SPAWN_RATE)){
+		else if(rnd>=(100-midtermSpawnRate-assignmentSpawnRate-labSpawnRate-quizSpawnRate-bugSpawnRate)){
 			b = new Bug(new Vector2f(velX, velY), 
 					100f, player);
 			enemyList.add(b);
 		}
+	}
+	
+	private void spawnWave(int level){
+		int numOfEnemy = 0 + 2*level; // level1=8, level2=10, level3=12, level4=14 ENEMY
+		for(int i=0; i<numOfEnemy; i++){
+			spawnEnemy();
+		}
+	}
+	
+	private int getNumOfWave(int level){
+		int num = 1;
+		if(level==1){
+			num =  WAVES_LEVEL_1;
+		}
+		if(level==2){
+			num = WAVES_LEVEL_2;
+		}
+		if(level==3){
+			num = WAVES_LEVEL_3;
+		}
+		if(level==4){
+			num = WAVES_LEVEL_4;
+		}
+		return num;
+	}
+	
+	private boolean isTimeToFinal = false;
+	private int numOfWave = getNumOfWave(level);
+	private int currentWave = numOfWave;
+	
+	private void spawnLevelWaves(int level){
+
+		for(int i=0; i<numOfWave; i++){
+			if (System.currentTimeMillis() >= nextTimeToSpawnEnemy)
+			{
+				nextTimeToSpawnEnemy = (long)ENEMY_SPAWN + System.currentTimeMillis();
+				if((enemyList.size() < 1)){
+					spawnWave(level);
+					currentWave--;
+				}
+			}
+		}
+		if(currentWave <= 0){
+			isTimeToFinal = true;
+		}
+	}
+	
+	public void reset(){
+		keySpawnRate = 20f;
+		coinSpawnRate = 25f;
+		freshmenChestSpawnRate = 10f;
+		sophomoreChestSpawnRate = 7.5f;
+		juniorChestSpawnRate = 5f;
+		seniorChestSpawnRate = 2.5f;
+				
+		bugSpawnRate = 25f;
+		quizSpawnRate = 25f;
+		labSpawnRate = 20f;
+		assignmentSpawnRate = 20f;
+		midtermSpawnRate = 15f;
 	}
 
 	@Override
@@ -400,6 +469,19 @@ private void spawnEnemy(){
 								new Vector2f(0f,0f), 
 								new Icon(new Image("res/iconXAmount/coinX.png")), 
 								0 ); 
+		
+		keySpawnRate = 20f;
+		coinSpawnRate = 25f;
+		freshmenChestSpawnRate = 10f;
+		sophomoreChestSpawnRate = 7.5f;
+		juniorChestSpawnRate = 5f;
+		seniorChestSpawnRate = 2.5f;
+				
+		bugSpawnRate = 25f;
+		quizSpawnRate = 25f;
+		labSpawnRate = 20f;
+		assignmentSpawnRate = 20f;
+		midtermSpawnRate = 15f;
 	}
 	
 	@Override
@@ -430,6 +512,8 @@ private void spawnEnemy(){
 			bonusList.get(i).update();
 		}
 		
+		
+		//*******************		
 		if(System.currentTimeMillis() > nextTimeToSpawnBonus){
 			nextTimeToSpawnBonus =  (long)BONUS_SPAWN + System.currentTimeMillis();
 			if(bonusList.size() < 3){
@@ -437,19 +521,27 @@ private void spawnEnemy(){
 			}
 		}
 		
-		if (System.currentTimeMillis() >= nextTimeToSpawnEnemy)
+		if((enemyList.size() < 1) && !isFinalSpawn){
+			spawnLevelWaves(level);
+		}
+		
+		Enemy boss = new Final(new Vector2f(1200f, 200f), 500f, player, bulletList);
+		if(isTimeToFinal)
 		{
-			nextTimeToSpawnEnemy = (long)ENEMY_SPAWN + System.currentTimeMillis();
-			if((enemyList.size() < 10) && !isFinalSpawn){
-				spawnEnemy();
+			isFinalSpawn = true;
+			if (System.currentTimeMillis() >= nextTimeToSpawnEnemy)
+			{
+				nextTimeToSpawnEnemy = (long)ENEMY_SPAWN + System.currentTimeMillis();		
+				enemyList.add(boss);
+				isTimeToFinal=false;
+				level++;
 			}
 		}
 		
-		if(enemyList.isEmpty())
-		{
-			Enemy enemy6= new Final(new Vector2f(1200f, 200f), 500f, player, bulletList);
-			enemyList.add(enemy6);
-			isFinalSpawn = true;
+		if(boss != null && boss.getStats().isDead()){
+			boss=null;
+			game.enterState(2);
+			playerBoom.play();
 		}
 		
 		if (player != null && player.getStats().isDead()){
@@ -458,7 +550,7 @@ private void spawnEnemy(){
 			container.setMusicOn(false);
 			game.getState(5).init(container, game);
 			game.enterState(5);
-			playerBoom.play();
+			
 		}
 		if(paused)
 		{
@@ -466,7 +558,7 @@ private void spawnEnemy(){
 			paused= !paused;
 		}	
 	}
-
+	
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 	{
