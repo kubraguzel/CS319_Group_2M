@@ -1,3 +1,11 @@
+package deneme;
+
+/**
+ * 
+ * Author: Semih Teker
+ * 
+ */
+
 public abstract class Bonus extends GameObject implements Collectable {
 
 	boolean pickedUp;

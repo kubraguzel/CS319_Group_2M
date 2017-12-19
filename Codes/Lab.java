@@ -1,8 +1,5 @@
-/**
- * 
- * Author:Alper Þahýstan
- * 
- */
+package deneme;
+
 import java.util.ArrayList;
 
 import org.newdawn.slick.Color;
@@ -16,6 +13,10 @@ public class Lab extends Enemy
 	private ArrayList<Enemy> enemyList;
 	private final float SPAWN_RATE = 3000f;
 	
+	//-----------
+	MultiBar m;
+	//-----------
+	
 	
 	public Lab(Vector2f pos, Vector2f dim, float speed, float maxHealth, DynamicGameObject target, ArrayList<Enemy> enemyList) {
 		super(pos, dim, speed, maxHealth, target);
@@ -24,6 +25,9 @@ public class Lab extends Enemy
 		this.enemyList = enemyList;
 		super.proximityDistance = 500f;
 		super.getStats().setFireRate(SPAWN_RATE);
+		//-----------
+		m = new MultiBar(this, true);
+		//-----------
 	}
 	
 	public Lab(Vector2f pos, float speed, float maxHealth, DynamicGameObject target, ArrayList<Enemy> enemyList) {
@@ -33,6 +37,9 @@ public class Lab extends Enemy
 		this.enemyList = enemyList;
 		super.proximityDistance = 500f;
 		super.getStats().setFireRate(SPAWN_RATE);
+		//-----------
+		m = new MultiBar(this, true);	
+		//-----------
 	}
 	
 	public Lab(Vector2f pos, float maxHealth, DynamicGameObject target, ArrayList<Enemy> enemyList) {
@@ -42,6 +49,9 @@ public class Lab extends Enemy
 		this.enemyList = enemyList;
 		super.proximityDistance = 500f;
 		super.getStats().setFireRate(SPAWN_RATE);
+		//-----------
+		m = new MultiBar(this, true);	
+		//-----------
 	}
 	
 	public void spawnBug()
@@ -54,8 +64,7 @@ public class Lab extends Enemy
 		spawnPos.add(this.getPosition());
 		
 		Bug bug = new Bug(spawnPos, 30, target);
-		
-		enemyList.add(bug);
+		enemyList.add(bug);			
 	}
 	
 	@Override
@@ -66,20 +75,25 @@ public class Lab extends Enemy
 		
 		g.setColor(Color.black);
 		g.drawString("Lab", this.getPosition().x - 3*4.6f ,
-				this.getPosition().y + this.getDimentions().y -5f);
+					this.getPosition().y + this.getDimentions().y -5f);
+		//-----------
+		m.draw(g);
+		//-----------
 	}
 	
 	@Override
 	void update() 
 	{
 		super.update();
-		
 
 		if (System.currentTimeMillis() >= nextTimeToSpawn)
 		{
 			nextTimeToSpawn = (long)super.getStats().getFireRate() + System.currentTimeMillis();
 			spawnBug();
 		}
+		//-----------
+		m.update();
+		//-----------
 	}
 	
 	public void setEnemyList(ArrayList<Enemy> enemyList) {
@@ -87,4 +101,3 @@ public class Lab extends Enemy
 	}
 	
 }
-

@@ -1,3 +1,7 @@
+package deneme;
+
+import java.util.ArrayList;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Polygon;
@@ -15,12 +19,19 @@ public class Assignment extends Enemy {
 	private int hitCounter =0;
 	private final int SHIELD_STRENGHT = 3;
 	//private final float SPEED = 8f;
+	
+	//-----------
+	MultiBar m;
+	//-----------
 
 	public Assignment(Vector2f pos, Vector2f dim, float speed, float maxHealth, float bodyDamage,
 			DynamicGameObject target) {
 		super(pos, dim, speed, maxHealth, bodyDamage, target);
 		super.getStats().setFireRate(DOWN_TIME);//firerate is repurposed to act as a shield down time
 		super.shape = makeDiamond(super.getDimentions().x);
+		//-----------
+		m = new MultiBar(this, true);
+		//-----------
 	}
 
 	public Assignment(Vector2f pos, Vector2f dim, float speed, float maxHealth, DynamicGameObject target) {
@@ -28,6 +39,9 @@ public class Assignment extends Enemy {
 		super.getStats().setBodyDamage(BODY_DAMAGE);
 		super.getStats().setFireRate(DOWN_TIME);//firerate is repurposed to act as a shield down time
 		super.shape = makeDiamond(super.getDimentions().x);
+		//-----------
+		m = new MultiBar(this, true);
+		//-----------
 	}
 	
 	public Assignment(Vector2f pos, float speed, float maxHealth, DynamicGameObject target) {
@@ -35,6 +49,9 @@ public class Assignment extends Enemy {
 		super.getStats().setBodyDamage(BODY_DAMAGE);
 		super.getStats().setFireRate(DOWN_TIME);//firerate is repurposed to act as a shield down time
 		super.shape = makeDiamond(super.getDimentions().x);
+		//-----------
+		m = new MultiBar(this, true);
+		//-----------
 	}
 	
 	private Polygon makeDiamond(float scale)
@@ -78,6 +95,10 @@ public class Assignment extends Enemy {
 		
 		g.setColor(Color.white);
 		super.draw(g);
+		
+		//-----------
+		m.draw(g);
+		//-----------
 	}
 
 	@Override
@@ -87,13 +108,10 @@ public class Assignment extends Enemy {
 		if(!shieldUp && System.currentTimeMillis() >= nextTimetoShieldUp)
 			shieldUp=true;
 		super.update();
+		//-----------
+		m.update();
+		//-----------
+		
 	}
-	
-	
-	
-	
-	
-	
-	
 
 }

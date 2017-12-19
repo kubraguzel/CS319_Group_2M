@@ -1,3 +1,5 @@
+package deneme;
+
 import java.util.ArrayList;
 
 import org.newdawn.slick.Color;
@@ -24,6 +26,9 @@ public class Midterm extends Enemy implements Shooter
 	private final Color critical = new Color(1f, 0f, 0.5f);
 	private Color curColor = standart;
 	
+	//-----------
+	MultiBar m;
+	//-----------
 	
 	public Midterm(Vector2f pos, Vector2f dim, float speed, float maxHealth, float bodyDamage,
 			DynamicGameObject target, ArrayList<Bullet> bulletList) {
@@ -35,6 +40,9 @@ public class Midterm extends Enemy implements Shooter
 		super.getStats().setBulletSpeed(BULLET_SPEED);
 		super.proximityDistance =PROXIMITY;
 		setShape();
+		//-----------
+		m = new MultiBar(this, true);
+		//-----------
 	}
 
 	public Midterm(Vector2f pos, Vector2f dim, float speed, float maxHealth, DynamicGameObject target,
@@ -47,6 +55,9 @@ public class Midterm extends Enemy implements Shooter
 		super.getStats().setBulletSpeed(BULLET_SPEED);
 		super.proximityDistance =PROXIMITY;
 		setShape();
+		//-----------	
+		m = new MultiBar(this, true);
+		//-----------
 	}
 	
 	public Midterm(Vector2f pos, float speed, float maxHealth, DynamicGameObject target,
@@ -59,6 +70,9 @@ public class Midterm extends Enemy implements Shooter
 		super.getStats().setBulletSpeed(BULLET_SPEED);
 		super.proximityDistance =PROXIMITY;
 		setShape();
+		//-----------
+		m = new MultiBar(this, true);
+		//-----------
 	}
 	
 	public Midterm(Vector2f pos, float maxHealth, DynamicGameObject target,
@@ -71,6 +85,9 @@ public class Midterm extends Enemy implements Shooter
 		super.getStats().setBulletSpeed(BULLET_SPEED);
 		super.proximityDistance =PROXIMITY;
 		setShape();
+		//-----------
+		m = new MultiBar(this, true);
+		//-----------
 	}
 	
 	private void setShape()
@@ -151,9 +168,14 @@ public class Midterm extends Enemy implements Shooter
 	public void draw(Graphics g) {
 		g.setColor(Color.black);
 		g.drawString("Midterm", this.getPosition().x - 7*4.6f ,
-				this.getPosition().y + this.getDimentions().y + 5f);
+					this.getPosition().y + this.getDimentions().y + 5f);
+		
 		g.setColor(curColor);
 		super.draw(g);
+		
+		//-----------
+		m.draw(g);
+		//-----------
 	}
 
 	@Override
@@ -166,6 +188,10 @@ public class Midterm extends Enemy implements Shooter
 		else
 			((MorphShape) shape).updateMorphTime(0.04f);
 		super.update();
+		
+		//-----------
+		m.update();
+		//-----------
 	}
 
 	private void enterCriticalState() 
@@ -175,7 +201,4 @@ public class Midterm extends Enemy implements Shooter
 		
 		((MorphShape) shape).setMorphTime(0f);
 	}
-	
-	
-
 }

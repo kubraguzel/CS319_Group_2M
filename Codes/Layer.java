@@ -1,3 +1,11 @@
+package deneme;
+
+/**
+ * 
+ * Author: Semih Teker
+ * 
+ */
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -71,11 +79,23 @@ public class Layer extends UIObject{
 	
 	public void move() {
 		if (enemy != null){
-			if(enemy.numOfLayer>2){
-				setPosition(new Vector2f(enemy.getPosition().getX()-50f, enemy.getPosition().getY()-100f));	
-			}
-			else{
+			if(enemy instanceof Bug){
 				setPosition(new Vector2f(enemy.getPosition().getX()-50f, enemy.getPosition().getY()-20f));
+			}
+			if(enemy instanceof Quiz){
+				setPosition(new Vector2f(enemy.getPosition().getX()-50f, enemy.getPosition().getY()-20f));
+			}
+			if(enemy instanceof Lab){
+				setPosition(new Vector2f(enemy.getPosition().getX()-50f, enemy.getPosition().getY()-35f));
+			}
+			if(enemy instanceof Assignment){
+				setPosition(new Vector2f(enemy.getPosition().getX()-50f, enemy.getPosition().getY()-35f));
+			}
+			if(enemy instanceof Midterm){
+				setPosition(new Vector2f(enemy.getPosition().getX()-50f, enemy.getPosition().getY()-40f));
+			}
+			if(enemy instanceof Final){
+				setPosition(new Vector2f(enemy.getPosition().getX()-50f, enemy.getPosition().getY()-90f));		
 			}
 		}
 		else{

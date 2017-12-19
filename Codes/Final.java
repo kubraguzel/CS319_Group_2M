@@ -1,3 +1,4 @@
+package deneme;
 import java.awt.Font;
 import java.util.ArrayList;
 
@@ -32,6 +33,10 @@ public class Final extends Enemy implements Shooter {
 	private Vector2f velocity;
 	private boolean shootSingle = false;
 	
+	//-----------
+	MultiBar m;
+	//-----------
+	
 
 	public Final(Vector2f pos, Vector2f dim, float speed, float maxHealth, float bodyDamage, 
 			DynamicGameObject target, ArrayList<Bullet> bulletList) {
@@ -44,7 +49,8 @@ public class Final extends Enemy implements Shooter {
 		super.proximityDistance =PROXIMITY;
 		setShape();
 		//*************************ST**************************
-		//numOfLayer = 3;
+		numOfLayer = 3;
+		m = new MultiBar(this, true);
 		//*************************ST**************************
 	}
 
@@ -59,7 +65,8 @@ public class Final extends Enemy implements Shooter {
 		super.proximityDistance =PROXIMITY;
 		setShape();
 		//*************************ST**************************
-		//numOfLayer = 3;
+		numOfLayer = 3;
+		m = new MultiBar(this, true);
 		//*************************ST**************************
 	}
 	
@@ -74,7 +81,8 @@ public class Final extends Enemy implements Shooter {
 		super.proximityDistance =PROXIMITY;
 		setShape();
 		//*************************ST**************************
-		//numOfLayer = 3;
+		numOfLayer = 3;
+		m = new MultiBar(this, true);	
 		//*************************ST**************************
 	}
 	
@@ -89,7 +97,8 @@ public class Final extends Enemy implements Shooter {
 		super.proximityDistance =PROXIMITY;
 		setShape();
 		//*************************ST**************************
-		//numOfLayer = 3;
+		numOfLayer = 3;
+		m = new MultiBar(this, true);
 		//*************************ST**************************
 	}
 	
@@ -242,6 +251,9 @@ public class Final extends Enemy implements Shooter {
 		g.setColor(Color.white);
 		g.drawString("Final", this.getPosition().x - 5*4.6f ,
 				this.getPosition().y - this.getDimentions().y/4);
+		//-----------
+		m.draw(g);
+		//-----------
 	}
 
 	@Override
@@ -286,7 +298,12 @@ public class Final extends Enemy implements Shooter {
 			shieldHealth = MAX_SHIELD;
 		}
 		
+		
 		super.update();
+		
+		//-----------
+		m.update();
+		//-----------
 		
 	}
 

@@ -1,3 +1,5 @@
+package deneme;
+
 /**
  * 
  * Author: Semih Teker
@@ -23,12 +25,14 @@ public class MultiBar extends UIObject {
 	public static Color color3 = Color.red;
 	public static Color color4 = Color.blue;
 	
-	/*public MultiBar(Vector2f position, Vector2f dimension, Enemy enemy, boolean horizontal) {
-		super(position, dimension);
-		this.enemy = enemy;
+	public MultiBar(Enemy enemy, Vector2f position, boolean horizontal) {
+		this.position = position;
+		dimension = new Vector2f(2f,2f);		
 		layerList = new ArrayList<Layer>();
+		this.enemy = enemy;
 		//this.layerList = layerList;
-	}*/
+		addLayer(enemy, enemy.numOfLayer);
+	}
 	
 	public MultiBar(Enemy enemy, boolean horizontal) {
 		position = enemy.getPosition().add(new Vector2f(-20f, -20f));

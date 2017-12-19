@@ -1,3 +1,5 @@
+package deneme;
+
 import java.util.ArrayList;
 
 import org.newdawn.slick.Color;
@@ -13,6 +15,10 @@ public class Quiz extends Enemy implements Shooter {
 	private final float PROXIMITY = 120f;
 	private final float BULLET_DAMAGE = 5f;
 	private ArrayList<Bullet> bulletList;
+	
+	//-----------
+	MultiBar m;
+	//-----------
 
 	public Quiz(Vector2f pos, Vector2f dim, float speed, float maxHealth, float bodyDamage, DynamicGameObject target, ArrayList<Bullet> bulletList) {
 		super(pos, dim, speed, maxHealth, bodyDamage, target);
@@ -23,6 +29,9 @@ public class Quiz extends Enemy implements Shooter {
 				super.getDimentions().x, super.getDimentions().y);
 		this.bulletList = bulletList;
 		super.proximityDistance = PROXIMITY;
+		//-----------
+		m = new MultiBar(this, true);
+		//-----------
 	}
 
 	public Quiz(Vector2f pos, Vector2f dim, float speed, float maxHealth, DynamicGameObject target, ArrayList<Bullet> bulletList) {
@@ -34,6 +43,9 @@ public class Quiz extends Enemy implements Shooter {
 				super.getDimentions().x, super.getDimentions().y);
 		this.bulletList = bulletList;
 		super.proximityDistance = PROXIMITY;
+		//-----------
+		m = new MultiBar(this, true);
+		//-----------
 	}
 	
 	public Quiz(Vector2f pos, float speed, float maxHealth, DynamicGameObject target, ArrayList<Bullet> bulletList) {
@@ -45,6 +57,9 @@ public class Quiz extends Enemy implements Shooter {
 				super.getDimentions().x, super.getDimentions().y);
 		this.bulletList = bulletList;
 		super.proximityDistance = PROXIMITY;
+		//-----------
+		m = new MultiBar(this, true);	
+		//-----------
 	}
 	
 	public Quiz(Vector2f pos, float maxHealth, DynamicGameObject target, ArrayList<Bullet> bulletList) {
@@ -56,6 +71,9 @@ public class Quiz extends Enemy implements Shooter {
 				super.getDimentions().x, super.getDimentions().y);
 		this.bulletList = bulletList;
 		super.proximityDistance = PROXIMITY;
+		//-----------
+		m = new MultiBar(this, true);	
+		//-----------
 	}
 
 	@Override
@@ -76,8 +94,12 @@ public class Quiz extends Enemy implements Shooter {
 		g.setColor(Color.black);
 		g.drawString("Quiz", this.getPosition().x - 3*4.6f ,
 				this.getPosition().y + this.getDimentions().y );
+		
 		g.setColor(new Color(0.9f,0.64f, 0.4f));
 		super.draw(g);
+		//-----------
+		m.draw(g);
+		//-----------
 	}
 
 	@Override
@@ -89,8 +111,9 @@ public class Quiz extends Enemy implements Shooter {
 		Bullet bullet = shoot(targetPos);
 		if (bullet!=null)
 			bulletList.add(bullet);
+		
+		//-----------
+		m.update();
+		//-----------
 	}
-	
-	
-
 }

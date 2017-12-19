@@ -1,9 +1,7 @@
-/**
- * Author: Alper Sahistan, Semih Teker
- */
-
+package deneme;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -44,6 +42,7 @@ public class Player extends DynamicGameObject implements Shooter{
 	//*************************ST**************************
 	int numberOfKey;
 	int score;
+	ArrayList<MultiBar> multiBarList;
 	//*************************ST**************************	
 	
 	public static Player getPlayer()
@@ -54,8 +53,8 @@ public class Player extends DynamicGameObject implements Shooter{
 			double width = screenSize.getWidth();
 			double height = screenSize.getHeight();
 			player = new Player (new Vector2f(30f, 30f), new Vector2f(30f, 30f), 
-					5f, 600f, 9f, 10f, 
-					400f, 0f, (float)width, 
+					5f, 6000f, 9f, 10f, 
+					400f, 50f, (float)width, 
 					(float)height);
 		}
 		return player;
@@ -79,6 +78,8 @@ public class Player extends DynamicGameObject implements Shooter{
 		//*************************ST**************************
 		numberOfKey=0;
 		score=0;
+		multiBarList = new ArrayList<MultiBar>();
+		multiBarList.add(new MultiBar(this, false)); //not horizontal	
 		//*************************ST**************************
 	}
 	
@@ -102,6 +103,8 @@ public class Player extends DynamicGameObject implements Shooter{
 		//*************************ST**************************
 		numberOfKey=0;
 		score=0;
+		multiBarList = new ArrayList<MultiBar>();
+		multiBarList.add(new MultiBar(this, false)); //not horizontal
 		//*************************ST**************************
 	}
 	
@@ -125,6 +128,8 @@ public class Player extends DynamicGameObject implements Shooter{
 		//*************************ST**************************
 		numberOfKey=0;
 		score=0;
+		multiBarList = new ArrayList<MultiBar>();
+		multiBarList.add(new MultiBar(this, false)); //not horizontal
 		//*************************ST**************************
 	}
 	
@@ -140,7 +145,11 @@ public class Player extends DynamicGameObject implements Shooter{
 			g.drawString(playerName, this.getPosition().x - playerName.length()*4.6f ,
 					this.getPosition().y + this.getDimentions().y/2 + 10f);
 		}	
-		
+		//-----------
+		for (int i =0; i < multiBarList.size(); i++){
+			multiBarList.get(i).draw(g);
+		}
+		//-----------
 	}
 
 	@Override
@@ -187,6 +196,12 @@ public class Player extends DynamicGameObject implements Shooter{
 		
 		if(System.currentTimeMillis() > nextTimeToNormalise)
 			curColor = normal;
+		
+		//-----------
+		for (int i=0; i<multiBarList.size(); i++){
+			multiBarList.get(i).update();
+		}
+		//-----------
 	}
 	
 	@Override
