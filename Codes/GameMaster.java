@@ -1,4 +1,6 @@
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 
 import org.newdawn.slick.Color;
@@ -57,13 +59,20 @@ public class GameMaster extends BasicGameState{
 	private long nextTimeToSpawnEnemy = 0;
 	
 	//Number of Waves of Levels level1=6, level2=8, level3=10, level4=12 WAVE
-	final int WAVES_LEVEL_1 = 2;
-	final int WAVES_LEVEL_2 = 2;
-	final int WAVES_LEVEL_3 = 2;
-	final int WAVES_LEVEL_4 = 2;
+	final int WAVES_LEVEL_1 = 6;
+	final int WAVES_LEVEL_2 = 8;
+	final int WAVES_LEVEL_3 = 10;
+	final int WAVES_LEVEL_4 = 12;
+	
 	
 	//level
-	private int level = 1;
+	public int level;
+	public int currentWave;
+	public int numOfWave;
+	public boolean isTimeToFinal;
+	public boolean once;
+	final float WAVE_SPAWN = 5000f;
+	private long nextTimeToSpawnWave = 0;
 	
 	public static Color BACKGROUND = Color.gray;
 	private static GameMaster gm = null;
@@ -163,20 +172,31 @@ public class GameMaster extends BasicGameState{
 		for(int i=0; i<bonusList.size(); i++){
 			if(player.collides(bonusList.get(i)))
 			{
-				//player.takeKey();
 				bonusList.get(i).setToBeRemoved(true);
-				if(bonusList.get(i) instanceof Key)
-					keyXAmount.amount++;	
-				if(bonusList.get(i) instanceof Coin)
-					coinXAmount.amount++;
-				if(bonusList.get(i) instanceof FreshmenChest)
-					FreshmenChestXAmount.amount++;
-				if(bonusList.get(i) instanceof SophomoreChest)
-					SophomoreChestXAmount.amount++;
-				if(bonusList.get(i) instanceof JuniorChest)
-					JuniorChestXAmount.amount++;
-				if(bonusList.get(i) instanceof SeniorChest)
-					SeniorChestXAmount.amount++;
+				if(bonusList.get(i) instanceof Key){
+					player.getInventory().setNumOfKeys(player.getInventory().getNumOfKeys()+1);
+					keyXAmount.amount = player.getInventory().getNumOfKeys();
+				}
+				if(bonusList.get(i) instanceof Coin){
+					player.getInventory().setNumOfCoins(player.getInventory().getNumOfCoins()+1);
+					coinXAmount.amount = player.getInventory().getNumOfCoins();
+				}
+				if(bonusList.get(i) instanceof FreshmenChest){
+					player.getInventory().setNumOfFreshmenChests(player.getInventory().getNumOfFreshmenChests()+1);
+					FreshmenChestXAmount.amount = player.getInventory().getNumOfFreshmenChests();
+				}
+				if(bonusList.get(i) instanceof SophomoreChest){
+					player.getInventory().setNumOfSophomoreChests(player.getInventory().getNumOfSophomoreChests()+1);
+					SophomoreChestXAmount.amount = player.getInventory().getNumOfSophomoreChests();
+				}
+				if(bonusList.get(i) instanceof JuniorChest){
+					player.getInventory().setNumOfJuniorChests(player.getInventory().getNumOfJuniorChests()+1);
+					JuniorChestXAmount.amount = player.getInventory().getNumOfJuniorChests();
+				}
+				if(bonusList.get(i) instanceof SeniorChest){	
+					player.getInventory().setNumOfSeniorChests(player.getInventory().getNumOfSeniorChests()+1);
+					SeniorChestXAmount.amount = player.getInventory().getNumOfSeniorChests();
+				}
 			}
 		}
 		handleRemovals((ArrayList)bonusList);
@@ -251,7 +271,6 @@ public class GameMaster extends BasicGameState{
 		
 	}
 
-	
 	private void spawnBonus(){
 		
 		float rnd = (float) (Math.random()*100f);
@@ -359,8 +378,17 @@ public class GameMaster extends BasicGameState{
 		}
 	}
 	
-	private void spawnWave(int level){
-		int numOfEnemy = 0 + 2*level; // level1=8, level2=10, level3=12, level4=14 ENEMY
+	private void spawnFinal(){
+		
+		float velX = (float) (Math.random()*1820f);
+		float velY = (float) (Math.random()*1040f+40f);
+		
+		Final f = new Final(new Vector2f(velX, velY), 500f, player, bulletList);
+		enemyList.add(f);
+	}
+	
+	private void spawnWave(){
+		int numOfEnemy = 2 + 2*level; // level1=8, level2=10, level3=12, level4=14 ENEMY
 		for(int i=0; i<numOfEnemy; i++){
 			spawnEnemy();
 		}
@@ -383,27 +411,6 @@ public class GameMaster extends BasicGameState{
 		return num;
 	}
 	
-	private boolean isTimeToFinal = false;
-	private int numOfWave = getNumOfWave(level);
-	private int currentWave = numOfWave;
-	
-	private void spawnLevelWaves(int level){
-
-		for(int i=0; i<numOfWave; i++){
-			if (System.currentTimeMillis() >= nextTimeToSpawnEnemy)
-			{
-				nextTimeToSpawnEnemy = (long)ENEMY_SPAWN + System.currentTimeMillis();
-				if((enemyList.size() < 1)){
-					spawnWave(level);
-					currentWave--;
-				}
-			}
-		}
-		if(currentWave <= 0){
-			isTimeToFinal = true;
-		}
-	}
-	
 	public void reset(){
 		keySpawnRate = 20f;
 		coinSpawnRate = 25f;
@@ -417,6 +424,21 @@ public class GameMaster extends BasicGameState{
 		labSpawnRate = 20f;
 		assignmentSpawnRate = 20f;
 		midtermSpawnRate = 15f;
+		
+		currentWave = 1;
+		
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		double width = screenSize.getWidth();
+		double height = screenSize.getHeight();
+		
+		player = Player.getPlayer();
+		player.getStats().setCurHealth(player.getStats().getMaxHealth());
+		player.getStats().setDead(false);
+		player.setPosition(new Vector2f( (float)width/2, (float)height/2));
+		
+		bulletList = new ArrayList<Bullet>();
+		enemyList = new ArrayList<Enemy>();
+		bonusList = new ArrayList<Bonus>();
 	}
 
 	@Override
@@ -482,6 +504,12 @@ public class GameMaster extends BasicGameState{
 		labSpawnRate = 20f;
 		assignmentSpawnRate = 20f;
 		midtermSpawnRate = 15f;
+		
+		level = 1;
+		currentWave = 1;
+		numOfWave = getNumOfWave(level);
+		isTimeToFinal = false;
+		//once = true;
 	}
 	
 	@Override
@@ -511,9 +539,7 @@ public class GameMaster extends BasicGameState{
 		for (int i=0; i<bonusList.size(); i++){
 			bonusList.get(i).update();
 		}
-		
-		
-		//*******************		
+				
 		if(System.currentTimeMillis() > nextTimeToSpawnBonus){
 			nextTimeToSpawnBonus =  (long)BONUS_SPAWN + System.currentTimeMillis();
 			if(bonusList.size() < 3){
@@ -521,37 +547,41 @@ public class GameMaster extends BasicGameState{
 			}
 		}
 		
-		if((enemyList.size() < 1) && !isFinalSpawn){
-			spawnLevelWaves(level);
-		}
-		
-		Enemy boss = new Final(new Vector2f(1200f, 200f), 500f, player, bulletList);
-		if(isTimeToFinal)
-		{
-			isFinalSpawn = true;
-			if (System.currentTimeMillis() >= nextTimeToSpawnEnemy)
-			{
-				nextTimeToSpawnEnemy = (long)ENEMY_SPAWN + System.currentTimeMillis();		
-				enemyList.add(boss);
-				isTimeToFinal=false;
-				level++;
+		if(System.currentTimeMillis() > nextTimeToSpawnWave){
+			nextTimeToSpawnWave =  (long)WAVE_SPAWN + System.currentTimeMillis();
+			
+			if((currentWave > numOfWave) && (enemyList.size() <= 0)){
+				if(!isFinalSpawn){
+					spawnFinal();
+					isFinalSpawn = true;
+				}
+			}
+			if(enemyList.size() <= 0 && !isFinalSpawn){
+				spawnWave();
+				currentWave++;
 			}
 		}
 		
-		if(boss != null && boss.getStats().isDead()){
-			boss=null;
-			game.enterState(2);
-			playerBoom.play();
+		if(isFinalSpawn){
+			if(enemyList.size() <= 0){
+				level++;
+				if(level <= 4){
+					game.enterState(3); //***** it will change with the upgrade screen *****4
+				}
+				else{
+					game.enterState(5); //***** it will change with the success screen *****
+				}
+			}
 		}
 		
 		if (player != null && player.getStats().isDead()){
-			
 			player = null;
 			container.setMusicOn(false);
 			game.getState(5).init(container, game);
 			game.enterState(5);
-			
+			playerBoom.play();
 		}
+		
 		if(paused)
 		{
 			game.enterState(3);
@@ -596,6 +626,15 @@ public class GameMaster extends BasicGameState{
 		}
 		for (int i=0; i<enemyList.size(); i++){
 			enemyList.get(i).draw(g);
+		}
+		
+		if(enemyList.size()<=0){
+			if(currentWave <= numOfWave){
+				g.drawString("Wave: " + currentWave, container.getWidth()/2, container.getHeight()/2);
+			}
+			else{
+				g.drawString("Final Time ;)", container.getWidth()/2, container.getHeight()/2);
+			}
 		}
 	}
 	
