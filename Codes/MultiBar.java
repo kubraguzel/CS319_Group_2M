@@ -1,5 +1,3 @@
-package deneme;
-
 /**
  * 
  * Author: Semih Teker
