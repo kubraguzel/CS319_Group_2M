@@ -1,3 +1,7 @@
+/**
+ * Author: Alper Sahistan, Semih Teker
+ */
+
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
@@ -28,6 +32,7 @@ public class Player extends DynamicGameObject implements Shooter{
 	private Vector2f velocity;
 	
 	Stats playerStats;
+	private Inventory inventory;
 	
 	private boolean powerUpActive=false;
 	
@@ -39,7 +44,6 @@ public class Player extends DynamicGameObject implements Shooter{
 	private static Player player = null;
 	
 	//*************************ST**************************
-	int numberOfKey;
 	int score;
 	MultiBar m;
 	//*************************ST**************************	
@@ -58,6 +62,22 @@ public class Player extends DynamicGameObject implements Shooter{
 		}
 		return player;
 	}
+	
+	public void reset()
+	{
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		double width = screenSize.getWidth();
+		double height = screenSize.getHeight();
+		this.setPosition(getPosition());
+		this.setDimentions( new Vector2f(30f, 30f));
+		this.setSpeed(5f);
+		this.playerStats.setBulletSpeed(9f);
+		this.playerStats.setBulletDamage(10);
+		this.playerStats.setMaxHealth(600);
+		this.playerStats.setCurHealth(600);
+		this.playerStats.setBodyDamage(5);
+		this.playerStats.setFireRate(400f);
+	}
 
 	private Player(Vector2f pos, Vector2f dim, float speed, float maxHealth) {
 		super(pos, dim, speed);
@@ -74,11 +94,10 @@ public class Player extends DynamicGameObject implements Shooter{
 		
 		playerStats = new Stats(maxHealth, maxHealth);
 		
-		//*************************ST**************************
-		numberOfKey=0;
 		score=0;
 		m = new MultiBar(this, false); //not horizontal	
-		//*************************ST**************************
+		
+		inventory = new Inventory();
 	}
 	
 	private Player(Vector2f pos, Vector2f dim, float speed, 
@@ -97,12 +116,10 @@ public class Player extends DynamicGameObject implements Shooter{
 		curColor = normal;
 		
 		playerStats = new Stats(maxHealth, bulletSpeed, bulletDamage, fireRate, 0f);
-		
-		//*************************ST**************************
-		numberOfKey=0;
 		score=0;
-		m = new MultiBar(this, false); //not horizontal	
-		//*************************ST**************************
+		m = new MultiBar(this, false); //not horizontal
+		
+		inventory = new Inventory();
 	}
 	
 	private Player(Vector2f pos, Vector2f dim, float speed, 
@@ -122,11 +139,10 @@ public class Player extends DynamicGameObject implements Shooter{
 		
 		playerStats = new Stats(maxHealth, bulletSpeed, bulletDamage, fireRate, bodyDamage);
 		
-		//*************************ST**************************
-		numberOfKey=0;
 		score=0;
 		m = new MultiBar(this, false); //not horizontal	
-		//*************************ST**************************
+		
+		inventory = new Inventory();
 	}
 	
 	
@@ -230,12 +246,16 @@ public class Player extends DynamicGameObject implements Shooter{
 		nextTimeToNormalise = System.currentTimeMillis() + (long)ALTERNATE_TIME;
 	}
 	
-	//*************************ST**************************
-	void takeKey(){
-		numberOfKey++;
-		//System.out.println(numberOfKey);
+	public void applyInventory()
+	{
+		this.reset();
+		GameMaster.getGameMaster().reset();
+		for(int i =0; i < inventory.getItemList().size(); i++)
+		{
+			inventory.getItemList().get(i).affect();
+		}
 	}
-	//*************************ST**************************
+	
 	
 	//getters & setters
 	public Color getAlternate() {
@@ -308,6 +328,14 @@ public class Player extends DynamicGameObject implements Shooter{
 
 	public void setPlayerName(String playerName) {
 		this.playerName = playerName;
+	}
+
+	public Inventory getInventory() {
+		return inventory;
+	}
+
+	public void setInventory(Inventory inventory) {
+		this.inventory = inventory;
 	}
 	
 }

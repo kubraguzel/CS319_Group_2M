@@ -30,6 +30,10 @@ public class SeniorChest extends Chest {
 		super.shape = new Rectangle(position.x, position.y, img.getWidth(), img.getHeight());
 	}
 	
+	public SeniorChest() 
+	{
+	}
+
 	public void setPosition(Vector2f pos) {
 		this.position = pos;		
 	}
