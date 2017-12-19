@@ -1,5 +1,3 @@
-package deneme;
-
 import java.util.ArrayList;
 import java.util.Random;
 
