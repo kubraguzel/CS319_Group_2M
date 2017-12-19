@@ -19,21 +19,21 @@ public class SurvivalInBilkent extends StateBasedGame {
 	@Override
 	public void initStatesList(GameContainer arg0) throws SlickException 
 	{
-		addState(new UpgradeScreen());
 		addState(new TitleMenu());
 		addState(GameMaster.getGameMaster());
 		addState(new CreditsMenu());
 		addState(new PauseMenu());
 		addState(new GameOverScreen());
+		addState(new UpgradeScreen());
 	}
 	
 	public static void main(String[] args) throws SlickException {
-		AppGameContainer app = new AppGameContainer(new SurvivalInBilkent ("Survival in Bilkent v0.8 beta"));
+		AppGameContainer app = new AppGameContainer(new SurvivalInBilkent ("Survival in Bilkent"));
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		double width = screenSize.getWidth();
 		double height = screenSize.getHeight();
-		app.setDisplayMode((int)width, (int)height, true);
+		app.setDisplayMode((int)width, (int)height, false);
 		app.setTargetFrameRate(FPS);
 		app.start();
 	}

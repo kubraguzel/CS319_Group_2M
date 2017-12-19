@@ -1,4 +1,3 @@
-
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
@@ -515,6 +514,9 @@ public class GameMaster extends BasicGameState{
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int arg2) throws SlickException 
 	{
+		if(container.getInput().isKeyPressed(Input.KEY_8))
+			game.enterState(4);
+		
 		if(player !=null){
 			manageInput(container);
 			player.update();
@@ -566,7 +568,7 @@ public class GameMaster extends BasicGameState{
 			if(enemyList.size() <= 0){
 				level++;
 				if(level <= 4){
-					game.enterState(3); //***** it will change with the upgrade screen *****4
+					game.enterState(4); //***** it will change with the upgrade screen *****4
 				}
 				else{
 					game.enterState(5); //***** it will change with the success screen *****

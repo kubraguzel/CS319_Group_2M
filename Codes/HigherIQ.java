@@ -2,7 +2,7 @@
 public class HigherIQ extends Item {
 
 	public HigherIQ() {
-		super("Higher IQ", "You are better, smarter, faster but /n you are expected to do these in half the time.", 0);
+		super("Higher IQ", "You are better, faster,stronger but half as tough", 0);
 		itemTier = Item.hacker;
 	}
 
