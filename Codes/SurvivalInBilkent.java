@@ -19,6 +19,7 @@ public class SurvivalInBilkent extends StateBasedGame {
 	@Override
 	public void initStatesList(GameContainer arg0) throws SlickException 
 	{
+		addState(new UpgradeScreen());
 		addState(new TitleMenu());
 		addState(GameMaster.getGameMaster());
 		addState(new CreditsMenu());

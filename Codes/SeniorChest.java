@@ -74,8 +74,28 @@ public class SeniorChest extends Chest {
 		this.img = img;
 	}
 
-	public Item unlock(){
-		return null;
+	public Item unlock()
+	{
+		double rand =  Math.random();
+		if (rand<=0.18)
+		{
+			return new CaramelMacchiato();
+		}
+		
+		else if (rand > 0.18 && rand <= 0.43)
+		{
+			return new OldExams();
+		}
+		
+		else if (rand > 0.43 && rand <= 0.75)
+		{
+			return new Prozac();
+		}
+		
+		else
+		{
+			return new HigherIQ();
+		}
 	}
 
 }

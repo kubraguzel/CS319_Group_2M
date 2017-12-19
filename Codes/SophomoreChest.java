@@ -74,8 +74,23 @@ public class SophomoreChest extends Chest {
 		this.img = img;
 	}
 
-	public Item unlock(){
-		return null;
+	public Item unlock()
+	{
+		double rand =  Math.random();
+		if (rand<=0.5)
+		{
+			return new CaramelMacchiato();
+		}
+		
+		else if (rand > 0.8)
+		{
+			return new Prozac();
+		}
+		
+		else
+		{
+			return new OldExams();
+		}
 	}
 
 }
