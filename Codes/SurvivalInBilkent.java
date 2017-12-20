@@ -33,7 +33,7 @@ public class SurvivalInBilkent extends StateBasedGame {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		double width = screenSize.getWidth();
 		double height = screenSize.getHeight();
-		app.setDisplayMode((int)width, (int)height, false);
+		app.setDisplayMode((int)width, (int)height, true);
 		app.setTargetFrameRate(FPS);
 		app.start();
 	}

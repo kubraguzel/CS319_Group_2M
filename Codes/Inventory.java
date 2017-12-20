@@ -37,8 +37,8 @@ public class Inventory {
 	public boolean discardItem(int i)
 	{
 		if (i >= 0 
-				&& i <= ITEM_CAPACITY 
-				&& itemList.get(i)!= null)
+				&& !itemList.isEmpty()
+				&& i < itemList.size() )
 		{
 			itemList.remove(i);
 			return true;
@@ -49,50 +49,54 @@ public class Inventory {
 	public boolean openChest(int chestType)
 	{
 		Chest chest;
-		if(chestType == 0 
-				&& numOfFreshmenChests > 0
-				&& numOfKeys >= 1)
+		if (itemList.size() <= ITEM_CAPACITY)
 		{
-			chest = new FreshmenChest();
-			itemList.add(chest.unlock());
-			numOfFreshmenChests--;
-			numOfKeys--;
-			return true;
+			if(chestType == 0 
+					&& numOfFreshmenChests > 0
+					&& numOfKeys >= 1)
+			{
+				chest = new FreshmenChest();
+				itemList.add(chest.unlock());
+				numOfFreshmenChests--;
+				numOfKeys--;
+				return true;
+			}
+			
+			else if(chestType == 1
+					&& numOfSophomoreChests > 0
+					&& numOfKeys >= 2)
+			{
+				chest = new SophomoreChest();
+				itemList.add(chest.unlock());
+				numOfSophomoreChests--;
+				numOfKeys= numOfKeys -2;
+				return true;
+			}
+			
+			else if(chestType == 2
+					&& numOfJuniorChests > 0
+					&& numOfKeys >= 3)
+			{
+				chest = new JuniorChest();
+				itemList.add(chest.unlock());
+				numOfJuniorChests--;
+				numOfKeys= numOfKeys -3;
+				return true;
+			}
+			
+			else if(chestType == 3
+					&& numOfSeniorChests > 0
+					&& numOfKeys >= 4)
+			{
+				chest = new SeniorChest();
+				itemList.add(chest.unlock());
+				numOfSeniorChests--;
+				numOfKeys= numOfKeys -4;
+				return true;
+			}
+			else 
+				return false;
 		}
-		
-		else if(chestType == 1
-				&& numOfSophomoreChests > 0
-				&& numOfKeys >= 2)
-		{
-			chest = new SophomoreChest();
-			itemList.add(chest.unlock());
-			numOfSophomoreChests--;
-			numOfKeys=-2;
-			return true;
-		}
-		
-		else if(chestType == 2
-				&& numOfJuniorChests > 0
-				&& numOfKeys >= 3)
-		{
-			chest = new JuniorChest();
-			itemList.add(chest.unlock());
-			numOfJuniorChests--;
-			numOfKeys=-3;
-			return true;
-		}
-		
-		else if(chestType == 3
-				&& numOfSeniorChests > 0
-				&& numOfKeys >= 4)
-		{
-			chest = new SeniorChest();
-			itemList.add(chest.unlock());
-			numOfSeniorChests--;
-			numOfKeys=-4;
-			return true;
-		}
-		
 		else
 		{
 			return false;

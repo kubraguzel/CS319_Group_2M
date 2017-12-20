@@ -8,8 +8,8 @@ public class CaramelMacchiato extends Item {
 
 	@Override
 	public void affect() {
-		Player.getPlayer().setSpeed(Player.getPlayer().getSpeed()*1.5f);
-		GameMaster.getGameMaster().coinSpawnRate = GameMaster.getGameMaster().coinSpawnRate* 0.6f;
+		Player.getPlayer().setSpeed(Player.getPlayer().getSpeed()*1.7f);
+		GameMaster.getGameMaster().coinSpawnRate = GameMaster.getGameMaster().coinSpawnRate* 0f;
 	}
 
 }

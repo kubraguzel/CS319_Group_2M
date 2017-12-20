@@ -438,6 +438,8 @@ public class GameMaster extends BasicGameState{
 		bulletList = new ArrayList<Bullet>();
 		enemyList = new ArrayList<Enemy>();
 		bonusList = new ArrayList<Bonus>();
+		
+		isFinalSpawn = false;
 	}
 
 	@Override
@@ -447,6 +449,8 @@ public class GameMaster extends BasicGameState{
 		boom = new Sound("res/Sound/kaboom.wav");
 		playerBoom = new Sound("res/Sound/playerboom.wav");
 		paused=false;
+		
+		isFinalSpawn = false;
 		
 		container.setShowFPS(false); 
 		
