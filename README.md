@@ -16,13 +16,3 @@ Kübra Nur Güzel - 21400946
 Alper Şahıstan - 21501207
 
 Semih Teker - 21300964
-
-
-git clone https://gist.github.com/<CS319_Group_2M>.git # with https
-git clone git@gist.github.com:<CS319_Group_2M>.git     # or with ssh
-
-git add your-image.jpg
-
-git commit -m "Add image"
-
-git push origin master
