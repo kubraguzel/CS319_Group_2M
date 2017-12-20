@@ -18,6 +18,8 @@ Alper Şahıstan - 21501207
 Semih Teker - 21300964
 
 
+![logo2](https://user-images.githubusercontent.com/32205459/34212679-20f7b8ca-e5ae-11e7-8cad-7ec2594cbeba.png)
+
 ![taslak](https://user-images.githubusercontent.com/32205459/34212460-63fb9be2-e5ad-11e7-9e12-02f75ecc3b1a.png)
 
 ![javaw_2017-12-20_03-48-44-55](https://user-images.githubusercontent.com/32205459/34212616-e57a2940-e5ad-11e7-8c48-1e2cde0eabf8.jpg)
