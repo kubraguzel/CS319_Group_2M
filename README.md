@@ -26,6 +26,7 @@ Semih Teker - 21300964
 
 ![javaw_2017-12-20_03-58-07-48](https://user-images.githubusercontent.com/32205459/34212625-ef9a4b08-e5ad-11e7-854e-d663b0479e98.jpg)
 
-![javaw_2017-12-20_03-57-57-61](https://user-images.githubusercontent.com/32205459/34212626-f1f58b2e-e5ad-11e7-8ee9-5baf236bfd4e.jpg)
+![javaw_2017-12-20_17-59-24-82](https://user-images.githubusercontent.com/32205459/34213246-b0f67f8c-e5af-11e7-8a83-63b5b28efa79.jpg)
 
 ![javaw_2017-12-20_04-01-49-05](https://user-images.githubusercontent.com/32205459/34212628-f40122c0-e5ad-11e7-9405-6072cacb7549.jpg)
+
